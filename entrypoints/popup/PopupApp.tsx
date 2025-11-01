@@ -40,8 +40,8 @@ export default function App() {
 
   return (
     <main className="flex w-[250px] flex-col items-center p-4">
-      <div className="flex items-center gap-2">
-        <AppIcon className="h-8 w-8"></AppIcon>
+      <div className="ml-2 flex items-center gap-2 self-start">
+        <AppIcon className="h-9 w-9"></AppIcon>
         <h1 className="text-base font-semibold">Socket Inspector</h1>
       </div>
       {extensionEnabledResult.loaded && (

@@ -219,11 +219,32 @@ test('it can still send a message when the websocket is paused', async ({
   await hostPageModel.assertEchoResponse('EXT_CLIENT');
 });
 
-// test.skip("it shows an error when sending invalid json", async ({
-//   page,
-//   context,
-//   devtoolsPanelUrl,
-// }) => {});
+test('it shows an error when sending invalid json', async ({ page, context, devtoolsPanelUrl }) => {
+  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  await devtoolsPanelModel.loadDevtoolsPanel();
+
+  const hostPage = await context.newPage();
+  const hostPageModel = new HostPageModel(hostPage);
+  await hostPageModel.navigateToHostPage();
+
+  await devtoolsPanelModel.bringToFront();
+  await devtoolsPanelModel.clickSocketLink({
+    url: hostPageModel.serverBaseUrl,
+    status: 'Connected',
+  });
+
+  await devtoolsPanelModel.assertNoComposerErrors();
+
+  // Select JSON payload type
+  await devtoolsPanelModel.selectComposerDestination('Server');
+  await devtoolsPanelModel.selectComposerPayloadType('JSON');
+
+  // Enter invalid JSON (missing closing brace)
+  await devtoolsPanelModel.enterComposerPayload('{type:EchoRequest"');
+  await devtoolsPanelModel.submitComposerMessage();
+  await devtoolsPanelModel.assertComposerError('Payload must be valid JSON');
+  await devtoolsPanelModel.assertTableMessages([]);
+});
 
 // test.skip("it shows an error when trying to send a message on a closed socket", async ({
 //   page,

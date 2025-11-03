@@ -2,7 +2,9 @@
 
 ## About
 
-Socket Inspector is a browser extension built to simulate edge cases, reproduce bugs, and uncover security vulnerabilities in WebSocket Applications.
+**Socket Inspector** is a browser extension built to simulate edge cases, reproduce bugs, and uncover security vulnerabilities in WebSocket Applications.
+
+Open the DevTools panel to view all the current page's WebSocket connections. Select a connection to view all incoming/outgoing messages and send your own custom messages via the built-in text editor. You can debug your UI by setting the message destination to **Client** or your backend by setting it to **Server**.
 
 ## Installation
 

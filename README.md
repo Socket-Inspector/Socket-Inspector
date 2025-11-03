@@ -1,5 +1,16 @@
 ![Hero Screenshot](./.github/assets/hero-screenshot.png)
 
+## About
+
+Socket Inspector is a browser extension built to simulate edge cases, reproduce bugs, and uncover security vulnerabilities in WebSocket Applications.
+
+## Installation
+
+Chrome Web Store:
+
+- Navigate to the [Chrome store page](https://chromewebstore.google.com/detail/kecipkncnnofappfmapgmfailmnbaoaf?utm_source=item-share-cb)
+- Click **Add to Chrome**
+
 ## Support
 
 Bug reports, feature requests, and general questions are welcome and appreciated!

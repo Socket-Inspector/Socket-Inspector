@@ -1,6 +1,6 @@
 ![Hero Screenshot](./.github/assets/hero.png)
 ![Hero Screenshot](./.github/assets/hero-2.png)
-![Hero Screenshot](./.github/assets/hero-3.png)
+![Hero Screenshot](./.github/assets/hero_3.png)
 
 ## Support
 

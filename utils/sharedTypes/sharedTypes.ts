@@ -14,6 +14,7 @@ import {
   ClearDevtoolsStatePacketSchema,
   PauseSocketPacketSchema,
   ResumeSocketPacketSchema,
+  CloseConnectionPacketSchema,
   PacketSchema,
 } from './schemas';
 
@@ -34,6 +35,7 @@ export type RequestSocketsPacket = z.infer<typeof RequestSocketsPacketSchema>;
 export type ClearDevtoolsStatePacket = z.infer<typeof ClearDevtoolsStatePacketSchema>;
 export type PauseSocketPacket = z.infer<typeof PauseSocketPacketSchema>;
 export type ResumeSocketPacket = z.infer<typeof ResumeSocketPacketSchema>;
+export type CloseConnectionPacket = z.infer<typeof CloseConnectionPacketSchema>;
 
 /** Union of all Packet Types */
 export type Packet = z.infer<typeof PacketSchema>;

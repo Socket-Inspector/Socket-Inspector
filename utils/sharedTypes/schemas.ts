@@ -103,6 +103,13 @@ export const ResumeSocketPacketSchema = z.object({
   }),
 });
 
+export const CloseConnectionPacketSchema = z.object({
+  type: z.literal('CloseConnectionPacket'),
+  payload: z.object({
+    socketId: z.string(),
+  }),
+});
+
 /***** Discriminated Union *****/
 export const PacketSchema = z.discriminatedUnion('type', [
   SocketDetailsPacketSchema,
@@ -115,4 +122,5 @@ export const PacketSchema = z.discriminatedUnion('type', [
   UserInjectedSocketMessagePacketSchema,
   PauseSocketPacketSchema,
   ResumeSocketPacketSchema,
+  CloseConnectionPacketSchema,
 ]);

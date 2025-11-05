@@ -5,12 +5,20 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from './shadcn/Sidebar';
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './shadcn/DropdownMenu';
+import { MoreHorizontal } from 'lucide-react';
 
 export function AppSidebar() {
   const { socketState, dispatch } = useSocketContext();
@@ -52,6 +60,8 @@ type SocketConnectionMenuItemProps = {
 };
 
 function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnectionMenuItemProps) {
+  const { sendPacket } = useSocketContext();
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -63,6 +73,26 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
         <SocketStatusIcon socketStatus={socket.status}></SocketStatusIcon>
         <span>{socket.url}</span>
       </SidebarMenuButton>
+      {/* TODO: should these options be available for closed sockets? */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuAction>
+            <MoreHorizontal />
+          </SidebarMenuAction>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="right" align="start">
+          <DropdownMenuItem
+            onSelect={() => {
+              sendPacket({
+                type: 'CloseConnectionPacket',
+                payload: { socketId: socket.id },
+              });
+            }}
+          >
+            <span>Close connection</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </SidebarMenuItem>
   );
 }

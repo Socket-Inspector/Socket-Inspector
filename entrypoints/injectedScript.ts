@@ -215,13 +215,13 @@ export default defineUnlistedScript(() => {
         payload: { socket: connection.socket },
       });
     } else if (packet.type === 'CloseConnectionPacket') {
-      const { socketId } = packet.payload;
+      const { socketId, code, reason } = packet.payload;
       const connection = sockets.get(socketId);
       if (!connection) {
         return;
       }
       try {
-        connection.client.close();
+        connection.client.close(code, reason);
       } catch {}
     }
   });

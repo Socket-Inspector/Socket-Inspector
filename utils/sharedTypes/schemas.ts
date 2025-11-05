@@ -107,6 +107,8 @@ export const CloseConnectionPacketSchema = z.object({
   type: z.literal('CloseConnectionPacket'),
   payload: z.object({
     socketId: z.string(),
+    code: z.number().optional(),
+    reason: z.string().optional(),
   }),
 });
 

@@ -35,7 +35,6 @@ const closeCodeItems: CloseCodeItem[] = [
 ];
 
 // TODO: make styling cooler (e.g. supporting text for the label of each code)
-//
 export function CloseCodeSelect() {
   const [selectedCode, setSelectedCode] = useState<CloseCode>('1000');
   return (

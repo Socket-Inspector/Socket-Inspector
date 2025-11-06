@@ -8,6 +8,11 @@ import {
   DialogTitle,
 } from './shadcn/Dialog';
 
+/**
+ * TODO:
+ *  what if socket is closed? should button just be disabled?
+ */
+
 export type CloseSocketFormResult = {
   code?: number;
   reason?: string;

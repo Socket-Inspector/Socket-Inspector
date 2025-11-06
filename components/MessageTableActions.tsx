@@ -1,4 +1,4 @@
-import { Filter, Ban, Pause, Play } from 'lucide-react';
+import { Filter, Ban, Pause, Play, OctagonX } from 'lucide-react';
 import { Input } from './shadcn/Input';
 import { Button } from './shadcn/Button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
@@ -14,6 +14,7 @@ export type TableActionsProps = {
   onClear: () => void;
   onFilterChange: (value: MessageFilterOption) => void;
   onPauseToggle: () => void;
+  onCloseSocketClick: () => void;
 };
 
 export function TableActions({
@@ -24,6 +25,7 @@ export function TableActions({
   onClear,
   onFilterChange,
   onPauseToggle,
+  onCloseSocketClick,
 }: TableActionsProps) {
   return (
     <div className="bg-background/95 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-10 flex items-center gap-1 border-b px-2 py-1 backdrop-blur">
@@ -46,6 +48,24 @@ export function TableActions({
         </Tooltip>
       </TooltipProvider>
 
+      {/* TODO: accessibility, etc as in the above button */}
+      <TooltipProvider>
+        <Tooltip delayDuration={500}>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground h-6 w-6"
+              onClick={() => onCloseSocketClick()}
+              aria-label="TODO: Close Socket"
+            >
+              <OctagonX></OctagonX>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>TODO: add content</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
       <TooltipProvider>
         <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
@@ -54,12 +74,12 @@ export function TableActions({
               size="icon"
               className="text-muted-foreground h-6 w-6"
               onClick={() => onClear()}
-              aria-label="Clear all messages"
+              aria-label="Clear messages from table"
             >
               <Ban className="h-4 w-4"></Ban>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Clear all messages</TooltipContent>
+          <TooltipContent>Clear messages from table</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 

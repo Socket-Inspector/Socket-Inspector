@@ -18,6 +18,11 @@ export type CloseCodeItem = {
 };
 
 // TODO: make styling cooler (e.g. supporting text for the label)
+/**
+ * sources:
+ * https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
+ * https://www.iana.org/assignments/websocket/websocket.xhtml#close-code-number
+ */
 const closeCodeItems: CloseCodeItem[] = [
   { code: '1000', label: 'Normal Closure' },
   { code: '1001', label: 'Going Away' },
@@ -26,7 +31,6 @@ const closeCodeItems: CloseCodeItem[] = [
   { code: '1007', label: 'Invalid Frame Payload Data' },
   { code: '1008', label: 'Policy Violation' },
   { code: '1009', label: 'Message Too Big' },
-  { code: '1010', label: 'Mandatory Extension' },
   { code: '1011', label: 'Internal Error' },
 ];
 

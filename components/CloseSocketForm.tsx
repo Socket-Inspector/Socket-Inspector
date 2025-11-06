@@ -9,8 +9,8 @@ import {
 } from './shadcn/Dialog';
 
 export type CloseSocketFormResult = {
-  code: number;
-  reason: string;
+  code?: number;
+  reason?: string;
 };
 
 export type CloseSocketFormProps = {

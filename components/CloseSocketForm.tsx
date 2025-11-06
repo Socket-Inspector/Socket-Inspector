@@ -1,4 +1,5 @@
-import { CloseCodeSelect } from './CloseCodeSelect';
+import { useState } from 'react';
+import { CloseCode, CloseCodeSelect } from './CloseCodeSelect';
 import { Button } from './shadcn/Button';
 import {
   DialogContent,
@@ -13,8 +14,13 @@ import {
  *  what if socket is closed? should button just be disabled?
  */
 
+export type CloseSocketFormValue = {
+  code: CloseCode;
+  reason?: string;
+};
+
 export type CloseSocketFormResult = {
-  code?: number;
+  code: number;
   reason?: string;
 };
 
@@ -23,6 +29,9 @@ export type CloseSocketFormProps = {
 };
 
 export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
+  const formValue = useState<CloseSocketFormValue>({
+    code: '1000',
+  });
   return (
     <form
       onSubmit={(e) => {

@@ -1,6 +1,8 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
 import { useState } from 'react';
 
+// TODO: should this be a shared type and should close items be exposed in shared service of
+//       some sort?
 export type CloseCode =
   | '1000'
   | '1001'
@@ -19,9 +21,13 @@ export type CloseCodeItem = {
 
 // TODO: make styling cooler (e.g. supporting text for the label)
 /**
- * sources:
+ * close code sources:
  * https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
  * https://www.iana.org/assignments/websocket/websocket.xhtml#close-code-number
+ * https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code#value
+ *  TODO: 1012, 1013, 1014 from MDN?
+ *
+ * consider making Zod schemas more specific to only allow these codes?
  */
 const closeCodeItems: CloseCodeItem[] = [
   { code: '1000', label: 'Normal Closure' },

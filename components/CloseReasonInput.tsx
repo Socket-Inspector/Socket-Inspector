@@ -1,6 +1,12 @@
 import { Field, FieldDescription, FieldLabel } from './shadcn/Field';
 import { Input } from './shadcn/Input';
 
+/**
+ * TODO:
+ * live character counter?
+ * consider the "Input Group" element
+ */
+
 export function CloseReasonInput() {
   return (
     <Field>

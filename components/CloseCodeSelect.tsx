@@ -1,6 +1,5 @@
 import { Field, FieldDescription, FieldLabel } from './shadcn/Field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
-import { useState } from 'react';
 
 // TODO: should this be a shared type and should close items be exposed in shared service of
 //       some sort?
@@ -41,14 +40,18 @@ const closeCodeItems: CloseCodeItem[] = [
   { code: '1011', label: 'Internal Error' },
 ];
 
+export type CloseCodeSelectProps = {
+  value: CloseCode;
+  onChange: (newValue: CloseCode) => void;
+};
+
 // TODO: make styling cooler (e.g. supporting text for the label of each code)
 //       is id/htmlfor needed?
-export function CloseCodeSelect() {
-  const [selectedCode, setSelectedCode] = useState<CloseCode>('1000');
+export function CloseCodeSelect({ value, onChange }: CloseCodeSelectProps) {
   return (
     <Field>
       <FieldLabel>Close Code</FieldLabel>
-      <Select value={selectedCode} onValueChange={(value) => setSelectedCode(value as CloseCode)}>
+      <Select value={value} onValueChange={(value) => onChange(value as CloseCode)}>
         <SelectTrigger className="text-xs">
           <SelectValue placeholder="1000"></SelectValue>
         </SelectTrigger>

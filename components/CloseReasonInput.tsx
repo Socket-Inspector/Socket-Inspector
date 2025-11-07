@@ -7,11 +7,23 @@ import { Input } from './shadcn/Input';
  * consider the "Input Group" element
  */
 
-export function CloseReasonInput() {
+export type CloseReasonInputProps = {
+  value: string;
+  onChange: (newValue: string) => void;
+};
+export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
   return (
     <Field>
       <FieldLabel htmlFor="close-reason-input">Close Reason</FieldLabel>
-      <Input id="close-reason-input" type="text" placeholder="max 180 or something?" />
+      <Input
+        id="close-reason-input"
+        type="text"
+        placeholder="max 180 or something?"
+        value={value}
+        onChange={(event) => {
+          onChange(event.target.value);
+        }}
+      ></Input>
       <FieldDescription>add close reason description here if needed</FieldDescription>
     </Field>
   );

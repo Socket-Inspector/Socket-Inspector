@@ -21,9 +21,9 @@ import { FieldGroup } from './shadcn/Field';
  * https://ui.shadcn.com/docs/components/field
  */
 
-export type CloseSocketFormValue = {
+export type CloseSocketFormState = {
   code: CloseCode;
-  reason?: string;
+  reason: string;
 };
 
 export type CloseSocketFormResult = {
@@ -36,25 +36,40 @@ export type CloseSocketFormProps = {
 };
 
 export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
-  const formValue = useState<CloseSocketFormValue>({
+  const [formState, setFormState] = useState<CloseSocketFormState>({
     code: '1000',
+    reason: '',
   });
+
+  console.log('formState on render: ', formState);
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        console.log('formState on submit: ', formState);
       }}
     >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Close Socket</DialogTitle>
-          {/* explain that close code/close reason will be sent to client? */}
+          {/* TODO: explain that close code/close reason will be sent to client? */}
           <DialogDescription>Add description here if needed</DialogDescription>
         </DialogHeader>
         <div className="w-full max-w-md">
           <FieldGroup>
-            <CloseCodeSelect></CloseCodeSelect>
-            <CloseReasonInput></CloseReasonInput>
+            <CloseCodeSelect
+              value={formState.code}
+              onChange={(value) => {
+                setFormState({ ...formState, code: value });
+              }}
+            ></CloseCodeSelect>
+            <CloseReasonInput
+              value={formState.reason}
+              onChange={(value) => {
+                setFormState({ ...formState, reason: value });
+              }}
+            ></CloseReasonInput>
           </FieldGroup>
         </div>
         <DialogFooter>

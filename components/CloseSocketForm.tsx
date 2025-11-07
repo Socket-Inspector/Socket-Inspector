@@ -8,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from './shadcn/Dialog';
-import { Input } from './shadcn/Input';
 import { CloseReasonInput } from './CloseReasonInput';
 import { FieldGroup } from './shadcn/Field';
 
@@ -16,6 +15,7 @@ import { FieldGroup } from './shadcn/Field';
  * TODO:
  *  what if socket is closed? should button just be disabled?
  *  how to make it clear close reason is optional
+ *  consider horizontal orientation for fields?
  *
  * consider using the new <Field> component:
  * https://ui.shadcn.com/docs/components/field

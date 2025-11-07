@@ -43,6 +43,8 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
 
   console.log('formState on render: ', formState);
 
+  // TODO: styling issue with putting form inside the dialog content?
+
   return (
     <DialogContent>
       <form
@@ -53,7 +55,7 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
         }}
       >
         <DialogHeader>
-          <DialogTitle>Close Socket</DialogTitle>
+          <DialogTitle>Close Connection</DialogTitle>
           {/* TODO: explain that close code/close reason will be sent to client? */}
           <DialogDescription>Add description here if needed</DialogDescription>
         </DialogHeader>

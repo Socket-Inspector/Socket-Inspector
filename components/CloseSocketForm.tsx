@@ -8,10 +8,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from './shadcn/Dialog';
+import { Input } from './shadcn/Input';
+import { CloseReasonInput } from './CloseReasonInput';
+import { FieldGroup } from './shadcn/Field';
 
 /**
  * TODO:
  *  what if socket is closed? should button just be disabled?
+ *  how to make it clear close reason is optional
+ *
+ * consider using the new <Field> component:
+ * https://ui.shadcn.com/docs/components/field
  */
 
 export type CloseSocketFormValue = {
@@ -44,7 +51,12 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
           {/* explain that close code/close reason will be sent to client? */}
           <DialogDescription>Add description here if needed</DialogDescription>
         </DialogHeader>
-        <CloseCodeSelect></CloseCodeSelect>
+        <div className="w-full max-w-md">
+          <FieldGroup>
+            <CloseCodeSelect></CloseCodeSelect>
+            <CloseReasonInput></CloseReasonInput>
+          </FieldGroup>
+        </div>
         <DialogFooter>
           <Button type="submit">Close Socket</Button>
         </DialogFooter>

@@ -1,3 +1,4 @@
+import { Field, FieldDescription, FieldLabel } from './shadcn/Field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
 import { useState } from 'react';
 
@@ -41,20 +42,25 @@ const closeCodeItems: CloseCodeItem[] = [
 ];
 
 // TODO: make styling cooler (e.g. supporting text for the label of each code)
+//       is id/htmlfor needed?
 export function CloseCodeSelect() {
   const [selectedCode, setSelectedCode] = useState<CloseCode>('1000');
   return (
-    <Select value={selectedCode} onValueChange={(value) => setSelectedCode(value as CloseCode)}>
-      <SelectTrigger className="text-xs">
-        <SelectValue placeholder="1000"></SelectValue>
-      </SelectTrigger>
-      <SelectContent className="text-xs" side="bottom">
-        {closeCodeItems.map((item) => (
-          <SelectItem key={item.code} value={item.code}>
-            {item.code} ({item.label})
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <Field>
+      <FieldLabel>Close Code</FieldLabel>
+      <Select value={selectedCode} onValueChange={(value) => setSelectedCode(value as CloseCode)}>
+        <SelectTrigger className="text-xs">
+          <SelectValue placeholder="1000"></SelectValue>
+        </SelectTrigger>
+        <SelectContent className="text-xs" side="bottom">
+          {closeCodeItems.map((item) => (
+            <SelectItem key={item.code} value={item.code}>
+              {item.code} ({item.label})
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FieldDescription>add close code description if needed</FieldDescription>
+    </Field>
   );
 }

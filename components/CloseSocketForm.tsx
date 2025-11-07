@@ -44,13 +44,14 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
   console.log('formState on render: ', formState);
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log('formState on submit: ', formState);
-      }}
-    >
-      <DialogContent>
+    <DialogContent>
+      <form
+        onSubmit={(e) => {
+          console.log('inside onSubmit');
+          e.preventDefault();
+          console.log('formState on submit: ', formState);
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Close Socket</DialogTitle>
           {/* TODO: explain that close code/close reason will be sent to client? */}
@@ -75,7 +76,7 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
         <DialogFooter>
           <Button type="submit">Close Socket</Button>
         </DialogFooter>
-      </DialogContent>
-    </form>
+      </form>
+    </DialogContent>
   );
 }

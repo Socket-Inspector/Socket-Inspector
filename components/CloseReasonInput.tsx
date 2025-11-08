@@ -1,5 +1,6 @@
 import { Field, FieldDescription, FieldLabel } from './shadcn/Field';
 import { Input } from './shadcn/Input';
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from './shadcn/InputGroup';
 
 /**
  * TODO:
@@ -13,21 +14,32 @@ export type CloseReasonInputProps = {
   value: string;
   onChange: (newValue: string) => void;
 };
+
 export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
+  const maxLength = 123;
   return (
     <Field>
       <FieldLabel htmlFor="close-reason-input">Close Reason</FieldLabel>
-      <Input
-        id="close-reason-input"
-        type="text"
-        placeholder="max 180 or something?"
-        maxLength={123}
-        value={value}
-        onChange={(event) => {
-          onChange(event.target.value);
-        }}
-      ></Input>
-      <FieldDescription>add close reason description here if needed</FieldDescription>
+      <InputGroup>
+        <InputGroupInput
+          id="close-reason-input"
+          type="text"
+          placeholder="Enter close reason (optional)"
+          maxLength={maxLength}
+          value={value}
+          onChange={(event) => {
+            onChange(event.target.value);
+          }}
+        />
+        <InputGroupAddon align="inline-end">
+          <InputGroupText className="text-xs tabular-nums">
+            {value.length} / {maxLength}
+          </InputGroupText>
+        </InputGroupAddon>
+      </InputGroup>
+      <FieldDescription>
+        Optional UTF-8 text describing why the connection is being closed
+      </FieldDescription>
     </Field>
   );
 }

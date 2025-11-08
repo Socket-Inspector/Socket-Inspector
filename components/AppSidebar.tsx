@@ -5,12 +5,14 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from './shadcn/Sidebar';
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
+import { CircleX } from 'lucide-react';
 
 export function AppSidebar() {
   const { socketState, dispatch } = useSocketContext();
@@ -63,6 +65,11 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
         <SocketStatusIcon socketStatus={socket.status}></SocketStatusIcon>
         <span>{socket.url}</span>
       </SidebarMenuButton>
+      {/* TODO: hovering over button when connection selected has contrast issues */}
+      <SidebarMenuAction>
+        <CircleX className="h-3.5 w-3.5"></CircleX>
+        <span className="sr-only">Close Connection</span>
+      </SidebarMenuAction>
     </SidebarMenuItem>
   );
 }

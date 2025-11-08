@@ -19,13 +19,11 @@ export type CloseCodeItem = {
   label: string;
 };
 
-// TODO: make styling cooler (e.g. supporting text for the label)
 /**
  * close code sources:
  * https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
  * https://www.iana.org/assignments/websocket/websocket.xhtml#close-code-number
  * https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code#value
- *  TODO: 1012, 1013, 1014 from MDN?
  *
  * consider making Zod schemas more specific to only allow these codes?
  */

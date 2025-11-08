@@ -17,7 +17,9 @@ import {
 /**
  * TODO:
  *  should make this component stateful (read state from context)
- *    allows us to show success message when socket is closed
+ *
+ *
+ *  show success message when socket is closed?
  *
  *
  * test in dark mode
@@ -84,7 +86,6 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
       >
         <DialogHeader>
           <DialogTitle>Close Connection</DialogTitle>
-          {/* TODO: explain that close code/close reason will be sent to client? */}
           <DialogDescription>
             Sends a close frame to the client with the specified close code and optional close
             reason.

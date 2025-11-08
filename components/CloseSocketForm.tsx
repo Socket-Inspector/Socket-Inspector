@@ -19,9 +19,13 @@ import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
  *  should make this component stateful (read state from context)
  *    allows us to show success message when socket is closed
  *
+ *
+ * test in dark mode
+ *
  * this seems to be keeping its state when opening/closing it
  *
  * link to RFC?
+ *  could put <Description> above the inputs with link
  *
  * how can we make it faster to open/close the dialog? kind of annoying to drag mouse to middle of screen
  *  also, the close button is a little to far to the right?

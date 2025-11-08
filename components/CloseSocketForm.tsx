@@ -21,6 +21,11 @@ import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
  *
  * this seems to be keeping its state when opening/closing it
  *
+ * link to RFC?
+ *
+ * how can we make it faster to open/close the dialog? kind of annoying to drag mouse to middle of screen
+ *  also, the close button is a little to far to the right?
+ *
  *
  * TODO:
  *  what if socket is closed? should button just be disabled?

@@ -10,8 +10,16 @@ import {
 } from './shadcn/Dialog';
 import { CloseReasonInput } from './CloseReasonInput';
 import { FieldGroup } from './shadcn/Field';
+import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
+import { querySelectedSocketDetails } from '@/hooks/useSocketState/queries';
+import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
 
 /**
+ * TODO:
+ *  should make this component stateful (read state from context)
+ *    allows us to show success message when socket is closed
+ *
+ *
  * TODO:
  *  what if socket is closed? should button just be disabled?
  *  how to make it clear close reason is optional
@@ -21,37 +29,44 @@ import { FieldGroup } from './shadcn/Field';
  * https://ui.shadcn.com/docs/components/field
  */
 
-export type CloseSocketFormState = {
+type CloseSocketFormState = {
   code: CloseCode;
   reason: string;
 };
 
-export type CloseSocketFormResult = {
-  code: number;
-  reason?: string;
-};
-
 export type CloseSocketFormProps = {
-  onSubmit: (packet: CloseSocketFormResult) => void;
+  onSubmit: () => void;
 };
-
 export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
+  const { socketState, dispatch, sendPacket } = useSocketContext();
+
   const [formState, setFormState] = useState<CloseSocketFormState>({
     code: '1000',
     reason: '',
   });
 
-  console.log('formState on render: ', formState);
-
-  // TODO: styling issue with putting form inside the dialog content?
+  const selectedSocketDetails = querySelectedSocketDetails(socketState);
+  if (!selectedSocketDetails) {
+    return null;
+  }
 
   return (
     <DialogContent>
       <form
         onSubmit={(e) => {
-          console.log('inside onSubmit');
           e.preventDefault();
           console.log('formState on submit: ', formState);
+          const packet: CloseConnectionPacket = {
+            type: 'CloseConnectionPacket',
+            payload: {
+              socketId: selectedSocketDetails.id,
+              code: parseInt(formState.code),
+            },
+          };
+          if (formState.reason) {
+            packet.payload.reason = formState.reason;
+          }
+          console.log('constructed this packet: ', packet);
         }}
       >
         <DialogHeader>

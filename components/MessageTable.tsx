@@ -19,7 +19,7 @@ import {
 import { TableActions, MessageFilterOption } from './MessageTableActions';
 import { MessageDirectionIcon } from './MessageDirectionIcon';
 import { Dialog } from './shadcn/Dialog';
-import { CloseSocketForm, CloseSocketFormResult } from './CloseSocketForm';
+import { CloseSocketForm } from './CloseSocketForm';
 
 const TABLE_HEADER_HEIGHT = 32;
 const TABLE_BODY_ROW_HEIGHT = 25;
@@ -351,19 +351,8 @@ export function MessageTable() {
       </main>
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <CloseSocketForm
-          onSubmit={(result: CloseSocketFormResult) => {
-            if (!selectedSocketId) {
-              return;
-            }
-            const packet: CloseConnectionPacket = {
-              type: 'CloseConnectionPacket',
-              payload: {
-                socketId: selectedSocketId,
-                code: result.code,
-                reason: result.reason,
-              },
-            };
-            sendPacket(packet);
+          onSubmit={() => {
+            setDialogOpen(false);
           }}
         ></CloseSocketForm>
       </Dialog>

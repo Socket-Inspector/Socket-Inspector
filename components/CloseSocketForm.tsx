@@ -78,7 +78,7 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
           {/* TODO: explain that close code/close reason will be sent to client? */}
           <DialogDescription>Add description here if needed</DialogDescription>
         </DialogHeader>
-        <div className="w-full max-w-md">
+        <div className="mt-4 mb-4 w-full max-w-md">
           <FieldGroup>
             <CloseCodeSelect
               value={formState.code}

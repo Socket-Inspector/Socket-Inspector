@@ -58,7 +58,7 @@ export function CloseCodeSelect({ value, onChange }: CloseCodeSelectProps) {
         <SelectContent className="text-xs" side="bottom">
           {closeCodeItems.map((item) => (
             <SelectItem key={item.code} value={item.code}>
-              {item.code} <span className="text-muted-foreground">({item.label})</span>
+              {item.code} <span className="text-muted-foreground">{item.label}</span>
             </SelectItem>
           ))}
         </SelectContent>

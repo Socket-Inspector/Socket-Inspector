@@ -1,4 +1,4 @@
-import { Field, FieldDescription, FieldLabel } from './shadcn/Field';
+import { Field, FieldLabel } from './shadcn/Field';
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from './shadcn/InputGroup';
 
 /**
@@ -18,14 +18,15 @@ export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
   const maxLength = 123;
   return (
     <Field>
-      <FieldLabel htmlFor="close-reason-input">
-        Close Reason <span className="text-muted-foreground text-xs">(optional)</span>
+      <FieldLabel className="justify-between" htmlFor="close-reason-input">
+        <span>Close Reason</span>
+        <span className="text-muted-foreground text-xs">optional</span>
       </FieldLabel>
       <InputGroup>
         <InputGroupInput
           id="close-reason-input"
           type="text"
-          placeholder="Enter close reason"
+          placeholder="Optional close reason"
           maxLength={maxLength}
           value={value}
           onChange={(event) => {

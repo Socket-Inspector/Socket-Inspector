@@ -1,4 +1,4 @@
-import { Field, FieldDescription, FieldLabel } from './shadcn/Field';
+import { Field, FieldLabel } from './shadcn/Field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
 
 // TODO: should this be a shared type and should close items be exposed in shared service of

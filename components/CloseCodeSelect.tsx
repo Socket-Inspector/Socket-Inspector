@@ -1,8 +1,6 @@
 import { Field, FieldLabel } from './shadcn/Field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
 
-// TODO: should this be a shared type and should close items be exposed in shared service of
-//       some sort?
 export type CloseCode =
   | '1000'
   | '1001'
@@ -19,14 +17,6 @@ export type CloseCodeItem = {
   label: string;
 };
 
-/**
- * close code sources:
- * https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
- * https://www.iana.org/assignments/websocket/websocket.xhtml#close-code-number
- * https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code#value
- *
- * consider making Zod schemas more specific to only allow these codes?
- */
 const closeCodeItems: CloseCodeItem[] = [
   { code: '1000', label: 'Normal Closure' },
   { code: '1001', label: 'Going Away' },
@@ -43,9 +33,6 @@ export type CloseCodeSelectProps = {
   onChange: (newValue: CloseCode) => void;
 };
 
-// TODO: make styling cooler (e.g. supporting text for the label of each code)
-//       is id/htmlfor needed?
-//       font size of dropdown items seems to differ from selected item
 export function CloseCodeSelect({ value, onChange }: CloseCodeSelectProps) {
   return (
     <Field>
@@ -62,7 +49,6 @@ export function CloseCodeSelect({ value, onChange }: CloseCodeSelectProps) {
           ))}
         </SelectContent>
       </Select>
-      {/* <FieldDescription>add close code description if needed</FieldDescription> */}
     </Field>
   );
 }

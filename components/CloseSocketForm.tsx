@@ -68,7 +68,6 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log('formState on submit: ', formState);
           const packet: CloseConnectionPacket = {
             type: 'CloseConnectionPacket',
             payload: {
@@ -80,7 +79,6 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
             packet.payload.reason = formState.reason;
           }
           sendPacket(packet);
-          console.log('constructed this packet: ', packet);
           onSubmit();
         }}
       >

@@ -66,6 +66,7 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
           if (formState.reason) {
             packet.payload.reason = formState.reason;
           }
+          // sendPacket(packet);
           console.log('constructed this packet: ', packet);
         }}
       >

@@ -5,6 +5,8 @@ import { Input } from './shadcn/Input';
  * TODO:
  * live character counter?
  * consider the "Input Group" element
+ * max length is 123 UTF-8 bytes per the spec
+ *  we'll just keep it to 123 characters for now
  */
 
 export type CloseReasonInputProps = {
@@ -19,6 +21,7 @@ export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
         id="close-reason-input"
         type="text"
         placeholder="max 180 or something?"
+        maxLength={123}
         value={value}
         onChange={(event) => {
           onChange(event.target.value);

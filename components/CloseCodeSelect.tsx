@@ -47,6 +47,7 @@ export type CloseCodeSelectProps = {
 
 // TODO: make styling cooler (e.g. supporting text for the label of each code)
 //       is id/htmlfor needed?
+//       font size of dropdown items seems to differ from selected item
 export function CloseCodeSelect({ value, onChange }: CloseCodeSelectProps) {
   return (
     <Field>

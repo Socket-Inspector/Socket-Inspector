@@ -1,5 +1,4 @@
 import { Field, FieldDescription, FieldLabel } from './shadcn/Field';
-import { Input } from './shadcn/Input';
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from './shadcn/InputGroup';
 
 /**
@@ -32,7 +31,7 @@ export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
           }}
         />
         <InputGroupAddon align="inline-end">
-          <InputGroupText className="text-xs tabular-nums">
+          <InputGroupText className="text-muted-foreground text-xs">
             {value.length} / {maxLength}
           </InputGroupText>
         </InputGroupAddon>

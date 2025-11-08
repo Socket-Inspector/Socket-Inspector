@@ -71,9 +71,8 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
       </SidebarMenuButton>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          {/* TODO: hovering over button when connection selected has contrast issues */}
           {/* TODO: add tooltip */}
-          <SidebarMenuAction>
+          <SidebarMenuAction className="hover:bg-primary/13 dark:hover:bg-primary/20 data-[state=open]:bg-primary/10 dark:data-[state=open]:bg-primary/13">
             <CircleX className="h-4 w-4"></CircleX>
             <span className="sr-only">Close Connection</span>
           </SidebarMenuAction>

@@ -78,7 +78,9 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
           </FieldGroup>
         </div>
         <DialogFooter>
-          <Button type="submit">Send Close Frame</Button>
+          <Button className="cursor-pointer" type="submit">
+            Send Close Frame
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

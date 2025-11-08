@@ -13,6 +13,9 @@ import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
 import { CircleX } from 'lucide-react';
+import { Dialog, DialogTrigger } from './shadcn/Dialog';
+import { useState } from 'react';
+import { CloseSocketForm } from './CloseSocketForm';
 
 export function AppSidebar() {
   const { socketState, dispatch } = useSocketContext();
@@ -54,6 +57,7 @@ type SocketConnectionMenuItemProps = {
 };
 
 function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnectionMenuItemProps) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -65,11 +69,21 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
         <SocketStatusIcon socketStatus={socket.status}></SocketStatusIcon>
         <span>{socket.url}</span>
       </SidebarMenuButton>
-      {/* TODO: hovering over button when connection selected has contrast issues */}
-      <SidebarMenuAction>
-        <CircleX className="h-4 w-4"></CircleX>
-        <span className="sr-only">Close Connection</span>
-      </SidebarMenuAction>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger asChild>
+          {/* TODO: hovering over button when connection selected has contrast issues */}
+          {/* TODO: add tooltip */}
+          <SidebarMenuAction>
+            <CircleX className="h-4 w-4"></CircleX>
+            <span className="sr-only">Close Connection</span>
+          </SidebarMenuAction>
+        </DialogTrigger>
+        <CloseSocketForm
+          onSubmit={() => {
+            setIsDialogOpen(false);
+          }}
+        ></CloseSocketForm>
+      </Dialog>
     </SidebarMenuItem>
   );
 }

@@ -64,7 +64,7 @@ export function CloseCodeSelect({ value, onChange }: CloseCodeSelectProps) {
           ))}
         </SelectContent>
       </Select>
-      <FieldDescription>add close code description if needed</FieldDescription>
+      {/* <FieldDescription>add close code description if needed</FieldDescription> */}
     </Field>
   );
 }

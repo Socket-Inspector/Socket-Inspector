@@ -18,8 +18,6 @@ import {
 } from '@/hooks/useSocketState/queries';
 import { TableActions, MessageFilterOption } from './MessageTableActions';
 import { MessageDirectionIcon } from './MessageDirectionIcon';
-import { Dialog } from './shadcn/Dialog';
-import { CloseSocketForm } from './CloseSocketForm';
 
 const TABLE_HEADER_HEIGHT = 32;
 const TABLE_BODY_ROW_HEIGHT = 25;
@@ -30,7 +28,6 @@ export function MessageTable() {
   const { socketState, dispatch, sendPacket } = useSocketContext();
   const [searchText, setSearchText] = useState('');
   const [filterValue, setFilterValue] = useState<MessageFilterOption>('all');
-  const [dialogOpen, setDialogOpen] = useState(false);
 
   const selectedMessageId = socketState.selectedSocket?.selectedMessageId;
 
@@ -179,181 +176,168 @@ export function MessageTable() {
   ]);
 
   return (
-    <>
-      <main className="flex h-full w-full flex-col" aria-labelledby="websocket-messages-heading">
-        <h1 id="websocket-messages-heading" className="sr-only">
-          WebSocket Messages
-        </h1>
-        <TableActions
-          searchText={searchText}
-          filterValue={filterValue}
-          isPaused={isPaused}
-          onClear={() => {
-            dispatch({ type: 'CLEAR_SELECTED_SOCKET_MESSAGES' });
-          }}
-          onFilterChange={(value) => {
-            setFilterValue(value);
-            dispatch({ type: 'CLEAR_SELECTED_MESSAGE_ID' });
-          }}
-          onSearchChange={(value) => {
-            setSearchText(value);
-            dispatch({ type: 'CLEAR_SELECTED_MESSAGE_ID' });
-          }}
-          onPauseToggle={() => {
-            if (!selectedSocketId) {
-              return;
-            }
-            if (isPaused) {
-              sendPacket({ type: 'ResumeSocketPacket', payload: { socketId: selectedSocketId } });
-            } else {
-              sendPacket({ type: 'PauseSocketPacket', payload: { socketId: selectedSocketId } });
-            }
-          }}
-        ></TableActions>
-        <div ref={containerRef} className="flex min-h-0 w-full flex-1">
-          <ScrollArea className="min-h-0 w-full flex-1">
-            <Table
-              className="table-fixed"
-              role="grid"
-              tabIndex={0}
-              aria-label="Captured Messages"
-              aria-colcount={2}
-              aria-rowcount={filteredMessages.length + 1}
-              aria-multiselectable={false}
-              aria-activedescendant={getActiveDescendant()}
-              data-testid="message-table"
-              onKeyDown={(e) => {
-                if (e.key === 'ArrowUp') {
-                  e.preventDefault();
-                  selectPreviousMessage();
-                } else if (e.key === 'ArrowDown') {
-                  e.preventDefault();
-                  selectNextMessage();
-                }
-              }}
-            >
-              <TableHeader role="rowgroup">
-                <TableRow role="row" aria-rowindex={1}>
-                  <TableHead
-                    role="columnheader"
-                    aria-colindex={1}
-                    className="h-8 px-2 py-1 text-xs"
-                  >
-                    Data
-                  </TableHead>
-                  <TableHead
-                    role="columnheader"
-                    aria-colindex={2}
-                    className="h-8 w-25 px-2 py-1 text-xs"
-                  >
-                    Time
-                  </TableHead>
+    <main className="flex h-full w-full flex-col" aria-labelledby="websocket-messages-heading">
+      <h1 id="websocket-messages-heading" className="sr-only">
+        WebSocket Messages
+      </h1>
+      <TableActions
+        searchText={searchText}
+        filterValue={filterValue}
+        isPaused={isPaused}
+        onClear={() => {
+          dispatch({ type: 'CLEAR_SELECTED_SOCKET_MESSAGES' });
+        }}
+        onFilterChange={(value) => {
+          setFilterValue(value);
+          dispatch({ type: 'CLEAR_SELECTED_MESSAGE_ID' });
+        }}
+        onSearchChange={(value) => {
+          setSearchText(value);
+          dispatch({ type: 'CLEAR_SELECTED_MESSAGE_ID' });
+        }}
+        onPauseToggle={() => {
+          if (!selectedSocketId) {
+            return;
+          }
+          if (isPaused) {
+            sendPacket({ type: 'ResumeSocketPacket', payload: { socketId: selectedSocketId } });
+          } else {
+            sendPacket({ type: 'PauseSocketPacket', payload: { socketId: selectedSocketId } });
+          }
+        }}
+      ></TableActions>
+      <div ref={containerRef} className="flex min-h-0 w-full flex-1">
+        <ScrollArea className="min-h-0 w-full flex-1">
+          <Table
+            className="table-fixed"
+            role="grid"
+            tabIndex={0}
+            aria-label="Captured Messages"
+            aria-colcount={2}
+            aria-rowcount={filteredMessages.length + 1}
+            aria-multiselectable={false}
+            aria-activedescendant={getActiveDescendant()}
+            data-testid="message-table"
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectPreviousMessage();
+              } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectNextMessage();
+              }
+            }}
+          >
+            <TableHeader role="rowgroup">
+              <TableRow role="row" aria-rowindex={1}>
+                <TableHead role="columnheader" aria-colindex={1} className="h-8 px-2 py-1 text-xs">
+                  Data
+                </TableHead>
+                <TableHead
+                  role="columnheader"
+                  aria-colindex={2}
+                  className="h-8 w-25 px-2 py-1 text-xs"
+                >
+                  Time
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody role="rowgroup">
+              {/* Top spacer */}
+              {virtualItems.length > 0 && (
+                <TableRow aria-hidden role="presentation">
+                  <TableCell
+                    colSpan={2}
+                    className="border-0 p-0"
+                    style={{
+                      height: Math.max(0, virtualItems[0].start - TABLE_HEADER_HEIGHT),
+                    }}
+                  ></TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody role="rowgroup">
-                {/* Top spacer */}
-                {virtualItems.length > 0 && (
-                  <TableRow aria-hidden role="presentation">
-                    <TableCell
-                      colSpan={2}
-                      className="border-0 p-0"
-                      style={{
-                        height: Math.max(0, virtualItems[0].start - TABLE_HEADER_HEIGHT),
-                      }}
-                    ></TableCell>
-                  </TableRow>
-                )}
+              )}
 
-                {/* Virtual rows */}
-                {virtualItems.map((virtualRow) => {
-                  const message = filteredMessages[virtualRow.index];
-                  return (
-                    <ContextMenu key={virtualRow.key}>
-                      <ContextMenuTrigger asChild>
-                        <TableRow
-                          className="cursor-pointer"
-                          id={`row-${message.id}`}
-                          role="row"
-                          aria-rowindex={virtualRow.index + 2}
-                          aria-selected={message.id === selectedMessageId}
-                          data-index={virtualRow.index}
-                          data-state={message.id === selectedMessageId ? 'selected' : undefined}
-                          onClick={() => {
-                            selectMessage(message.id);
-                          }}
+              {/* Virtual rows */}
+              {virtualItems.map((virtualRow) => {
+                const message = filteredMessages[virtualRow.index];
+                return (
+                  <ContextMenu key={virtualRow.key}>
+                    <ContextMenuTrigger asChild>
+                      <TableRow
+                        className="cursor-pointer"
+                        id={`row-${message.id}`}
+                        role="row"
+                        aria-rowindex={virtualRow.index + 2}
+                        aria-selected={message.id === selectedMessageId}
+                        data-index={virtualRow.index}
+                        data-state={message.id === selectedMessageId ? 'selected' : undefined}
+                        onClick={() => {
+                          selectMessage(message.id);
+                        }}
+                      >
+                        <TableCell
+                          id={`cell-${message.id}-c1`}
+                          role="gridcell"
+                          aria-colindex={1}
+                          className="flex items-center space-x-2 px-2 py-1 text-xs"
                         >
-                          <TableCell
-                            id={`cell-${message.id}-c1`}
-                            role="gridcell"
-                            aria-colindex={1}
-                            className="flex items-center space-x-2 px-2 py-1 text-xs"
-                          >
-                            <MessageDirectionIcon
-                              direction={message.endpoints.destination === 'server' ? 'up' : 'down'}
-                            ></MessageDirectionIcon>
-                            {message.endpoints.source === 'chrome_extension' && (
-                              <Badge
-                                variant="outline"
-                                className="h-[15px] border-orange-500 bg-orange-50 text-orange-700 dark:border-orange-600 dark:bg-orange-950 dark:text-orange-300"
-                              >
-                                Custom
-                              </Badge>
-                            )}
-                            <span
-                              className="min-w-0 flex-1 truncate"
-                              id={getPayloadPreviewId(message.id)}
+                          <MessageDirectionIcon
+                            direction={message.endpoints.destination === 'server' ? 'up' : 'down'}
+                          ></MessageDirectionIcon>
+                          {message.endpoints.source === 'chrome_extension' && (
+                            <Badge
+                              variant="outline"
+                              className="h-[15px] border-orange-500 bg-orange-50 text-orange-700 dark:border-orange-600 dark:bg-orange-950 dark:text-orange-300"
                             >
-                              {payloadPreview(message.payload)}
-                            </span>
-                          </TableCell>
-                          <TableCell
-                            role="gridcell"
-                            aria-colindex={2}
-                            className="px-2 py-1 text-xs tabular-nums"
+                              Custom
+                            </Badge>
+                          )}
+                          <span
+                            className="min-w-0 flex-1 truncate"
+                            id={getPayloadPreviewId(message.id)}
                           >
-                            {formatTimestamp(message.timestampISO)}
-                          </TableCell>
-                        </TableRow>
-                      </ContextMenuTrigger>
-                      <ContextMenuContent>
-                        <ContextMenuItem
-                          onSelect={() => {
-                            prefillComposer(message);
-                          }}
+                            {payloadPreview(message.payload)}
+                          </span>
+                        </TableCell>
+                        <TableCell
+                          role="gridcell"
+                          aria-colindex={2}
+                          className="px-2 py-1 text-xs tabular-nums"
                         >
-                          Copy to Message Composer
-                        </ContextMenuItem>
-                      </ContextMenuContent>
-                    </ContextMenu>
-                  );
-                })}
+                          {formatTimestamp(message.timestampISO)}
+                        </TableCell>
+                      </TableRow>
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      <ContextMenuItem
+                        onSelect={() => {
+                          prefillComposer(message);
+                        }}
+                      >
+                        Copy to Message Composer
+                      </ContextMenuItem>
+                    </ContextMenuContent>
+                  </ContextMenu>
+                );
+              })}
 
-                {/* Bottom spacer */}
-                {virtualItems.length > 0 && (
-                  <TableRow aria-hidden role="presentation">
-                    <TableCell
-                      colSpan={2}
-                      className="border-0 p-0"
-                      style={{
-                        height:
-                          rowVirtualizer.getTotalSize() - virtualItems[virtualItems.length - 1].end,
-                      }}
-                    ></TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </ScrollArea>
-        </div>
-      </main>
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <CloseSocketForm
-          onSubmit={() => {
-            setDialogOpen(false);
-          }}
-        ></CloseSocketForm>
-      </Dialog>
-    </>
+              {/* Bottom spacer */}
+              {virtualItems.length > 0 && (
+                <TableRow aria-hidden role="presentation">
+                  <TableCell
+                    colSpan={2}
+                    className="border-0 p-0"
+                    style={{
+                      height:
+                        rowVirtualizer.getTotalSize() - virtualItems[virtualItems.length - 1].end,
+                    }}
+                  ></TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
+      </div>
+    </main>
   );
 }
 

@@ -52,8 +52,6 @@ type SocketConnectionMenuItemProps = {
 };
 
 function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnectionMenuItemProps) {
-  const { sendPacket } = useSocketContext();
-
   return (
     <SidebarMenuItem>
       <SidebarMenuButton

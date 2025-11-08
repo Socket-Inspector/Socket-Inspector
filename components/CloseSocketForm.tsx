@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { CloseCode, CloseCodeSelect } from './CloseCodeSelect';
 import { Button } from './shadcn/Button';
+import { CloseReasonInput } from './CloseReasonInput';
+import { FieldGroup } from './shadcn/Field';
+import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
+import { querySelectedSocketDetails } from '@/hooks/useSocketState/queries';
+import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
 import {
   DialogContent,
   DialogDescription,
@@ -8,11 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from './shadcn/Dialog';
-import { CloseReasonInput } from './CloseReasonInput';
-import { FieldGroup } from './shadcn/Field';
-import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { querySelectedSocketDetails } from '@/hooks/useSocketState/queries';
-import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
 
 /**
  * TODO:
@@ -106,7 +106,7 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
           </FieldGroup>
         </div>
         <DialogFooter>
-          <Button type="submit">Close Socket</Button>
+          <Button type="submit">Send Close Frame</Button>
         </DialogFooter>
       </form>
     </DialogContent>

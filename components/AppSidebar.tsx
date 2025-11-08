@@ -73,7 +73,6 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
         <SocketStatusIcon socketStatus={socket.status}></SocketStatusIcon>
         <span>{socket.url}</span>
       </SidebarMenuButton>
-      {/* TODO: should these options be available for closed sockets? */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <SidebarMenuAction>

@@ -19,6 +19,8 @@ import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
  *  should make this component stateful (read state from context)
  *    allows us to show success message when socket is closed
  *
+ * this seems to be keeping its state when opening/closing it
+ *
  *
  * TODO:
  *  what if socket is closed? should button just be disabled?

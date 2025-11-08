@@ -86,7 +86,8 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
           <DialogTitle>Close Connection</DialogTitle>
           {/* TODO: explain that close code/close reason will be sent to client? */}
           <DialogDescription>
-            Sends a close frame to the client with the specified code and optional reason.
+            Sends a close frame to the client with the specified close code and optional close
+            reason.
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4 mb-5 w-full max-w-md">

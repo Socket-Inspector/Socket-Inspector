@@ -14,34 +14,6 @@ import {
   DialogTitle,
 } from './shadcn/Dialog';
 
-/**
- * TODO:
- *  should make this component stateful (read state from context)
- *
- *
- *  show success message when socket is closed?
- *
- *
- * test in dark mode
- *
- * this seems to be keeping its state when opening/closing it
- *
- * link to RFC?
- *  could put <Description> above the inputs with link
- *
- * how can we make it faster to open/close the dialog? kind of annoying to drag mouse to middle of screen
- *  also, the close button is a little to far to the right?
- *
- *
- * TODO:
- *  what if socket is closed? should button just be disabled?
- *  how to make it clear close reason is optional
- *  consider horizontal orientation for fields?
- *
- * consider using the new <Field> component:
- * https://ui.shadcn.com/docs/components/field
- */
-
 type CloseSocketFormState = {
   code: CloseCode;
   reason: string;
@@ -51,7 +23,7 @@ export type CloseSocketFormProps = {
   onSubmit: () => void;
 };
 export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
-  const { socketState, dispatch, sendPacket } = useSocketContext();
+  const { socketState, sendPacket } = useSocketContext();
 
   const [formState, setFormState] = useState<CloseSocketFormState>({
     code: '1000',

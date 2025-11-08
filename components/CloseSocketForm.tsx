@@ -4,7 +4,6 @@ import { Button } from './shadcn/Button';
 import { CloseReasonInput } from './CloseReasonInput';
 import { FieldGroup } from './shadcn/Field';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { querySelectedSocketDetails } from '@/hooks/useSocketState/queries';
 import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
 import {
   DialogContent,
@@ -20,20 +19,16 @@ type CloseSocketFormState = {
 };
 
 export type CloseSocketFormProps = {
+  socketId: string;
   onSubmit: () => void;
 };
-export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
-  const { socketState, sendPacket } = useSocketContext();
+export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
+  const { sendPacket } = useSocketContext();
 
   const [formState, setFormState] = useState<CloseSocketFormState>({
     code: '1000',
     reason: '',
   });
-
-  const selectedSocketDetails = querySelectedSocketDetails(socketState);
-  if (!selectedSocketDetails) {
-    return null;
-  }
 
   return (
     <DialogContent>
@@ -43,7 +38,7 @@ export function CloseSocketForm({ onSubmit }: CloseSocketFormProps) {
           const packet: CloseConnectionPacket = {
             type: 'CloseConnectionPacket',
             payload: {
-              socketId: selectedSocketDetails.id,
+              socketId,
               code: parseInt(formState.code),
             },
           };

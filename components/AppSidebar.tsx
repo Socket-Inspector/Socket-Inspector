@@ -78,6 +78,7 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
           </SidebarMenuAction>
         </DialogTrigger>
         <CloseSocketForm
+          socketId={socket.id}
           onSubmit={() => {
             setIsDialogOpen(false);
           }}

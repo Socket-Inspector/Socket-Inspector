@@ -67,7 +67,7 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
       </SidebarMenuButton>
       {/* TODO: hovering over button when connection selected has contrast issues */}
       <SidebarMenuAction>
-        <CircleX className="h-3.5 w-3.5"></CircleX>
+        <CircleX className="h-4 w-4"></CircleX>
         <span className="sr-only">Close Connection</span>
       </SidebarMenuAction>
     </SidebarMenuItem>

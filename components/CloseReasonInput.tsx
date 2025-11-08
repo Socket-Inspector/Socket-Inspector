@@ -31,9 +31,6 @@ export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
           </InputGroupText>
         </InputGroupAddon>
       </InputGroup>
-      {/* <FieldDescription>
-        Optional UTF-8 text describing why the connection is being closed
-      </FieldDescription> */}
     </Field>
   );
 }

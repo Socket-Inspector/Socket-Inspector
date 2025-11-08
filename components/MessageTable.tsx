@@ -209,9 +209,6 @@ export function MessageTable() {
               sendPacket({ type: 'PauseSocketPacket', payload: { socketId: selectedSocketId } });
             }
           }}
-          onCloseSocketClick={() => {
-            setDialogOpen(true);
-          }}
         ></TableActions>
         <div ref={containerRef} className="flex min-h-0 w-full flex-1">
           <ScrollArea className="min-h-0 w-full flex-1">

@@ -54,12 +54,12 @@ export function TableActions({
               size="icon"
               className="text-muted-foreground h-6 w-6"
               onClick={() => onClear()}
-              aria-label="Clear all messages"
+              aria-label="Clear messages from table"
             >
               <Ban className="h-4 w-4"></Ban>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Clear all messages</TooltipContent>
+          <TooltipContent>Clear messages from table</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 

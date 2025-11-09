@@ -11,12 +11,12 @@ type CloseSocketFormState = {
   reason: string;
 };
 
-export type CloseSocketFormPopoverProps = {
+export type CloseSocketFormProps = {
   socketId: string;
   onSubmit: () => void;
 };
 
-export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormPopoverProps) {
+export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
   const { sendPacket } = useSocketContext();
 
   const [formState, setFormState] = useState<CloseSocketFormState>({

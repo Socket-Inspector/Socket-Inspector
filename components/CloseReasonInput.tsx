@@ -8,6 +8,7 @@ export type CloseReasonInputProps = {
 };
 
 export function CloseReasonInput({ value, onChange, disabled }: CloseReasonInputProps) {
+  // Per WebSocket RFC, the close reason must not exceed 123 bytes of UTF-8 encoded data
   const maxLength = 123;
   return (
     <Field>

@@ -60,9 +60,6 @@ Bun.serve({
       }
     },
     async close(ws, code, message) {
-      if (config.closeDelay) {
-        await sleep(config.closeDelay);
-      }
       console.log('closed with code: ', code, ' and message: ', message);
     },
   },

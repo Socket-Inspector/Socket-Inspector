@@ -2,7 +2,6 @@ export type EnvConfig = {
   port: number;
   openDelay?: number;
   messageDelay?: number;
-  closeDelay?: number;
 };
 
 export const generateEnvConfig = (): EnvConfig => {
@@ -12,10 +11,6 @@ export const generateEnvConfig = (): EnvConfig => {
     ? parseInt(process.env.OPEN_DELAY, 10)
     : undefined;
 
-  const closeDelay: number | undefined = process.env.CLOSE_DELAY
-    ? parseInt(process.env.CLOSE_DELAY, 10)
-    : undefined;
-
   const messageDelay: number | undefined = process.env.MESSAGE_DELAY
     ? parseInt(process.env.MESSAGE_DELAY, 10)
     : undefined;
@@ -23,7 +18,6 @@ export const generateEnvConfig = (): EnvConfig => {
   return {
     port,
     openDelay,
-    closeDelay,
     messageDelay,
   };
 };

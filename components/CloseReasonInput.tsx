@@ -11,15 +11,15 @@ export function CloseReasonInput({ value, onChange, disabled }: CloseReasonInput
   const maxLength = 123;
   return (
     <Field>
-      <FieldLabel className="justify-between" htmlFor="close-reason-input">
+      <FieldLabel htmlFor="close-reason-input">
         <span>Close Reason</span>
-        <span className="text-muted-foreground text-xs">optional</span>
+        <span className="text-muted-foreground text-xs">(optional)</span>
       </FieldLabel>
       <InputGroup>
         <InputGroupInput
           id="close-reason-input"
           type="text"
-          placeholder="Optional close reason"
+          placeholder="optional close reason"
           maxLength={maxLength}
           value={value}
           disabled={disabled}

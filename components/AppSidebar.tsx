@@ -16,6 +16,7 @@ import { CircleX } from 'lucide-react';
 import { Dialog, DialogTrigger } from './shadcn/Dialog';
 import { useState } from 'react';
 import { CloseSocketForm } from './CloseSocketForm';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
 
 export function AppSidebar() {
   const { socketState, dispatch } = useSocketContext();
@@ -70,12 +71,19 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
         <span>{socket.url}</span>
       </SidebarMenuButton>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <SidebarMenuAction className="hover:bg-primary/13 dark:hover:bg-primary/20 data-[state=open]:bg-primary/10 dark:data-[state=open]:bg-primary/13">
-            <CircleX className="h-4 w-4"></CircleX>
-            <span className="sr-only">Close Connection</span>
-          </SidebarMenuAction>
-        </DialogTrigger>
+        <TooltipProvider>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <SidebarMenuAction className="hover:bg-primary/13 dark:hover:bg-primary/20 data-[state=open]:bg-primary/10 dark:data-[state=open]:bg-primary/13">
+                  <CircleX className="h-4 w-4"></CircleX>
+                  <span className="sr-only">Close Connection</span>
+                </SidebarMenuAction>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent>Close Connection</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <CloseSocketForm
           socketId={socket.id}
           onSubmit={() => {

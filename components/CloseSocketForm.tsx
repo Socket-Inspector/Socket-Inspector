@@ -46,8 +46,7 @@ export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
         <div>
           <h3 className="text-base font-semibold">Close Connection</h3>
           <p className="text-muted-foreground mt-1 text-sm">
-            Sends a close frame to the client with the specified close code and optional close
-            reason.
+            Simulate a close frame sent from the server to the client
           </p>
         </div>
         <FieldGroup>

@@ -12,7 +12,7 @@ import {
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
-import { SquareX } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
@@ -76,7 +76,7 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
             <TooltipTrigger asChild>
               <PopoverTrigger asChild>
                 <SidebarMenuAction className="hover:bg-primary/13 dark:hover:bg-primary/20 data-[state=open]:bg-primary/10 dark:data-[state=open]:bg-primary/13">
-                  <SquareX className="h-4 w-4"></SquareX>
+                  <X className="h-4 w-4"></X>
                   <span className="sr-only">Close Connection</span>
                 </SidebarMenuAction>
               </PopoverTrigger>

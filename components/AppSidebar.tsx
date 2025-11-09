@@ -84,7 +84,7 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
             <TooltipContent>Close Connection</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <PopoverContent side="right" align="start" className="w-96">
+        <PopoverContent side="right" align="start" className="w-72">
           <CloseSocketForm
             socketId={socket.id}
             onSubmit={() => {

@@ -13,9 +13,9 @@ import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
 import { CircleX } from 'lucide-react';
-import { Dialog, DialogTrigger } from './shadcn/Dialog';
+import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
-import { CloseSocketForm } from './CloseSocketForm';
+import { CloseSocketFormPopover } from './CloseSocketFormPopover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
 
 export function AppSidebar() {
@@ -58,7 +58,7 @@ type SocketConnectionMenuItemProps = {
 };
 
 function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnectionMenuItemProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -70,27 +70,29 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
         <SocketStatusIcon socketStatus={socket.status}></SocketStatusIcon>
         <span>{socket.url}</span>
       </SidebarMenuButton>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <TooltipProvider>
           <Tooltip delayDuration={500}>
             <TooltipTrigger asChild>
-              <DialogTrigger asChild>
+              <PopoverTrigger asChild>
                 <SidebarMenuAction className="hover:bg-primary/13 dark:hover:bg-primary/20 data-[state=open]:bg-primary/10 dark:data-[state=open]:bg-primary/13">
                   <CircleX className="h-4 w-4"></CircleX>
                   <span className="sr-only">Close Connection</span>
                 </SidebarMenuAction>
-              </DialogTrigger>
+              </PopoverTrigger>
             </TooltipTrigger>
             <TooltipContent>Close Connection</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <CloseSocketForm
-          socketId={socket.id}
-          onSubmit={() => {
-            setIsDialogOpen(false);
-          }}
-        ></CloseSocketForm>
-      </Dialog>
+        <PopoverContent side="right" align="start" className="w-96">
+          <CloseSocketFormPopover
+            socketId={socket.id}
+            onSubmit={() => {
+              setIsPopoverOpen(false);
+            }}
+          ></CloseSocketFormPopover>
+        </PopoverContent>
+      </Popover>
     </SidebarMenuItem>
   );
 }

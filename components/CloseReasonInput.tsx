@@ -19,7 +19,7 @@ export function CloseReasonInput({ value, onChange, disabled }: CloseReasonInput
         <InputGroupInput
           id="close-reason-input"
           type="text"
-          placeholder="optional close reason"
+          placeholder="e.g. Session ended"
           maxLength={maxLength}
           value={value}
           disabled={disabled}

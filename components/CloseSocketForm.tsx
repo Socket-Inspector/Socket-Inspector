@@ -5,24 +5,18 @@ import { CloseReasonInput } from './CloseReasonInput';
 import { FieldGroup } from './shadcn/Field';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
-import {
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from './shadcn/Dialog';
 
 type CloseSocketFormState = {
   code: CloseCode;
   reason: string;
 };
 
-export type CloseSocketFormProps = {
+export type CloseSocketFormPopoverProps = {
   socketId: string;
   onSubmit: () => void;
 };
-export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
+
+export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormPopoverProps) {
   const { sendPacket } = useSocketContext();
 
   const [formState, setFormState] = useState<CloseSocketFormState>({
@@ -31,53 +25,49 @@ export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
   });
 
   return (
-    <DialogContent>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const packet: CloseConnectionPacket = {
-            type: 'CloseConnectionPacket',
-            payload: {
-              socketId,
-              code: parseInt(formState.code),
-            },
-          };
-          if (formState.reason) {
-            packet.payload.reason = formState.reason;
-          }
-          sendPacket(packet);
-          onSubmit();
-        }}
-      >
-        <DialogHeader>
-          <DialogTitle>Close Connection</DialogTitle>
-          <DialogDescription>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const packet: CloseConnectionPacket = {
+          type: 'CloseConnectionPacket',
+          payload: {
+            socketId,
+            code: parseInt(formState.code),
+          },
+        };
+        if (formState.reason) {
+          packet.payload.reason = formState.reason;
+        }
+        sendPacket(packet);
+        onSubmit();
+      }}
+    >
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-base font-semibold">Close Connection</h3>
+          <p className="text-muted-foreground mt-1 text-sm">
             Sends a close frame to the client with the specified close code and optional close
             reason.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="mt-4 mb-5 w-full max-w-md">
-          <FieldGroup>
-            <CloseCodeSelect
-              value={formState.code}
-              onChange={(value) => {
-                setFormState({ ...formState, code: value });
-              }}
-            ></CloseCodeSelect>
-            <CloseReasonInput
-              value={formState.reason}
-              onChange={(value) => {
-                setFormState({ ...formState, reason: value });
-              }}
-            ></CloseReasonInput>
-          </FieldGroup>
+          </p>
         </div>
-        <DialogFooter>
-          <Button className="cursor-pointer" type="submit">
-            Send Close Frame
-          </Button>
-        </DialogFooter>
-      </form>
-    </DialogContent>
+        <FieldGroup>
+          <CloseCodeSelect
+            value={formState.code}
+            onChange={(value) => {
+              setFormState({ ...formState, code: value });
+            }}
+          ></CloseCodeSelect>
+          <CloseReasonInput
+            value={formState.reason}
+            onChange={(value) => {
+              setFormState({ ...formState, reason: value });
+            }}
+          ></CloseReasonInput>
+        </FieldGroup>
+        <Button className="w-full cursor-pointer" type="submit">
+          Send Close Frame
+        </Button>
+      </div>
+    </form>
   );
 }

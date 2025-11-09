@@ -15,8 +15,8 @@ import { SocketStatusIcon } from './SocketStatusIcon';
 import { CircleX } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
-import { CloseSocketFormPopover } from './CloseSocketFormPopover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
+import { CloseSocketForm } from './CloseSocketForm';
 
 export function AppSidebar() {
   const { socketState, dispatch } = useSocketContext();
@@ -85,12 +85,12 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
           </Tooltip>
         </TooltipProvider>
         <PopoverContent side="right" align="start" className="w-96">
-          <CloseSocketFormPopover
+          <CloseSocketForm
             socketId={socket.id}
             onSubmit={() => {
               setIsPopoverOpen(false);
             }}
-          ></CloseSocketFormPopover>
+          ></CloseSocketForm>
         </PopoverContent>
       </Popover>
     </SidebarMenuItem>

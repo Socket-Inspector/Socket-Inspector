@@ -55,7 +55,7 @@ export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
             {isClosed ? 'This connection is already closed' : 'Send a close frame to the client'}
           </p>
         </div>
-        <FieldGroup>
+        <FieldGroup className="gap-3">
           <CloseCodeSelect
             value={formState.code}
             disabled={isClosed}

@@ -4,9 +4,10 @@ import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from './
 export type CloseReasonInputProps = {
   value: string;
   onChange: (newValue: string) => void;
+  disabled?: boolean;
 };
 
-export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
+export function CloseReasonInput({ value, onChange, disabled }: CloseReasonInputProps) {
   const maxLength = 123;
   return (
     <Field>
@@ -21,6 +22,7 @@ export function CloseReasonInput({ value, onChange }: CloseReasonInputProps) {
           placeholder="Optional close reason"
           maxLength={maxLength}
           value={value}
+          disabled={disabled}
           onChange={(event) => {
             onChange(event.target.value);
           }}

@@ -17,7 +17,10 @@ export type CloseSocketFormProps = {
 };
 
 export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
-  const { sendPacket } = useSocketContext();
+  const { sendPacket, socketState } = useSocketContext();
+
+  const socketDetails = socketState.sockets.find((s) => s.id === socketId);
+  const isClosed = socketDetails?.status === 'CLOSED';
 
   const [formState, setFormState] = useState<CloseSocketFormState>({
     code: '1000',
@@ -28,6 +31,11 @@ export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
+
+        if (isClosed) {
+          return;
+        }
+
         const packet: CloseConnectionPacket = {
           type: 'CloseConnectionPacket',
           payload: {
@@ -45,24 +53,28 @@ export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
       <div className="space-y-4">
         <div>
           <h3 className="text-base font-semibold">Close Connection</h3>
-          <p className="text-muted-foreground mt-1 text-sm">Send a close frame to the client</p>
+          <p className="text-muted-foreground mt-1 text-sm">
+            {isClosed ? 'This connection is already closed' : 'Send a close frame to the client'}
+          </p>
         </div>
         <FieldGroup>
           <CloseCodeSelect
             value={formState.code}
+            disabled={isClosed}
             onChange={(value) => {
               setFormState({ ...formState, code: value });
             }}
           ></CloseCodeSelect>
           <CloseReasonInput
             value={formState.reason}
+            disabled={isClosed}
             onChange={(value) => {
               setFormState({ ...formState, reason: value });
             }}
           ></CloseReasonInput>
         </FieldGroup>
-        <Button className="w-full cursor-pointer" type="submit">
-          Send Close Frame
+        <Button className="w-full cursor-pointer" type="submit" disabled={isClosed}>
+          {isClosed ? 'Connection Closed' : 'Send Close Frame'}
         </Button>
       </div>
     </form>

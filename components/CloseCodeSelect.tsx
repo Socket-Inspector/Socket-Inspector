@@ -31,13 +31,18 @@ const closeCodeItems: CloseCodeItem[] = [
 export type CloseCodeSelectProps = {
   value: CloseCode;
   onChange: (newValue: CloseCode) => void;
+  disabled?: boolean;
 };
 
-export function CloseCodeSelect({ value, onChange }: CloseCodeSelectProps) {
+export function CloseCodeSelect({ value, onChange, disabled }: CloseCodeSelectProps) {
   return (
     <Field>
       <FieldLabel>Close Code</FieldLabel>
-      <Select value={value} onValueChange={(value) => onChange(value as CloseCode)}>
+      <Select
+        value={value}
+        onValueChange={(value) => onChange(value as CloseCode)}
+        disabled={disabled}
+      >
         <SelectTrigger className="text-xs">
           <SelectValue placeholder="1000"></SelectValue>
         </SelectTrigger>

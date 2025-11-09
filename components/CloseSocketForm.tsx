@@ -19,23 +19,21 @@ export type CloseSocketFormProps = {
 export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
   const { sendPacket, socketState } = useSocketContext();
 
-  const socketDetails = socketState.sockets.find((s) => s.id === socketId);
-  const isClosed = socketDetails?.status === 'CLOSED';
-
   const [formState, setFormState] = useState<CloseSocketFormState>({
     code: '1000',
     reason: '',
   });
 
+  const socketDetails = socketState.sockets.find((s) => s.id === socketId);
+  const isClosed = socketDetails?.status === 'CLOSED';
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-
         if (isClosed) {
           return;
         }
-
         const packet: CloseConnectionPacket = {
           type: 'CloseConnectionPacket',
           payload: {

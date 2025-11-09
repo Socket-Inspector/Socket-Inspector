@@ -43,10 +43,10 @@ export function CloseCodeSelect({ value, onChange, disabled }: CloseCodeSelectPr
         onValueChange={(value) => onChange(value as CloseCode)}
         disabled={disabled}
       >
-        <SelectTrigger className="text-xs">
+        <SelectTrigger>
           <SelectValue placeholder="1000"></SelectValue>
         </SelectTrigger>
-        <SelectContent className="text-xs" side="bottom">
+        <SelectContent side="bottom">
           {closeCodeItems.map((item) => (
             <SelectItem key={item.code} value={item.code}>
               {item.code} <span className="text-muted-foreground">{item.label}</span>

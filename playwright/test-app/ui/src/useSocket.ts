@@ -35,7 +35,6 @@ export const useSocket = (url: string) => {
     };
 
     socket.onclose = (e) => {
-      console.log('socket onclose: ', e);
       return setReadyState(readyStateToString(socket.readyState));
     };
 

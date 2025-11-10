@@ -69,7 +69,7 @@ export class DevtoolsPanelModel {
   public async clearTableMessages() {
     await this.page
       .getByRole('button', {
-        name: 'Clear all messages',
+        name: 'Clear messages from table',
       })
       .click();
   }

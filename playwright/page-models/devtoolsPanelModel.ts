@@ -47,7 +47,9 @@ export class DevtoolsPanelModel {
   }
 
   public async assertSidebarSockets(queries: Array<SidebarSocket>) {
-    const linkLocators = this.locators.sidebarNav.getByRole('button');
+    const linkLocators = this.locators.sidebarNav
+      .getByRole('button')
+      .filter({ has: this.page.getByRole('img', { name: /Connecting|Connected|Disconnected/ }) });
 
     await expect(linkLocators).toHaveCount(queries.length);
 

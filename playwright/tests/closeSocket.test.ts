@@ -1,6 +1,8 @@
 import { test } from '../fixtures';
+import { CloseSocketPopupModel } from '../page-models/closeSocketPopupModel';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
 import { HostPageModel } from '../page-models/hostPageModel';
+import { assertVisible } from '../playwrightHelpers';
 
 test('it can select an open socket from the sidebar', async ({
   page,
@@ -8,11 +10,19 @@ test('it can select an open socket from the sidebar', async ({
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const closeSocketModel = new CloseSocketPopupModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
   const hostPage = await context.newPage();
   const hostPageModel = new HostPageModel(hostPage);
   await hostPageModel.navigateToHostPage();
+
   await devtoolsPanelModel.bringToFront();
 
   await devtoolsPanelModel.clickSocketCloseButton();
+  await assertVisible(closeSocketModel.locators.header);
+
+  // TODO: assert socket is open on the host page
+  await closeSocketModel.locators.submitButton.click();
+  await page.pause();
+  // TODO: assert socket is closed on the host page
 });

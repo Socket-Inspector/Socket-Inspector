@@ -21,7 +21,21 @@ test('it can select an open socket from the sidebar', async ({
   await devtoolsPanelModel.clickSocketCloseButton();
   await assertVisible(closeSocketModel.locators.header);
 
+  await devtoolsPanelModel.assertSidebarSockets([
+    {
+      url: hostPageModel.serverBaseUrl,
+      status: 'Connected',
+    },
+  ]);
   await hostPageModel.assertReadyState('OPEN');
+
   await closeSocketModel.locators.submitButton.click();
+
   await hostPageModel.assertReadyState('CLOSED');
+  await devtoolsPanelModel.assertSidebarSockets([
+    {
+      url: hostPageModel.serverBaseUrl,
+      status: 'Disconnected',
+    },
+  ]);
 });

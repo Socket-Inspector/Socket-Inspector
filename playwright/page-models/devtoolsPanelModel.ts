@@ -68,6 +68,10 @@ export class DevtoolsPanelModel {
     }
   }
 
+  public async clickSocketCloseButton(index: number = 0) {
+    await this.page.getByRole('button', { name: 'Close Connection' }).nth(index).click();
+  }
+
   public async clearTableMessages() {
     await this.page
       .getByRole('button', {

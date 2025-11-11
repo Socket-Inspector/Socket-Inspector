@@ -14,7 +14,8 @@ const SERVER_PORT = 6844;
 const SOCKET_URL = `ws://localhost:${SERVER_PORT}`;
 
 export default function App() {
-  const { readyState, messages, sendMessage, closeSocket, reconnectSocket } = useSocket(SOCKET_URL);
+  const { readyState, messages, closeInfo, sendMessage, closeSocket, reconnectSocket } =
+    useSocket(SOCKET_URL);
 
   const [echoInputText, setEchoInputText] = useState('');
 
@@ -40,6 +41,29 @@ export default function App() {
             {readyState ?? ''}
           </span>
         </p>
+        {readyState === 'CLOSED' && closeInfo && (
+          <p className="mb-2">
+            Close Code:{' '}
+            <span
+              data-testid="close-code-display"
+              className="ml-2 rounded bg-red-100 px-2 py-1 font-mono font-normal text-red-800"
+            >
+              {closeInfo.code}
+            </span>
+            {closeInfo.reason && (
+              <>
+                {' '}
+                | Close Reason:{' '}
+                <span
+                  data-testid="close-reason-display"
+                  className="ml-2 rounded bg-red-100 px-2 py-1 font-mono font-normal text-red-800"
+                >
+                  {closeInfo.reason}
+                </span>
+              </>
+            )}
+          </p>
+        )}
         <div className="flex flex-row gap-x-2">
           <Button
             className="cursor-pointer"

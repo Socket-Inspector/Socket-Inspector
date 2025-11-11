@@ -3,6 +3,8 @@ import { ClientMessage, ServerMessage } from './clientMessageTypes';
 
 export type ReadyState = 'CONNECTING' | 'OPEN' | 'CLOSING' | 'CLOSED';
 
+export type CloseInfo = { code: number; reason: string };
+
 const readyStateToString = (readyState: number): ReadyState => {
   if (readyState === WebSocket.CONNECTING) {
     return 'CONNECTING';
@@ -20,11 +22,13 @@ const readyStateToString = (readyState: number): ReadyState => {
 export const useSocket = (url: string) => {
   const [readyState, setReadyState] = useState<ReadyState | null>(null);
   const [messages, setMessages] = useState<ServerMessage[]>([]);
+  const [closeInfo, setCloseInfo] = useState<CloseInfo | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
 
   const connectSocket = () => {
     setMessages([]);
+    setCloseInfo(null);
 
     const socket = new WebSocket(url);
 
@@ -35,6 +39,7 @@ export const useSocket = (url: string) => {
     };
 
     socket.onclose = (e) => {
+      setCloseInfo({ code: e.code, reason: e.reason });
       return setReadyState(readyStateToString(socket.readyState));
     };
 
@@ -97,6 +102,7 @@ export const useSocket = (url: string) => {
   return {
     readyState,
     messages,
+    closeInfo,
     sendMessage,
     closeSocket,
     reconnectSocket,

@@ -15,7 +15,7 @@ import { Button } from './shadcn/Button';
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
-import { BookOpen, CircleHelp, Github, X } from 'lucide-react';
+import { BookOpen, CircleHelp, Github, Star, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
@@ -111,6 +111,24 @@ function AppSidebarFooter() {
               </Button>
             </TooltipTrigger>
             <TooltipContent>Support</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+                <a
+                  href="https://chromewebstore.google.com/detail/socket-inspector/kecipkncnnofappfmapgmfailmnbaoaf/reviews"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Rate this extension"
+                >
+                  <Star className="h-4 w-4" />
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Rate Extension</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>

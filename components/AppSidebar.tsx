@@ -14,7 +14,7 @@ import {
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
-import { BookOpen, Github, X } from 'lucide-react';
+import { BookOpen, CircleHelp, Github, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
@@ -81,7 +81,20 @@ function AppSidebarFooter() {
               aria-label="View source code on GitHub"
             >
               <Github />
-              <span>GitHub</span>
+              <span>Source Code</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild className="cursor-default hover:underline" size="sm">
+            <a
+              href="https://github.com/Socket-Inspector/Socket-Inspector#support"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Get support or report issues"
+            >
+              <CircleHelp />
+              <span>Support</span>
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>

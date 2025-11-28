@@ -50,37 +50,43 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarSeparator />
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <a
-                href="https://socketinspector.com/docs/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="View documentation"
-              >
-                <BookOpen />
-                <span>Docs</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <a
-                href="https://github.com/Socket-Inspector/Socket-Inspector"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="View source code on GitHub"
-              >
-                <Github />
-                <span>GitHub</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+      <AppSidebarFooter />
     </Sidebar>
+  );
+}
+
+function AppSidebarFooter() {
+  return (
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild>
+            <a
+              href="https://socketinspector.com/docs/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View documentation"
+            >
+              <BookOpen />
+              <span>Docs</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild>
+            <a
+              href="https://github.com/Socket-Inspector/Socket-Inspector"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View source code on GitHub"
+            >
+              <Github />
+              <span>GitHub</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
   );
 }
 

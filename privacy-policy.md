@@ -1,7 +1,7 @@
 # Privacy Policy — Socket Inspector
 
-**Effective Date:** October 19, 2025  
-**Policy Version:** 1.1.1
+**Effective Date:** November 28, 2025  
+**Policy Version:** 1.1.2
 **Applies to:** Socket Inspector extension for Chromium-based browsers and `socketinspector.com` (the “Site”)
 
 ---
@@ -249,3 +249,16 @@ We comply with the Personal Information Protection and Electronic Documents Act 
 - **Québec (Law 25)**: We assess privacy risks when using service providers located outside Québec and maintain a record of confidentiality incidents. If an incident poses a risk of serious injury, we promptly notify the Commission d’accès à l’information (CAI) and affected individuals. We designate a privacy contact responsible for Law 25 compliance (support@socketinspector.com).
 
 **India (DPDP Act 2023)**: We comply with the Digital Personal Data Protection Act, 2023 and applicable rules. Children: Socket Inspector is not intended for persons under 18 in India. Grievances: Indian users can contact our Grievance Contact at support@socketinspector.com. We provide readily available means of grievance redressal and will handle requests for access, correction, or erasure in line with the Act and implementing rules. Cross‑border transfers: The Act permits cross‑border transfers except to countries that may be restricted by government notification; if restrictions are issued, we will update this policy. Breach notice (DPDP Act): If a personal data breach affects any personal data we hold (e.g., support emails), we will give intimation to the Data Protection Board of India and each affected individual in the form and manner prescribed under Section 8(6) of the DPDP Act.
+
+**UK and EEA (GDPR / UK GDPR)**
+
+- **Controller:** Trey Vigus is the data controller for the personal information collected via socketinspector.com and support channels.
+- **Legal Basis for Processing:** We process your personal data based on the following legal grounds:
+  - _Performance of a Contract:_ To provide the Socket Inspector extension functionality and deliver the website content you request.
+  - _Legitimate Interests:_ To secure our website (server logs), prevent fraud, and respond to your support inquiries.
+  - _Consent:_ If we request specific permission for non-essential cookies or optional features (currently none).
+- **Your Rights:** Under the UK GDPR and EU GDPR, you have the right to **access**, **rectify**, **erase**, **restrict processing**, **object to processing**, and receive a **portable** copy of your data.
+- **How to Exercise Rights:** Contact us at support@socketinspector.com. We will respond within one month.
+- **Right to Complain:** You have the right to lodge a complaint with a supervisory authority. In the UK, this is the **Information Commissioner’s Office (ICO)** (ico.org.uk). In the EEA, you may contact your local Data Protection Authority.
+- **International Transfers:** We are located in the United States. If you are accessing the Site or Extension from the UK or EEA, please note that your personal data (such as support emails or website connection logs) may be transferred to and processed in the United States. We rely on mechanisms such as Adequacy Decisions (where applicable) or Standard Contractual Clauses (SCCs) to ensure your data remains protected.
+- **Automated Decision Making:** We do not use automated decision-making or profiling that produces legal or similarly significant effects concerning you.

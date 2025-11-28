@@ -60,7 +60,7 @@ function AppSidebarFooter() {
     <SidebarFooter>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild className="cursor-default">
             <a
               href="https://socketinspector.com/docs/"
               target="_blank"
@@ -73,7 +73,7 @@ function AppSidebarFooter() {
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild className="cursor-default">
             <a
               href="https://github.com/Socket-Inspector/Socket-Inspector"
               target="_blank"

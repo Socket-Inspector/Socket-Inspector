@@ -1,6 +1,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -8,11 +9,12 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from './shadcn/Sidebar';
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
-import { X } from 'lucide-react';
+import { BookOpen, Github, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
@@ -47,6 +49,37 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarSeparator />
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <a
+                href="https://socketinspector.com/docs/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View documentation"
+              >
+                <BookOpen />
+                <span>Docs</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <a
+                href="https://github.com/Socket-Inspector/Socket-Inspector"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View source code on GitHub"
+              >
+                <Github />
+                <span>GitHub</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

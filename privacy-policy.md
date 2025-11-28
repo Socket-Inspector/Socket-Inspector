@@ -185,6 +185,8 @@ This section explains your privacy choices for both the **Socket Inspector brows
 
 Depending on your jurisdiction, you may have the rights to **access**, **correct**, **delete**, **restrict or object to processing**, and/or **receive a portable copy** of personal information we hold from Site interactions (typically support emails and short-lived server logs). We do **not** sell or “share” personal information for cross-context behavioral advertising.
 
+**Withdraw consent:** Where we rely on consent (for example, for non-essential cookies or optional features), you may withdraw that consent at any time. Withdrawing consent does not affect processing that has already occurred, but we will stop the relevant processing going forward.
+
 **How to make a request:** Email `support@socketinspector.com` with the subject **“Privacy Request.”** Include:  
 (i) what you’re requesting (access/correction/deletion/etc.),  
 (ii) the email address you used to contact us (and any dates/topics of prior emails, if relevant), and  
@@ -256,7 +258,7 @@ We comply with the Personal Information Protection and Electronic Documents Act 
 - **Legal Basis for Processing:** We process your personal data based on the following legal grounds:
   - _Performance of a Contract:_ To provide the Socket Inspector extension functionality and deliver the website content you request.
   - _Legitimate Interests:_ To secure our website (server logs), prevent fraud, and respond to your support inquiries.
-  - _Consent:_ If we request specific permission for non-essential cookies or optional features (currently none).
+  - _Consent:_ If we request specific permission for non-essential cookies or optional features (currently none). You can withdraw this consent at any time, for example by changing your cookie settings or contacting us at support@socketinspector.com
 - **Your Rights:** Under the UK GDPR and EU GDPR, you have the right to **access**, **rectify**, **erase**, **restrict processing**, **object to processing**, and receive a **portable** copy of your data.
 - **How to Exercise Rights:** Contact us at support@socketinspector.com. We will respond within one month.
 - **Right to Complain:** You have the right to lodge a complaint with a supervisory authority. In the UK, this is the **Information Commissioner’s Office (ICO)** (ico.org.uk). In the EEA, you may contact your local Data Protection Authority.

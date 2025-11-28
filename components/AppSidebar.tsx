@@ -58,7 +58,7 @@ export function AppSidebar() {
 
 function AppSidebarFooter() {
   return (
-    <SidebarFooter className="flex-row">
+    <SidebarFooter className="flex-row justify-center">
       <div className="flex items-center gap-1">
         <TooltipProvider>
           <Tooltip delayDuration={500}>

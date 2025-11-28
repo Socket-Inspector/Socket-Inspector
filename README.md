@@ -2,9 +2,11 @@
 
 ## About
 
-**Socket Inspector** is a browser extension built to simulate edge cases, reproduce bugs, and uncover security vulnerabilities in WebSocket Applications.
+**Socket Inspector** is Chrome DevTools extension for debugging WebSocket applications.
 
-Open the DevTools panel to view all the current page's WebSocket connections. Select a connection to view all incoming/outgoing messages and send your own custom messages via the built-in text editor. You can debug your UI by setting the message destination to **Client** or your backend by setting it to **Server**.
+Similar to Chrome’s native DevTools, Socket Inspector allows the user to inspect the page’s WebSocket connections, along with the incoming/outgoing messages for each connection.
+
+It also adds some powerful features such as [sending custom messages](https://socketinspector.com/docs/send-custom-messages/) and [simulating server disconnections](https://socketinspector.com/docs/simulate-server-disconnections/), enabling the user to simulate scenarios that can be difficult to reproduce manually.
 
 ## Installation
 
@@ -15,7 +17,7 @@ Chrome Web Store:
 
 ## Documentation
 
-View the documentation on the [documentation site](https://socketinspector.com/docs/)
+Check out the [documentation site](https://socketinspector.com/docs/)
 
 ## Support
 

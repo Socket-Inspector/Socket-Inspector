@@ -13,6 +13,10 @@ Chrome Web Store:
 - Navigate to the [Chrome store page](https://chromewebstore.google.com/detail/kecipkncnnofappfmapgmfailmnbaoaf?utm_source=item-share-cb)
 - Click **Add to Chrome**
 
+## Documentation
+
+View the documentation on the [documentation site](https://socketinspector.com/docs/)
+
 ## Support
 
 Bug reports, feature requests, and general questions are welcome and appreciated!

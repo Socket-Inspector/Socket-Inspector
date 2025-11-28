@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from './shadcn/Sidebar';
+import { Button } from './shadcn/Button';
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
@@ -57,48 +58,62 @@ export function AppSidebar() {
 
 function AppSidebarFooter() {
   return (
-    <SidebarFooter>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton asChild className="cursor-default hover:underline" size="sm">
-            <a
-              href="https://socketinspector.com/docs/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View documentation"
-            >
-              <BookOpen />
-              <span>Docs</span>
-            </a>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton asChild className="cursor-default hover:underline" size="sm">
-            <a
-              href="https://github.com/Socket-Inspector/Socket-Inspector"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View source code on GitHub"
-            >
-              <Github />
-              <span>Source Code</span>
-            </a>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton asChild className="cursor-default hover:underline" size="sm">
-            <a
-              href="https://github.com/Socket-Inspector/Socket-Inspector#support"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Get support or report issues"
-            >
-              <CircleHelp />
-              <span>Support</span>
-            </a>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
+    <SidebarFooter className="flex-row">
+      <div className="flex items-center gap-1">
+        <TooltipProvider>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+                <a
+                  href="https://socketinspector.com/docs/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View documentation"
+                >
+                  <BookOpen className="h-4 w-4" />
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Docs</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+                <a
+                  href="https://github.com/Socket-Inspector/Socket-Inspector"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View source code on GitHub"
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Source Code</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider>
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+                <a
+                  href="https://github.com/Socket-Inspector/Socket-Inspector#support"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Get support or report issues"
+                >
+                  <CircleHelp className="h-4 w-4" />
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Support</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
     </SidebarFooter>
   );
 }

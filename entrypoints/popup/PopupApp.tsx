@@ -50,9 +50,7 @@ export default function App() {
         <PopupContents extensionEnabledInitialValue={extensionEnabledResult.value}></PopupContents>
       )}
       <Separator className="my-3" />
-      <div className="flex items-center justify-center gap-1">
-        <ExternalLinkFooter></ExternalLinkFooter>
-      </div>
+      <ExternalLinkFooter></ExternalLinkFooter>
     </main>
   );
 }

@@ -4,7 +4,7 @@ import { BookOpen, CircleHelp, Heart } from 'lucide-react';
 
 export function ExternalLinkFooter() {
   return (
-    <>
+    <div className="flex items-center justify-center gap-1">
       <TooltipProvider>
         <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
@@ -58,6 +58,6 @@ export function ExternalLinkFooter() {
           <TooltipContent>Rate Extension</TooltipContent>
         </Tooltip>
       </TooltipProvider>
-    </>
+    </div>
   );
 }

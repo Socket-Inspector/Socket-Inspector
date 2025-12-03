@@ -59,9 +59,7 @@ export function AppSidebar() {
 function AppSidebarFooter() {
   return (
     <SidebarFooter className="flex-row justify-center">
-      <div className="flex items-center gap-1">
-        <ExternalLinkFooter></ExternalLinkFooter>
-      </div>
+      <ExternalLinkFooter></ExternalLinkFooter>
     </SidebarFooter>
   );
 }

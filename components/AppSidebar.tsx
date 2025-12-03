@@ -15,7 +15,7 @@ import { Button } from './shadcn/Button';
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
-import { BookOpen, CircleHelp, Github, Star, X } from 'lucide-react';
+import { BookOpen, CircleHelp, Github, Heart, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
@@ -106,7 +106,7 @@ function AppSidebarFooter() {
                   rel="noopener noreferrer"
                   aria-label="Rate this extension"
                 >
-                  <Star className="h-4 w-4" />
+                  <Heart className="h-4 w-4" />
                 </a>
               </Button>
             </TooltipTrigger>

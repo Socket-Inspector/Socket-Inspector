@@ -83,24 +83,6 @@ function AppSidebarFooter() {
             <TooltipTrigger asChild>
               <Button asChild variant="ghost" size="icon" className="h-8 w-8">
                 <a
-                  href="https://github.com/Socket-Inspector/Socket-Inspector"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="View source code on GitHub"
-                >
-                  <Github className="h-4 w-4" />
-                </a>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Source Code</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider>
-          <Tooltip delayDuration={500}>
-            <TooltipTrigger asChild>
-              <Button asChild variant="ghost" size="icon" className="h-8 w-8">
-                <a
                   href="https://github.com/Socket-Inspector/Socket-Inspector#support"
                   target="_blank"
                   rel="noopener noreferrer"

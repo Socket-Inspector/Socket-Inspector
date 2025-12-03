@@ -56,7 +56,6 @@ export function AppSidebar() {
   );
 }
 
-// TODO: do something similar for the popup panel
 function AppSidebarFooter() {
   return (
     <SidebarFooter className="flex-row justify-center">

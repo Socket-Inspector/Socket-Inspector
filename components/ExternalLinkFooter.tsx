@@ -4,8 +4,8 @@ import { BookOpen, CircleHelp, Heart } from 'lucide-react';
 
 export function ExternalLinkFooter() {
   return (
-    <div className="flex items-center justify-center gap-1">
-      <TooltipProvider>
+    <TooltipProvider>
+      <div className="flex items-center justify-center gap-1">
         <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
             <Button asChild variant="ghost" size="icon" className="h-8 w-8">
@@ -21,9 +21,7 @@ export function ExternalLinkFooter() {
           </TooltipTrigger>
           <TooltipContent>Docs</TooltipContent>
         </Tooltip>
-      </TooltipProvider>
 
-      <TooltipProvider>
         <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
             <Button asChild variant="ghost" size="icon" className="h-8 w-8">
@@ -39,9 +37,7 @@ export function ExternalLinkFooter() {
           </TooltipTrigger>
           <TooltipContent>Support</TooltipContent>
         </Tooltip>
-      </TooltipProvider>
 
-      <TooltipProvider>
         <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
             <Button asChild variant="ghost" size="icon" className="h-8 w-8">
@@ -57,7 +53,7 @@ export function ExternalLinkFooter() {
           </TooltipTrigger>
           <TooltipContent>Rate Extension</TooltipContent>
         </Tooltip>
-      </TooltipProvider>
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }

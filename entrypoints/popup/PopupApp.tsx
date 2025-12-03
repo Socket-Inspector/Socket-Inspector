@@ -7,6 +7,15 @@ import {
   setExtensionEnabledStorage,
   watchExtensionEnabledStorage,
 } from '@/utils/storageHelpers';
+import { Separator } from '@/components/shadcn/Separator';
+import { Button } from '@/components/shadcn/Button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/Tooltip';
+import { BookOpen, CircleHelp, Heart } from 'lucide-react';
 
 type ExtensionEnabledResult =
   | {
@@ -47,6 +56,8 @@ export default function App() {
       {extensionEnabledResult.loaded && (
         <PopupContents extensionEnabledInitialValue={extensionEnabledResult.value}></PopupContents>
       )}
+      <Separator className="my-3" />
+      <PopupFooter />
     </main>
   );
 }
@@ -85,6 +96,66 @@ export function PopupContents({ extensionEnabledInitialValue }: PopupContentsPro
       <p className="text-muted-foreground mt-2 text-center text-xs">
         To use this extension, open the DevTools and look for the Socket Inspector tab
       </p>
+    </div>
+  );
+}
+
+function PopupFooter() {
+  return (
+    <div className="flex items-center justify-center gap-1">
+      <TooltipProvider>
+        <Tooltip delayDuration={500}>
+          <TooltipTrigger asChild>
+            <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+              <a
+                href="https://socketinspector.com/docs/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View documentation"
+              >
+                <BookOpen className="h-4 w-4" />
+              </a>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Docs</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider>
+        <Tooltip delayDuration={500}>
+          <TooltipTrigger asChild>
+            <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+              <a
+                href="https://github.com/Socket-Inspector/Socket-Inspector#support"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Get support or report issues"
+              >
+                <CircleHelp className="h-4 w-4" />
+              </a>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Support</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider>
+        <Tooltip delayDuration={500}>
+          <TooltipTrigger asChild>
+            <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+              <a
+                href="https://chromewebstore.google.com/detail/socket-inspector/kecipkncnnofappfmapgmfailmnbaoaf/reviews"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Rate this extension"
+              >
+                <Heart className="h-4 w-4" />
+              </a>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Rate Extension</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -8,6 +9,7 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from './shadcn/Sidebar';
 import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
@@ -17,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
 import { CloseSocketForm } from './CloseSocketForm';
+import { ExternalLinkFooter } from './ExternalLinkFooter';
 
 export function AppSidebar() {
   const { socketState, dispatch } = useSocketContext();
@@ -47,7 +50,17 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarSeparator />
+      <AppSidebarFooter />
     </Sidebar>
+  );
+}
+
+function AppSidebarFooter() {
+  return (
+    <SidebarFooter className="flex-row justify-center">
+      <ExternalLinkFooter></ExternalLinkFooter>
+    </SidebarFooter>
   );
 }
 

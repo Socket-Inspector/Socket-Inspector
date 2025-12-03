@@ -7,6 +7,8 @@ import {
   setExtensionEnabledStorage,
   watchExtensionEnabledStorage,
 } from '@/utils/storageHelpers';
+import { Separator } from '@/components/shadcn/Separator';
+import { ExternalLinkFooter } from '@/components/ExternalLinkFooter';
 
 type ExtensionEnabledResult =
   | {
@@ -47,6 +49,8 @@ export default function App() {
       {extensionEnabledResult.loaded && (
         <PopupContents extensionEnabledInitialValue={extensionEnabledResult.value}></PopupContents>
       )}
+      <Separator className="my-3" />
+      <ExternalLinkFooter></ExternalLinkFooter>
     </main>
   );
 }

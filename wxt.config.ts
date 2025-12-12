@@ -14,7 +14,8 @@ export default defineConfig({
   },
   manifest: ({ mode }) => {
     const config: UserManifest = {
-      name: 'Socket Inspector',
+      name: 'Socket Inspector - WebSocket Debugging Tools',
+      short_name: 'Socket Inspector',
       description:
         'Simulate edge cases, reproduce bugs, and uncover security vulnerabilities in WebSocket Applications.',
       host_permissions: ['*://*/*'],

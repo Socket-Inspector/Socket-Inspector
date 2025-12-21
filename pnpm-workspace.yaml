@@ -6,5 +6,8 @@ onlyBuiltDependencies:
   - esbuild
   - spawn-sync
 
+overrides:
+  "@monaco-editor/react>@monaco-editor/loader": "1.5.0"
+
 patchedDependencies:
   "@monaco-editor/loader@1.5.0": patches/@monaco-editor__loader@1.5.0.patch

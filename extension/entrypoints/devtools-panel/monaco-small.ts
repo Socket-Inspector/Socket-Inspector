@@ -37,7 +37,6 @@ import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 self.MonacoEnvironment = {
   getWorker(_, label) {
     return label === 'json' ? new jsonWorker() : new editorWorker();
-    ``;
   },
 };
 

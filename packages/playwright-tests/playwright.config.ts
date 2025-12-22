@@ -1,8 +1,8 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: "tests",
-  testMatch: "*.test.ts",
+  testDir: 'tests',
+  testMatch: '*.test.ts',
 
   // Fail the build on CI if you accidentally left test.only in the source code.
   forbidOnly: !!process.env.CI,
@@ -14,10 +14,10 @@ export default defineConfig({
   workers: 1,
 
   // Reporter to use
-  reporter: "html",
+  reporter: 'html',
 
   use: {
-    trace: "retain-on-failure"
+    trace: 'retain-on-failure',
   },
 
   timeout: 10000,
@@ -25,8 +25,8 @@ export default defineConfig({
   // Configure projects for major browsers.
   projects: [
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 });

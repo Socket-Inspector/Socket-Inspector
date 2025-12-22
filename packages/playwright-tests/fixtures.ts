@@ -1,12 +1,7 @@
-import {
-  test as base,
-  chromium,
-  type BrowserContext,
-  type Worker,
-} from "@playwright/test";
-import path from "path";
+import { test as base, chromium, type BrowserContext, type Worker } from '@playwright/test';
+import path from 'path';
 
-const pathToExtension = path.resolve("../extension/.output/chrome-mv3");
+const pathToExtension = path.resolve('../extension/.output/chrome-mv3');
 
 export const test = base.extend<{
   context: BrowserContext;
@@ -16,7 +11,7 @@ export const test = base.extend<{
 }>({
   // oxlint-disable-next-line no-empty-pattern
   context: async ({}, use) => {
-    const context = await chromium.launchPersistentContext("", {
+    const context = await chromium.launchPersistentContext('', {
       headless: false,
       // devtools: true,
       args: [
@@ -31,14 +26,14 @@ export const test = base.extend<{
     let background: { url(): string };
     [background] = context.serviceWorkers();
     if (!background) {
-      background = await context.waitForEvent("serviceworker");
+      background = await context.waitForEvent('serviceworker');
     }
-    const extensionId = background.url().split("/")[2];
+    const extensionId = background.url().split('/')[2];
     await use(extensionId);
   },
   serviceWorker: async ({ context }, use) => {
     let [sw] = context.serviceWorkers();
-    if (!sw) sw = await context.waitForEvent("serviceworker");
+    if (!sw) sw = await context.waitForEvent('serviceworker');
     await use(sw);
   },
   devtoolsPanelUrl: async ({ extensionId }, use) => {

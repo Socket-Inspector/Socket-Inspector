@@ -2,8 +2,8 @@
   "name": "socket-inspector-workspace",
   "private": true,
   "scripts": {
-    "format:check": "prettier --check",
-    "format": "",
+    "format:check": "prettier --check packages/extension",
+    "format": "prettier --write packages/extension",
     "serve:test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
     "prepare:test:e2e": "pnpm --filter socket-inspector build:mock & pnpm run serve:test-app",
     "test:e2e": "pnpm --filter playwright-tests test",

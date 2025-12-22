@@ -1,6 +1,7 @@
 packages:
   - "extension"
   - "test-app-server"
+  - "test-app-ui"
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

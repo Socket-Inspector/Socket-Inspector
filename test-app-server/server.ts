@@ -1,7 +1,7 @@
 import { sleep } from "bun";
 import { generateEnvConfig } from "./generateEnvConfig";
 import { handleClientMessage } from "./messageHandlers";
-import { ClientMessage } from "./serverMessageTypes";
+import type { ClientMessage } from "./serverMessageTypes";
 
 const config = generateEnvConfig();
 console.log("serving with config: ", JSON.stringify(config, null, 2));

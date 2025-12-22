@@ -1,29 +1,36 @@
-import { ServerWebSocket, sleep } from 'bun';
-import { ClientMessage, EchoRequestPayload, EchoResponse } from './serverMessageTypes';
+import { type ServerWebSocket, sleep } from "bun";
+import type {
+  ClientMessage,
+  EchoRequestPayload,
+  EchoResponse,
+} from "./serverMessageTypes";
 
-export const handleClientMessage = async (ws: ServerWebSocket<unknown>, message: ClientMessage) => {
+export const handleClientMessage = async (
+  ws: ServerWebSocket<unknown>,
+  message: ClientMessage
+) => {
   if (message.delay && message.delay > 0) {
     await sleep(message.delay);
   }
-  if (message.type === 'EchoRequest') {
+  if (message.type === "EchoRequest") {
     handleEchoRequest(ws, message.payload);
     return;
-  } else if (message.type === 'ServerClosureRequest') {
+  } else if (message.type === "ServerClosureRequest") {
     handleServerClosureRequest(ws);
     return;
-  } else if (message.type === 'StartMessageStreamRequest') {
+  } else if (message.type === "StartMessageStreamRequest") {
     handleStartMessageStreamRequest(ws);
-  } else if (message.type === 'StopMessageStreamRequest') {
+  } else if (message.type === "StopMessageStreamRequest") {
     handleStopMessageStreamRequest(ws);
   }
 };
 
 export const handleEchoRequest = async (
   ws: ServerWebSocket<unknown>,
-  payload: EchoRequestPayload,
+  payload: EchoRequestPayload
 ) => {
   const response: EchoResponse = {
-    type: 'EchoResponse',
+    type: "EchoResponse",
     payload: {
       message: payload.message,
     },
@@ -46,7 +53,9 @@ export const handleServerClosureRequest = (ws: ServerWebSocket<unknown>) => {
  */
 const activeIntervals = new Map<ServerWebSocket<unknown>, NodeJS.Timeout>();
 
-export const handleStartMessageStreamRequest = async (ws: ServerWebSocket<unknown>) => {
+export const handleStartMessageStreamRequest = async (
+  ws: ServerWebSocket<unknown>
+) => {
   const existingInterval = activeIntervals.get(ws);
   if (existingInterval) {
     clearInterval(existingInterval);
@@ -61,7 +70,9 @@ export const handleStartMessageStreamRequest = async (ws: ServerWebSocket<unknow
   activeIntervals.set(ws, intervalId);
 };
 
-export const handleStopMessageStreamRequest = async (ws: ServerWebSocket<unknown>) => {
+export const handleStopMessageStreamRequest = async (
+  ws: ServerWebSocket<unknown>
+) => {
   const intervalId = activeIntervals.get(ws);
   if (intervalId) {
     clearInterval(intervalId);

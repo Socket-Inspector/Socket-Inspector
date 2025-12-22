@@ -13,6 +13,7 @@ stats.html
 stats-*.json
 .wxt
 web-ext.config.ts
+packages/test-app-ui/dist
 
 # Editor directories and files
 .vscode/*
@@ -29,4 +30,3 @@ playwright-report
 playwright-report/
 test-results
 test-results/
-test-app-ui/dist

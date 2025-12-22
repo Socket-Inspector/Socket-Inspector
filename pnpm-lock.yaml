@@ -145,6 +145,9 @@ importers:
       '@playwright/test':
         specifier: ^1.56.1
         version: 1.57.0
+      '@types/node':
+        specifier: ^25.0.3
+        version: 25.0.3
 
   test-app-server:
     devDependencies:

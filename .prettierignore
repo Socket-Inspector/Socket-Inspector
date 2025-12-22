@@ -13,6 +13,7 @@ stats.html
 stats-*.json
 .wxt
 web-ext.config.ts
+.github
 
 # Editor directories and files
 .vscode/*
@@ -30,3 +31,11 @@ playwright-report
 playwright-report/
 test-results
 test-results/
+
+# jsonc files
+*.jsonc
+
+# pnpm
+pnpm-lock.yaml
+pnpm-workspace.yaml
+patches/

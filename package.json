@@ -2,10 +2,15 @@
   "name": "socket-inspector-workspace",
   "private": true,
   "scripts": {
+    "format:check": "prettier --check",
     "format": "",
     "serve:test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
     "prepare:test:e2e": "pnpm --filter socket-inspector build:mock & pnpm run serve:test-app",
     "test:e2e": "pnpm --filter playwright-tests test",
     "test:e2e:ui": "pnpm --filter playwright-tests test:ui"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2"
   }
 }

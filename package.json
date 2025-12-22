@@ -2,6 +2,7 @@
   "name": "socket-inspector-workspace",
   "private": true,
   "scripts": {
+    "format": "",
     "serve:test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
     "pre:test:e2e": "pnpm --filter socket-inspector build:mock & pnpm run serve:test-app",
     "test:e2e": "pnpm --filter playwright-tests test",

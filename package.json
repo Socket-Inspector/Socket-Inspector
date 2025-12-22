@@ -2,6 +2,6 @@
   "name": "socket-inspector-workspace",
   "private": true,
   "scripts": {
-    "serve:test-app": ""
+    "test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve"
   }
 }

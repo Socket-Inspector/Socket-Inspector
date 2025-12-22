@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: "playwright/tests",
+  testDir: "tests",
   testMatch: "*.test.ts",
 
   // Fail the build on CI if you accidentally left test.only in the source code.

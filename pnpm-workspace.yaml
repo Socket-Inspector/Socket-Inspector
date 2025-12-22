@@ -2,6 +2,7 @@ packages:
   - "extension"
   - "test-app-server"
   - "test-app-ui"
+  - "playwright-tests"
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

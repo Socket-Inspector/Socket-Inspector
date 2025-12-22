@@ -1,0 +1,13 @@
+{
+  "name": "playwright-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install-browsers": "playwright install",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
+}

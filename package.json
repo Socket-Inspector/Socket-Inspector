@@ -2,6 +2,7 @@
   "name": "socket-inspector-workspace",
   "private": true,
   "scripts": {
-    "test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve"
+    "serve:test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
+    "test:e2e": ""
   }
 }

@@ -6,17 +6,12 @@ export type ClientMessageGeneric<T, P = undefined> = {
 };
 
 export type EchoRequestPayload = { message: string };
-export type EchoRequest = ClientMessageGeneric<
-  "EchoRequest",
-  EchoRequestPayload
->;
+export type EchoRequest = ClientMessageGeneric<'EchoRequest', EchoRequestPayload>;
 
-export type ServerClosureRequest = ClientMessageGeneric<"ServerClosureRequest">;
+export type ServerClosureRequest = ClientMessageGeneric<'ServerClosureRequest'>;
 
-export type StartMessageStreamRequest =
-  ClientMessageGeneric<"StartMessageStreamRequest">;
-export type StopMessageStreamRequest =
-  ClientMessageGeneric<"StopMessageStreamRequest">;
+export type StartMessageStreamRequest = ClientMessageGeneric<'StartMessageStreamRequest'>;
+export type StopMessageStreamRequest = ClientMessageGeneric<'StopMessageStreamRequest'>;
 
 export type ClientMessage =
   | EchoRequest
@@ -31,9 +26,6 @@ export type ServerMessageGeneric<T, P = undefined> = {
 };
 
 export type EchoResponsePayload = { message: string };
-export type EchoResponse = ServerMessageGeneric<
-  "EchoResponse",
-  EchoResponsePayload
->;
+export type EchoResponse = ServerMessageGeneric<'EchoResponse', EchoResponsePayload>;
 
 export type ServerMessage = EchoResponse;

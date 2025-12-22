@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "install-browsers": "playwright install",
@@ -12,6 +12,6 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
-    "@types/node": "^25.0.3"
+    "@types/node": "^24.0.0"
   }
 }

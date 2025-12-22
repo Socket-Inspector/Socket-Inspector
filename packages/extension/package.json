@@ -17,7 +17,6 @@
     "postinstall": "wxt prepare",
     "prepare": "wxt prepare",
     "test:unit": "vitest run",
-    "format": "prettier --write .",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "detect:monaco:cdn": "grep -R -q \"cdn.jsdelivr.net\" .output 2>/dev/null && (echo '\\033[1;31m==========================\\033[0m' && echo '\\033[1;31m⚠️  BLUE ARGON VIOLATION  ⚠️\\033[0m' && echo '\\033[1;31mMust remove cdn.jsdelivr.net from build output\\033[0m' && echo '\\033[1;31m==========================\\033[0m' && exit 1) || exit 0"
@@ -60,8 +59,6 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "happy-dom": "^20.0.10",
     "oxlint": "^1.13.0",
-    "prettier": "3.6.2",
-    "prettier-plugin-tailwindcss": "0.6.14",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4",
     "wxt": "^0.20.6"

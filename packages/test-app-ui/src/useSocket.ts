@@ -1,21 +1,21 @@
-import { useState, useEffect, useRef } from "react";
-import type { ClientMessage, ServerMessage } from "./clientMessageTypes";
+import { useState, useEffect, useRef } from 'react';
+import type { ClientMessage, ServerMessage } from './clientMessageTypes';
 
-export type ReadyState = "CONNECTING" | "OPEN" | "CLOSING" | "CLOSED";
+export type ReadyState = 'CONNECTING' | 'OPEN' | 'CLOSING' | 'CLOSED';
 
 export type CloseInfo = { code: number; reason: string };
 
 const readyStateToString = (readyState: number): ReadyState => {
   if (readyState === WebSocket.CONNECTING) {
-    return "CONNECTING";
+    return 'CONNECTING';
   } else if (readyState === WebSocket.OPEN) {
-    return "OPEN";
+    return 'OPEN';
   } else if (readyState === WebSocket.CLOSING) {
-    return "CLOSING";
+    return 'CLOSING';
   } else if (readyState === WebSocket.CLOSED) {
-    return "CLOSED";
+    return 'CLOSED';
   } else {
-    return "CLOSED";
+    return 'CLOSED';
   }
 };
 
@@ -59,7 +59,7 @@ export const useSocket = (url: string) => {
     socketRef.current = socket;
 
     return () => {
-      console.log("closing socket");
+      console.log('closing socket');
       socket.close();
     };
   };
@@ -93,7 +93,7 @@ export const useSocket = (url: string) => {
     if (!socketRef.current) {
       return;
     }
-    if (readyState !== "CLOSED") {
+    if (readyState !== 'CLOSED') {
       return;
     }
     connectSocket();

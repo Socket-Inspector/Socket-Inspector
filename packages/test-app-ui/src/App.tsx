@@ -1,35 +1,29 @@
-import { useSocket } from "./useSocket";
-import { useState } from "react";
+import { useSocket } from './useSocket';
+import { useState } from 'react';
 import type {
   ClientMessage,
   EchoRequest,
   StartMessageStreamRequest,
   ServerClosureRequest,
   StopMessageStreamRequest,
-} from "./clientMessageTypes";
-import { Button } from "./button";
-import { Separator } from "./separator";
+} from './clientMessageTypes';
+import { Button } from './button';
+import { Separator } from './separator';
 
 const SERVER_PORT = 6844;
 const SOCKET_URL = `ws://localhost:${SERVER_PORT}`;
 
 export default function App() {
-  const {
-    readyState,
-    messages,
-    closeInfo,
-    sendMessage,
-    closeSocket,
-    reconnectSocket,
-  } = useSocket(SOCKET_URL);
+  const { readyState, messages, closeInfo, sendMessage, closeSocket, reconnectSocket } =
+    useSocket(SOCKET_URL);
 
-  const [echoInputText, setEchoInputText] = useState("");
+  const [echoInputText, setEchoInputText] = useState('');
 
   const latestEchoResponse =
     messages
       .slice()
       .reverse()
-      .find((m) => m.type === "EchoResponse")?.payload.message ?? null;
+      .find((m) => m.type === 'EchoResponse')?.payload.message ?? null;
 
   if (!readyState) {
     return <main className="p-5"></main>;
@@ -39,17 +33,17 @@ export default function App() {
     <main className="p-5">
       <section>
         <p className="mb-2">
-          Ready State:{" "}
+          Ready State:{' '}
           <span
             data-testid="ready-state-display"
             className="ml-2 rounded bg-blue-100 px-2 py-1 font-mono font-normal text-blue-800"
           >
-            {readyState ?? ""}
+            {readyState ?? ''}
           </span>
         </p>
-        {readyState === "CLOSED" && closeInfo && (
+        {readyState === 'CLOSED' && closeInfo && (
           <p className="mb-2">
-            Close Code:{" "}
+            Close Code:{' '}
             <span
               data-testid="close-code-display"
               className="ml-2 rounded bg-red-100 px-2 py-1 font-mono font-normal text-red-800"
@@ -58,8 +52,8 @@ export default function App() {
             </span>
             {closeInfo.reason && (
               <>
-                {" "}
-                | Close Reason:{" "}
+                {' '}
+                | Close Reason:{' '}
                 <span
                   data-testid="close-reason-display"
                   className="ml-2 rounded bg-red-100 px-2 py-1 font-mono font-normal text-red-800"
@@ -73,17 +67,17 @@ export default function App() {
         <div className="flex flex-row gap-x-2">
           <Button
             className="cursor-pointer"
-            disabled={readyState === "CLOSED" || readyState === "CLOSING"}
+            disabled={readyState === 'CLOSED' || readyState === 'CLOSING'}
             onClick={() => closeSocket()}
           >
             Trigger Client Disconnect
           </Button>
           <Button
             className="cursor-pointer"
-            disabled={readyState === "CLOSED" || readyState === "CLOSING"}
+            disabled={readyState === 'CLOSED' || readyState === 'CLOSING'}
             onClick={() => {
               const message: ServerClosureRequest = {
-                type: "ServerClosureRequest",
+                type: 'ServerClosureRequest',
                 payload: undefined,
               };
               sendMessage(message);
@@ -93,7 +87,7 @@ export default function App() {
           </Button>
           <Button
             className="cursor-pointer"
-            disabled={readyState !== "CLOSED"}
+            disabled={readyState !== 'CLOSED'}
             onClick={() => reconnectSocket()}
           >
             Reconnect to server
@@ -113,10 +107,10 @@ export default function App() {
           ></input>
           <Button
             className="cursor-pointer"
-            disabled={readyState !== "OPEN"}
+            disabled={readyState !== 'OPEN'}
             onClick={() => {
               const message: EchoRequest = {
-                type: "EchoRequest",
+                type: 'EchoRequest',
                 payload: {
                   message: echoInputText,
                 },
@@ -151,9 +145,7 @@ export default function App() {
         </Button>
       </section>
       <Separator className="my-4"></Separator>
-      <MessageStreamComponent
-        sendMessage={sendMessage}
-      ></MessageStreamComponent>
+      <MessageStreamComponent sendMessage={sendMessage}></MessageStreamComponent>
     </main>
   );
 }
@@ -172,14 +164,14 @@ function MessageStreamComponent({ sendMessage }: MessageStreamComponentProps) {
         onClick={() => {
           if (isStreaming) {
             const message: StopMessageStreamRequest = {
-              type: "StopMessageStreamRequest",
+              type: 'StopMessageStreamRequest',
               payload: undefined,
             };
             sendMessage(message);
             setIsStreaming(false);
           } else {
             const message: StartMessageStreamRequest = {
-              type: "StartMessageStreamRequest",
+              type: 'StartMessageStreamRequest',
               payload: undefined,
             };
             sendMessage(message);
@@ -187,7 +179,7 @@ function MessageStreamComponent({ sendMessage }: MessageStreamComponentProps) {
           }
         }}
       >
-        {isStreaming ? "Stop Message Stream" : "Start Message Stream"}
+        {isStreaming ? 'Stop Message Stream' : 'Start Message Stream'}
       </Button>
     </section>
   );

@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "serve:test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
-    "test:e2e": ""
+    "build:mock-extension": "pnpm --filter socket-inspector build:mock",
+    "test:e2e": "pnpm run build:mock-extension & pnpm run serve:test-app"
   }
 }

@@ -18,7 +18,6 @@
     "prepare": "wxt prepare",
     "test:unit": "vitest run",
     "serve:test-app": "cd playwright/test-app/ui && yarn serve:prod & cd playwright/test-app/api && yarn serve",
-    "test:e2e:install": "playwright install",
     "test:e2e": "VITE_MOCK_TAB_ID=1234 wxt build && playwright test",
     "test:e2e:debug": "VITE_MOCK_TAB_ID=1234 wxt build && playwright test --ui",
     "format": "prettier --write .",

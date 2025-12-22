@@ -17,8 +17,7 @@ export default defineConfig({
   reporter: "html",
 
   use: {
-    // Collect trace when retrying the failed test.
-    trace: "on-first-retry",
+    trace: "retain-on-failure"
   },
 
   timeout: 10000,

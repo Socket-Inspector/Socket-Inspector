@@ -144,6 +144,10 @@ export class DevtoolsPanelModel {
 
   public async clearComposerPayload() {
     await this.enterComposerPayload('');
+    const editor = this.page.getByRole('textbox', { name: 'Payload Editor' });
+    await editor.focus();
+    await this.page.keyboard.press('ControlOrMeta+A');
+    await this.page.keyboard.press('Backspace');
   }
 
   public async submitComposerMessage() {

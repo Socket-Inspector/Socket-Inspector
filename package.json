@@ -1,4 +1,7 @@
 {
   "name": "socket-inspector-workspace",
-  "private": true
+  "private": true,
+  "scripts": {
+    "serve:test-app": ""
+  }
 }

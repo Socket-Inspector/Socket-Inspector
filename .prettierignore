@@ -26,6 +26,7 @@ web-ext.config.ts
 *.sln
 *.sw?
 
+packages/test-app-ui/dist
 playwright-report
 playwright-report/
 test-results

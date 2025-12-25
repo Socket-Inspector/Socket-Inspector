@@ -1,1 +1,0 @@
-{"root":["./vite.config.ts","./src/app.tsx","./src/clientmessagetypes.ts","./src/main.tsx","./src/usesocket.ts","./src/vite-env.d.ts","./src/components/ui/button.tsx","./src/components/ui/separator.tsx","./src/lib/utils.ts"],"version":"5.8.3"}

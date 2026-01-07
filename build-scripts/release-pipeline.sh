@@ -19,18 +19,18 @@ formatter() {
     write_log "Formatting successful ✅"
 }
 
-type_checker() {
-    write_separator
-    write_log "Running the type checker..."
-    pnpm --filter socket-inspector compile
-    write_log "Type checking successful ✅"
-}
-
 linter() {
     write_separator
     write_log "Running the linter..."
     pnpm --filter socket-inspector lint
     write_log "Linting successful ✅"
+}
+
+type_checker() {
+    write_separator
+    write_log "Running the type checker..."
+    pnpm --filter socket-inspector compile
+    write_log "Type checking successful ✅"
 }
 
 unit_tests() {

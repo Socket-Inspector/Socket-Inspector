@@ -47,7 +47,8 @@ playwright_tests() {
 
 build_extension() {
     write_log "Building the extension"
-    # TODO: wxt zip
+    pnpm --filter socket-inspector zip
+    write_log "Extension build successful ✅"
 }
 
 detect_blue_argon() {
@@ -61,3 +62,4 @@ detect_blue_argon() {
 # linter
 # type_checker
 # unit_tests
+build_extension

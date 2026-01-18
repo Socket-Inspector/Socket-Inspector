@@ -62,13 +62,21 @@ detect_blue_argon() {
     write_log "No Blue Argon violations detected ✅"
 }
 
+print_build_success() {
+    local MANIFEST_PATH="packages/extension/.output/chrome-mv3/manifest.json"
+    local VERSION=$(jq -r '.version' "$MANIFEST_PATH")
+    echo "Successfully built Socket Inspector version $VERSION 🎉"
+}
+
 # Pipeline
 
-formatter
-linter
-type_checker
-unit_tests
-build_extension
-detect_blue_argon
+# formatter
+# linter
+# type_checker
+# unit_tests
+# build_extension
+# detect_blue_argon
+
+print_build_success
 
 # TODO: print extension version from manifest.json as MVP

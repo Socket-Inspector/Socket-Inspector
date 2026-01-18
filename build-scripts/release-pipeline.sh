@@ -40,9 +40,9 @@ unit_tests() {
     write_log "Unit tests successful ✅"
 }
 
+# TODO: may need to run the dev server in the background and then run tests in the foreground
 playwright_tests() {
     write_log "Running the playwright tests..."
-    # TODO
 }
 
 build_extension() {
@@ -63,9 +63,12 @@ detect_blue_argon() {
 }
 
 # Pipeline
-# formatter
-# linter
-# type_checker
-# unit_tests
-# build_extension
-# detect_blue_argon
+
+formatter
+linter
+type_checker
+unit_tests
+build_extension
+detect_blue_argon
+
+# TODO: print extension version from manifest.json as MVP

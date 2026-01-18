@@ -67,5 +67,5 @@ detect_blue_argon() {
 # linter
 # type_checker
 # unit_tests
-# build_extension
+build_extension
 detect_blue_argon

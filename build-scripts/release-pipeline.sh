@@ -62,6 +62,7 @@ detect_blue_argon() {
     write_log "No Blue Argon violations detected ✅"
 }
 
+# TODO: should fail if the manifest.json file does not exist
 print_build_success() {
     local MANIFEST_PATH="packages/extension/.output/chrome-mv3/manifest.json"
     local VERSION=$(jq -r '.version' "$MANIFEST_PATH")

@@ -10,10 +10,12 @@
     "playwright:prepare": "pnpm --filter socket-inspector build:mock & pnpm run test-app",
     "playwright:test": "pnpm --filter playwright-tests test",
     "playwright:ui": "pnpm --filter playwright-tests test:ui",
+    "build-scripts:lint": "pnpm shellcheck build-scripts/*.sh",
     "release": "bash ./build-scripts/release-pipeline.sh"
   },
   "devDependencies": {
     "prettier": "^3.7.4",
-    "prettier-plugin-tailwindcss": "^0.7.2"
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "shellcheck": "^4.1.0"
   }
 }

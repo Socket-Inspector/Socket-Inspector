@@ -18,7 +18,7 @@
     "prepare": "wxt prepare",
     "test:unit": "vitest run",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
+    "lint:fix": "oxlint --fix"
   },
   "dependencies": {
     "@monaco-editor/react": "4.7.0",

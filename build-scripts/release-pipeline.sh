@@ -56,3 +56,8 @@ detect_blue_argon() {
 
 # Pipeline
 # TODO: print the version and maybe some other things as well
+
+# formatter
+# linter
+# type_checker
+# unit_tests

@@ -53,13 +53,19 @@ build_extension() {
 
 detect_blue_argon() {
     write_log "Checking for Blue Argon violations"
+    local BANNED_STRING="cdn.jsdelivr.net"
+    local BUILD_PATH="packages/extension/.output/chrome-mv3"
+    if grep -rin "$BANNED_STRING" "$BUILD_PATH"; then
+        echo "🚨🚨 Blue Argon violation detected 🚨🚨"
+        exit 1
+    fi
+    write_log "No Blue Argon violations detected ✅"
 }
 
 # Pipeline
-# TODO: print the version and maybe some other things as well
-
 # formatter
 # linter
 # type_checker
 # unit_tests
-build_extension
+# build_extension
+detect_blue_argon

@@ -40,16 +40,16 @@ export default defineConfig({
   webServer: [
     {
       cwd: '../test-app-ui',
-      command: 'pnpm serve',
-      url: 'http://localhost:4173',
+      command: 'pnpm serve:playwright',
+      url: 'http://localhost:4298',
       // reuseExistingServer: !process.env.CI,
       // stdout: 'pipe',
       stderr: 'pipe',
     },
     {
       cwd: '../test-app-server',
-      command: 'pnpm serve',
-      url: 'http://localhost:6844/playwright-ready',
+      command: 'pnpm serve:playwright',
+      url: 'http://localhost:6857/playwright-ready',
       // reuseExistingServer: !process.env.CI,
       // stdout: 'pipe',
       stderr: 'pipe',

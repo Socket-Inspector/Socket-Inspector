@@ -42,12 +42,13 @@ unit_tests() {
     write_log "Unit tests successful ✅"
 }
 
-# TODO: may need to run the dev server in the background and then run tests in the foreground
-# 1: build with mock environment variable
-# 2: serve the test app
-# 3: run playwright tests
+# TODO: any concerns that the build:mock and build commands use the 
+# same .output directory?
 playwright_tests() {
     write_log "Running the playwright tests..."
+    pnpm --filter socket-inspector build:mock > /dev/null
+    pnpm playwright:test
+    write_log "Playwright tests successful ✅"
 }
 
 build_extension() {
@@ -86,8 +87,9 @@ print_build_success() {
 # linter
 # type_checker
 # unit_tests
+playwright_tests
 # build_extension
 # detect_blue_argon
-print_build_success
+# print_build_success
 
 # TODO: print extension version from manifest.json as MVP

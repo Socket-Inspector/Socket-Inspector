@@ -33,20 +33,22 @@ export default defineConfig({
   // TODO: consider setting to 1 on CI?
   // maxFailures: 1,
 
+  // TODO: consider having a specific bun server port for the playwright tests
+  // consider using same env variable for build:mock and serve:playwright commands?
   webServer: [
     {
-      cwd: "../../",
-      command: "pnpm --filter test-app-ui serve",
+      cwd: "../test-app-ui",
+      command: "pnpm serve",
       url: "http://localhost:4173",
-      // reuseExistingServer: ""
+      // reuseExistingServer: !process.env.CI,
       stdout: 'pipe',
       stderr: 'pipe'
     },
     {
-      cwd: "../../",
-      command: "pnpm --filter test-app-server serve",
+      cwd: "../test-app-server",
+      command: "pnpm serve",
       url: "http://localhost:6844/playwright-ready",
-      // reuseExistingServer: ""
+      // reuseExistingServer: !process.env.CI,
       stdout: 'pipe',
       stderr: 'pipe'
     }

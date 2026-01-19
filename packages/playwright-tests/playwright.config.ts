@@ -29,4 +29,28 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
+
+  // TODO: consider setting to 1 on CI?
+  // maxFailures: 1,
+
+  // TODO: HTML report locking the process on failure
+  webServer: [
+    {
+      cwd: '../test-app-ui',
+      command: 'pnpm serve:playwright',
+      url: 'http://localhost:4298',
+      reuseExistingServer: false,
+      // reuseExistingServer: !process.env.CI,
+      // stdout: 'pipe',
+      stderr: 'pipe',
+    },
+    {
+      cwd: '../test-app-server',
+      command: 'pnpm serve:playwright',
+      url: 'http://localhost:6857/playwright-ready',
+      reuseExistingServer: false,
+      // stdout: 'pipe',
+      stderr: 'pipe',
+    },
+  ],
 });

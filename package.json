@@ -2,15 +2,20 @@
   "name": "socket-inspector-workspace",
   "private": true,
   "scripts": {
-    "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
-    "prepare:e2e": "pnpm --filter socket-inspector build:mock & pnpm run test-app",
-    "e2e": "pnpm --filter playwright-tests test",
-    "e2e:ui": "pnpm --filter playwright-tests test:ui"
+    "format:check": "prettier --check .",
+    "extension:lint": "pnpm --filter socket-inspector lint",
+    "extension:lint:fix": "pnpm --filter socket-inspector lint:fix",
+    "test-app:serve": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
+    "playwright:prepare": "pnpm --filter socket-inspector build:mock",
+    "playwright:test": "pnpm --filter playwright-tests test",
+    "playwright:test:ui": "pnpm --filter playwright-tests test:ui",
+    "build-scripts:lint": "pnpm shellcheck build-scripts/*.sh",
+    "release": "bash ./build-scripts/release-pipeline.sh"
   },
   "devDependencies": {
     "prettier": "^3.7.4",
-    "prettier-plugin-tailwindcss": "^0.7.2"
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "shellcheck": "^4.1.0"
   }
 }

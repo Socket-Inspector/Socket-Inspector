@@ -1,7 +1,7 @@
 import { test as base, chromium, type BrowserContext, type Worker } from '@playwright/test';
 import path from 'path';
 
-const pathToExtension = path.resolve('../extension/.output/chrome-mv3');
+const pathToExtension = path.resolve('../extension/.mock_output/chrome-mv3');
 
 export const test = base.extend<{
   context: BrowserContext;

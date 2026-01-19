@@ -43,4 +43,5 @@ export default defineConfig({
   vite: () => ({
     plugins: [tailwindcss()],
   }),
+  outDir: process.env.CUSTOM_OUT_DIR || '.output',
 });

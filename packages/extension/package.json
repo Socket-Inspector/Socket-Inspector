@@ -7,10 +7,10 @@
   "scripts": {
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
-    "build": "wxt build && pnpm detect:monaco:cdn",
-    "build:firefox": "wxt build -b firefox && pnpm detect:monaco:cdn",
-    "dev:mock": "VITE_MOCK_TAB_ID=1234 wxt",
-    "build:mock": "VITE_MOCK_TAB_ID=1234 wxt build",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "dev:mock": "CUSTOM_OUT_DIR=.mock_output VITE_MOCK_TAB_ID=1234 wxt",
+    "build:mock": "CUSTOM_OUT_DIR=.mock_output VITE_MOCK_TAB_ID=1234 wxt build",
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
@@ -18,8 +18,7 @@
     "prepare": "wxt prepare",
     "test:unit": "vitest run",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
-    "detect:monaco:cdn": "grep -R -q \"cdn.jsdelivr.net\" .output 2>/dev/null && (echo '\\033[1;31m==========================\\033[0m' && echo '\\033[1;31m⚠️  BLUE ARGON VIOLATION  ⚠️\\033[0m' && echo '\\033[1;31mMust remove cdn.jsdelivr.net from build output\\033[0m' && echo '\\033[1;31m==========================\\033[0m' && exit 1) || exit 0"
+    "lint:fix": "oxlint --fix"
   },
   "dependencies": {
     "@monaco-editor/react": "4.7.0",

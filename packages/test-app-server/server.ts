@@ -4,12 +4,16 @@ import { handleClientMessage } from './messageHandlers';
 import type { ClientMessage } from './serverMessageTypes';
 
 const config = generateEnvConfig();
-console.log('serving with config: ', JSON.stringify(config, null, 2));
+console.log('TEST_APP_SERVER: serving with config: ', JSON.stringify(config, null, 2));
 
 Bun.serve({
   port: config.port,
   async fetch(req, server) {
     console.log('fetch request received by server');
+
+    if (req.url.endsWith('playwright-ready')) {
+      return new Response('OK', { status: 200 });
+    }
 
     if (config.openDelay) {
       await sleep(config.openDelay);

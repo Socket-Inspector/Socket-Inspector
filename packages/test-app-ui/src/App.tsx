@@ -10,7 +10,7 @@ import type {
 import { Button } from './button';
 import { Separator } from './separator';
 
-const SERVER_PORT = 6844;
+const SERVER_PORT = import.meta.env.VITE_BUN_SERVER_PORT ?? '6844';
 const SOCKET_URL = `ws://localhost:${SERVER_PORT}`;
 
 export default function App() {

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "serve": "tsc -b && vite build && vite preview"
+    "serve": "tsc -b && vite build && vite preview",
+    "serve:playwright": "tsc -b && VITE_BUN_SERVER_PORT=6857 vite build && vite preview --port 4298"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.7",

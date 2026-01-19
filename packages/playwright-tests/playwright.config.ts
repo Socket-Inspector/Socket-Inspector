@@ -39,20 +39,20 @@ export default defineConfig({
   // TODO: HTML report locking the process on failure
   webServer: [
     {
-      cwd: "../test-app-ui",
-      command: "pnpm serve",
-      url: "http://localhost:4173",
+      cwd: '../test-app-ui',
+      command: 'pnpm serve',
+      url: 'http://localhost:4173',
       // reuseExistingServer: !process.env.CI,
       // stdout: 'pipe',
-      stderr: 'pipe'
+      stderr: 'pipe',
     },
     {
-      cwd: "../test-app-server",
-      command: "pnpm serve",
-      url: "http://localhost:6844/playwright-ready",
+      cwd: '../test-app-server',
+      command: 'pnpm serve',
+      url: 'http://localhost:6844/playwright-ready',
       // reuseExistingServer: !process.env.CI,
       // stdout: 'pipe',
-      stderr: 'pipe'
-    }
-  ]
+      stderr: 'pipe',
+    },
+  ],
 });

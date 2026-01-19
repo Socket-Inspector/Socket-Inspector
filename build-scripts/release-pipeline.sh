@@ -43,6 +43,9 @@ unit_tests() {
 }
 
 # TODO: may need to run the dev server in the background and then run tests in the foreground
+# 1: build with mock environment variable
+# 2: serve the test app
+# 3: run playwright tests
 playwright_tests() {
     write_log "Running the playwright tests..."
 }

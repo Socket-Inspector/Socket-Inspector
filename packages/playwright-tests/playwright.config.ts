@@ -29,4 +29,26 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
+
+  // TODO: consider setting to 1 on CI?
+  // maxFailures: 1,
+
+  webServer: [
+    {
+      cwd: "../../",
+      command: "pnpm --filter test-app-ui serve",
+      url: "http://localhost:4173",
+      // reuseExistingServer: ""
+      stdout: 'pipe',
+      stderr: 'pipe'
+    },
+    {
+      cwd: "../../",
+      command: "pnpm --filter test-app-server serve",
+      url: "http://localhost:6844/playwright-ready",
+      // reuseExistingServer: ""
+      stdout: 'pipe',
+      stderr: 'pipe'
+    }
+  ]
 });

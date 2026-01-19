@@ -3,8 +3,8 @@ import { expect } from '../fixtures';
 
 export class HostPageModel {
   public readonly page: Page;
-  public readonly uiBaseUrl: string = 'http://localhost:4173';
-  public readonly serverBaseUrl: string = 'ws://localhost:6844';
+  public readonly uiBaseUrl: string = 'http://localhost:4298';
+  public readonly serverBaseUrl: string = 'ws://localhost:6857';
 
   constructor(page: Page) {
     this.page = page;

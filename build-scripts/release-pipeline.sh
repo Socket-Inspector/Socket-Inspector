@@ -67,13 +67,13 @@ detect_blue_argon() {
     write_log "No Blue Argon violations detected ✅"
 }
 
-# TODO: should fail if the manifest.json file does not exist
 print_build_success() {
     local MANIFEST_PATH="$BUILD_PATH/manifest.json"
     if [[ ! -f  "$MANIFEST_PATH" ]]; then
         write_log "Error: no manifest found at $MANIFEST_PATH"
     fi
-    local VERSION=$(jq -r '.version' "$MANIFEST_PATH")
+    local VERSION
+    VERSION=$(jq -r '.version' "$MANIFEST_PATH")
     echo "Successfully built Socket Inspector version $VERSION 🎉"
 }
 

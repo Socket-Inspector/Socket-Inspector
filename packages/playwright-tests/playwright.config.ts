@@ -33,9 +33,6 @@ export default defineConfig({
   // TODO: consider setting to 1 on CI?
   // maxFailures: 1,
 
-  // TODO: consider having a specific bun server port for the playwright tests
-  // consider using same env variable for build:mock and serve:playwright commands?
-
   // TODO: HTML report locking the process on failure
   webServer: [
     {

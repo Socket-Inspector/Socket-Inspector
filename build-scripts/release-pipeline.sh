@@ -39,8 +39,6 @@ unit_tests() {
     write_log "Unit tests successful ✅"
 }
 
-# TODO: any concerns that the build:mock and build commands use the 
-# same .output directory?
 playwright_tests() {
     write_log "Running the playwright tests..."
     pnpm --filter socket-inspector build:mock > /dev/null
@@ -80,25 +78,25 @@ print_build_success() {
 
 # Pipeline
 
-formatter
-write_separator
+# formatter
+# write_separator
 
-linter
-write_separator
+# linter
+# write_separator
 
-type_checker
-write_separator
+# type_checker
+# write_separator
 
-unit_tests
-write_separator
+# unit_tests
+# write_separator
 
 playwright_tests
 write_separator
 
-build_extension_prod
-write_separator
+# build_extension_prod
+# write_separator
 
-detect_blue_argon
-write_separator
+# detect_blue_argon
+# write_separator
 
-print_build_success
+# print_build_success

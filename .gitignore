@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 .output
+.mock_output
 stats.html
 stats-*.json
 .wxt

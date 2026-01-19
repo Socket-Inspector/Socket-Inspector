@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
-    "build": "wxt build && pnpm detect:monaco:cdn",
-    "build:firefox": "wxt build -b firefox && pnpm detect:monaco:cdn",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
     "dev:mock": "VITE_MOCK_TAB_ID=1234 wxt",
     "build:mock": "VITE_MOCK_TAB_ID=1234 wxt build",
     "zip": "wxt zip",

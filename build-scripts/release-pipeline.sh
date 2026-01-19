@@ -69,7 +69,10 @@ detect_blue_argon() {
 
 # TODO: should fail if the manifest.json file does not exist
 print_build_success() {
-    local MANIFEST_PATH="packages/extension/.output/chrome-mv3/manifest.json"
+    local MANIFEST_PATH="$BUILD_PATH/manifest.json"
+    if [[ ! -f  "$MANIFEST_PATH" ]]; then
+        write_log "Error: no manifest found at $MANIFEST_PATH"
+    fi
     local VERSION=$(jq -r '.version' "$MANIFEST_PATH")
     echo "Successfully built Socket Inspector version $VERSION 🎉"
 }
@@ -80,8 +83,8 @@ print_build_success() {
 # linter
 # type_checker
 # unit_tests
-build_extension
-detect_blue_argon
-# print_build_success
+# build_extension
+# detect_blue_argon
+print_build_success
 
 # TODO: print extension version from manifest.json as MVP

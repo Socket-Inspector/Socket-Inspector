@@ -51,7 +51,7 @@ playwright_tests() {
     write_log "Playwright tests successful ✅"
 }
 
-build_extension() {
+build_extension_prod() {
     write_log "Building the extension"
     pnpm --filter socket-inspector zip
     write_log "Extension build successful ✅"
@@ -83,13 +83,25 @@ print_build_success() {
 
 # Pipeline
 
-# formatter
-# linter
-# type_checker
-# unit_tests
-playwright_tests
-# build_extension
-# detect_blue_argon
-# print_build_success
+formatter
+write_separator
 
-# TODO: print extension version from manifest.json as MVP
+linter
+write_separator
+
+type_checker
+write_separator
+
+# unit_tests
+# write_separator
+
+# playwright_tests
+# write_separator
+
+# build_extension_prod
+# write_separator
+
+# detect_blue_argon
+# write_separator
+
+# print_build_success

@@ -30,8 +30,7 @@ export default defineConfig({
     },
   ],
 
-  // TODO: consider setting to 1 on CI?
-  // maxFailures: 1,
+  maxFailures: 1,
 
   // TODO: HTML report locking the process on failure
   webServer: [

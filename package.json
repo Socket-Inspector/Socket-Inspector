@@ -7,9 +7,9 @@
     "extension:lint": "pnpm --filter socket-inspector lint",
     "extension:lint:fix": "pnpm --filter socket-inspector lint:fix",
     "test-app:serve": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
-    "playwright:prepare": "pnpm --filter socket-inspector build:mock && pnpm test-app:serve",
+    "playwright:prepare": "pnpm --filter socket-inspector build:mock",
     "playwright:test": "pnpm --filter playwright-tests test",
-    "playwright:ui": "pnpm --filter playwright-tests test:ui",
+    "playwright:test:ui": "pnpm --filter playwright-tests test:ui",
     "build-scripts:lint": "pnpm shellcheck build-scripts/*.sh",
     "release": "bash ./build-scripts/release-pipeline.sh"
   },

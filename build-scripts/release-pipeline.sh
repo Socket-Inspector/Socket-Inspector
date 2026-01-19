@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+BUILD_PATH="packages/extension/.output/chrome-mv3"
+
 # Helpers
 write_log() {
     local LOG_PREFIX="[SOCKET_INSPECTOR]"
@@ -54,9 +56,12 @@ build_extension() {
 detect_blue_argon() {
     write_log "Checking for Blue Argon violations"
     local BANNED_STRING="cdn.jsdelivr.net"
-    local BUILD_PATH="packages/extension/.output/chrome-mv3"
+    if [[ ! -d "$BUILD_PATH" ]]; then
+        write_log "Error: built extension not found at $BUILD_PATH"
+        exit 1
+    fi
     if grep -rin "$BANNED_STRING" "$BUILD_PATH"; then
-        echo "🚨🚨 Blue Argon violation detected 🚨🚨"
+        write_log "🚨🚨 Blue Argon violation detected 🚨🚨"
         exit 1
     fi
     write_log "No Blue Argon violations detected ✅"
@@ -75,9 +80,8 @@ print_build_success() {
 # linter
 # type_checker
 # unit_tests
-# build_extension
-# detect_blue_argon
-
-print_build_success
+build_extension
+detect_blue_argon
+# print_build_success
 
 # TODO: print extension version from manifest.json as MVP

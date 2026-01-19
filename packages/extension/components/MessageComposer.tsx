@@ -232,7 +232,7 @@ export function MessageComposer() {
       </p>
 
       <Button
-        className="mt-3 cursor-pointer focus-visible:ring-[4px] focus-visible:ring-offset-2"
+        className="mt-3 cursor-pointer focus-visible:ring-4 focus-visible:ring-offset-2"
         type="submit"
         ref={submitButton}
       >

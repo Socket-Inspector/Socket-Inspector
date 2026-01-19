@@ -35,13 +35,15 @@ export default defineConfig({
 
   // TODO: consider having a specific bun server port for the playwright tests
   // consider using same env variable for build:mock and serve:playwright commands?
+
+  // TODO: HTML report locking the process on failure
   webServer: [
     {
       cwd: "../test-app-ui",
       command: "pnpm serve",
       url: "http://localhost:4173",
       // reuseExistingServer: !process.env.CI,
-      stdout: 'pipe',
+      // stdout: 'pipe',
       stderr: 'pipe'
     },
     {
@@ -49,7 +51,7 @@ export default defineConfig({
       command: "pnpm serve",
       url: "http://localhost:6844/playwright-ready",
       // reuseExistingServer: !process.env.CI,
-      stdout: 'pipe',
+      // stdout: 'pipe',
       stderr: 'pipe'
     }
   ]

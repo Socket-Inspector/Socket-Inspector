@@ -15,28 +15,25 @@ write_separator() {
 
 # Pipeline functions
 formatter() {
-    write_separator
     write_log "Running the formatter..."
     prettier --check --log-level warn .
     write_log "Formatting successful ✅"
 }
 
 linter() {
-    write_separator
     write_log "Running the linter..."
     pnpm --filter socket-inspector lint
     write_log "Linting successful ✅"
 }
 
 type_checker() {
-    write_separator
     write_log "Running the type checker..."
+    pnpm --filter socket-inspector prepare
     pnpm --filter socket-inspector compile
     write_log "Type checking successful ✅"
 }
 
 unit_tests() {
-    write_separator
     write_log "Running the unit tests..."
     pnpm --filter socket-inspector test:unit
     write_log "Unit tests successful ✅"
@@ -92,16 +89,16 @@ write_separator
 type_checker
 write_separator
 
-# unit_tests
-# write_separator
+unit_tests
+write_separator
 
-# playwright_tests
-# write_separator
+playwright_tests
+write_separator
 
-# build_extension_prod
-# write_separator
+build_extension_prod
+write_separator
 
-# detect_blue_argon
-# write_separator
+detect_blue_argon
+write_separator
 
-# print_build_success
+print_build_success

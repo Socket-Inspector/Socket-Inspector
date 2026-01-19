@@ -42,7 +42,7 @@ unit_tests() {
 playwright_tests() {
     write_log "Running the playwright tests..."
     pnpm --filter socket-inspector build:mock > /dev/null
-    pnpm --filter playwright-tests test
+    pnpm --filter playwright-tests test:ci
     write_log "Playwright tests successful ✅"
 }
 

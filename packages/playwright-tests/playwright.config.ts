@@ -30,8 +30,7 @@ export default defineConfig({
     },
   ],
 
-  // TODO: consider setting to 1 on CI?
-  // maxFailures: 1,
+  maxFailures: 1,
 
   // TODO: HTML report locking the process on failure
   webServer: [
@@ -40,7 +39,6 @@ export default defineConfig({
       command: 'pnpm serve:playwright',
       url: 'http://localhost:4298',
       reuseExistingServer: false,
-      // reuseExistingServer: !process.env.CI,
       // stdout: 'pipe',
       stderr: 'pipe',
     },

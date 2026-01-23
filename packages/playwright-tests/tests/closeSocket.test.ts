@@ -13,7 +13,7 @@ test('it can select an open socket from the sidebar', async ({
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
   const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketModel = new CloseSocketPopupModel(page, devtoolsPanelUrl);
-  
+
   await devtoolsPanelModel.loadDevtoolsPanel();
   const hostPage = await context.newPage();
   const hostPageModel = new HostPageModel(hostPage);

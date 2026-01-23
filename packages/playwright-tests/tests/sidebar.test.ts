@@ -1,5 +1,6 @@
 import { test } from '../fixtures';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
+import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { HostPageModel } from '../page-models/hostPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
@@ -9,6 +10,7 @@ test('it can select an open socket from the sidebar', async ({
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -16,12 +18,12 @@ test('it can select an open socket from the sidebar', async ({
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
 
-  await devtoolsPanelModel.assertSidebarSockets([
+  await sidebarPageModel.assertSidebarSockets([
     {
       url: hostPageModel.serverBaseUrl,
       status: 'Connected',
@@ -38,6 +40,7 @@ test('it can select a closed socket from the sidebar', async ({
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -47,12 +50,12 @@ test('it can select a closed socket from the sidebar', async ({
   await hostPageModel.disconnectClient();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Disconnected',
   });
 
-  await devtoolsPanelModel.assertSidebarSockets([
+  await sidebarPageModel.assertSidebarSockets([
     {
       url: hostPageModel.serverBaseUrl,
       status: 'Disconnected',

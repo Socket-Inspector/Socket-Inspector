@@ -1,9 +1,11 @@
 import { test } from '../fixtures';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
+import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { HostPageModel } from '../page-models/hostPageModel';
 
 test('it can send an echo message to the server', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -11,7 +13,7 @@ test('it can send an echo message to the server', async ({ page, context, devtoo
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -45,6 +47,7 @@ test('it can send an echo message to the server', async ({ page, context, devtoo
 
 test('it can send an echo message to the client', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -52,7 +55,7 @@ test('it can send an echo message to the client', async ({ page, context, devtoo
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -82,6 +85,7 @@ test('it can send an echo message to the client', async ({ page, context, devtoo
 
 test('it shows an error if payload is empty', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -89,7 +93,7 @@ test('it shows an error if payload is empty', async ({ page, context, devtoolsPa
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -117,6 +121,7 @@ test('correcting an empty payload error allows the message to be sent', async ({
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -124,7 +129,7 @@ test('correcting an empty payload error allows the message to be sent', async ({
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -156,6 +161,7 @@ test('it can still send a message when the websocket is paused', async ({
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -164,7 +170,7 @@ test('it can still send a message when the websocket is paused', async ({
 
   // Open the devtools panel and select the socket
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -221,6 +227,7 @@ test('it can still send a message when the websocket is paused', async ({
 
 test('it shows an error when sending invalid json', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -228,7 +235,7 @@ test('it shows an error when sending invalid json', async ({ page, context, devt
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });

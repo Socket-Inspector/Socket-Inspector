@@ -1,6 +1,7 @@
 import { test } from '../fixtures';
 import { CloseSocketPopupModel } from '../page-models/closeSocketPopupModel';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
+import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { HostPageModel } from '../page-models/hostPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
@@ -10,7 +11,9 @@ test('it can select an open socket from the sidebar', async ({
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketModel = new CloseSocketPopupModel(page, devtoolsPanelUrl);
+
   await devtoolsPanelModel.loadDevtoolsPanel();
   const hostPage = await context.newPage();
   const hostPageModel = new HostPageModel(hostPage);
@@ -18,10 +21,10 @@ test('it can select an open socket from the sidebar', async ({
 
   await devtoolsPanelModel.bringToFront();
 
-  await devtoolsPanelModel.clickSocketCloseButton();
+  await sidebarPageModel.clickSocketCloseButton();
   await assertVisible(closeSocketModel.locators.header);
 
-  await devtoolsPanelModel.assertSidebarSockets([
+  await sidebarPageModel.assertSidebarSockets([
     {
       url: hostPageModel.serverBaseUrl,
       status: 'Connected',
@@ -32,7 +35,7 @@ test('it can select an open socket from the sidebar', async ({
   await closeSocketModel.locators.submitButton.click();
 
   await hostPageModel.assertReadyState('CLOSED');
-  await devtoolsPanelModel.assertSidebarSockets([
+  await sidebarPageModel.assertSidebarSockets([
     {
       url: hostPageModel.serverBaseUrl,
       status: 'Disconnected',

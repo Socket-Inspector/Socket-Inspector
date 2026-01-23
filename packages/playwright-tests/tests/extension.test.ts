@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
+import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { HostPageModel } from '../page-models/hostPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
@@ -8,9 +9,10 @@ test("if page has no websockets, then 'No WebSockets Detected' text displays", a
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
-  await expect(devtoolsPanelModel.locators.sidebarHeader).toBeVisible();
-  await expect(devtoolsPanelModel.locators.noWebsocketsText).toBeVisible();
+  await expect(sidebarPageModel.locators.sidebarHeader).toBeVisible();
+  await expect(sidebarPageModel.locators.noWebsocketsText).toBeVisible();
 });
 
 test("if page has websockets, but none are selected, then 'Select a WebSocket' text displays", async ({
@@ -19,6 +21,7 @@ test("if page has websockets, but none are selected, then 'Select a WebSocket' t
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -26,16 +29,16 @@ test("if page has websockets, but none are selected, then 'Select a WebSocket' t
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await expect(devtoolsPanelModel.locators.sidebarHeader).toBeVisible();
-  await expect(devtoolsPanelModel.locators.selectWebsocketText).toBeVisible();
+  await expect(sidebarPageModel.locators.sidebarHeader).toBeVisible();
+  await expect(sidebarPageModel.locators.selectWebsocketText).toBeVisible();
   await expect(
-    devtoolsPanelModel.locateSocketLink({
+    sidebarPageModel.locateSocketLink({
       url: hostPageModel.serverBaseUrl,
       status: 'Connected',
     }),
   ).toBeVisible();
   await expect(
-    devtoolsPanelModel.locateSocketLink({
+    sidebarPageModel.locateSocketLink({
       url: hostPageModel.serverBaseUrl,
       status: 'Connected',
     }),
@@ -48,6 +51,7 @@ test('table can capture echo message from host page', async ({
   devtoolsPanelUrl,
 }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -57,7 +61,7 @@ test('table can capture echo message from host page', async ({
   await hostPageModel.sendEchoMessage('HELLO');
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -77,6 +81,7 @@ test('table can capture echo message from host page', async ({
 
 test('clearing the table messages', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -85,7 +90,7 @@ test('clearing the table messages', async ({ page, context, devtoolsPanelUrl }) 
   await hostPageModel.sendEchoMessage('HELLO');
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -108,6 +113,7 @@ test('clearing the table messages', async ({ page, context, devtoolsPanelUrl }) 
 
 test('using the direction dropdown', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -116,7 +122,7 @@ test('using the direction dropdown', async ({ page, context, devtoolsPanelUrl })
   await hostPageModel.sendEchoMessage('HELLO');
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -163,6 +169,7 @@ test('using the direction dropdown', async ({ page, context, devtoolsPanelUrl })
 
 test('using the searchbox', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -171,7 +178,7 @@ test('using the searchbox', async ({ page, context, devtoolsPanelUrl }) => {
   await hostPageModel.sendEchoMessage('HELLO');
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });
@@ -218,6 +225,7 @@ test('using the searchbox', async ({ page, context, devtoolsPanelUrl }) => {
 
 test('using the pause function', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   await devtoolsPanelModel.loadDevtoolsPanel();
 
   const hostPage = await context.newPage();
@@ -225,7 +233,7 @@ test('using the pause function', async ({ page, context, devtoolsPanelUrl }) => 
   await hostPageModel.navigateToHostPage();
 
   await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clickSocketLink({
+  await sidebarPageModel.clickSocketLink({
     url: hostPageModel.serverBaseUrl,
     status: 'Connected',
   });

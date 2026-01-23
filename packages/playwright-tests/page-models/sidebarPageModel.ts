@@ -16,7 +16,6 @@ export class SidebarPageModel {
     this.devtoolsPanelUrl = devtoolsPanelUrl;
     this.locators = this.getStaticLocators();
   }
-
   public locateSocketLink(socket: SidebarSocket, index: number = 0): Locator {
     return this.locators.sidebarNav
       .getByRole('button', {
@@ -27,12 +26,10 @@ export class SidebarPageModel {
       })
       .nth(index);
   }
-
   public async clickSocketLink(socket: SidebarSocket, index: number = 0) {
     const locator = this.locateSocketLink(socket, index);
     await locator.click();
   }
-
   public async assertSidebarSockets(queries: Array<SidebarSocket>) {
     const linkLocators = this.locators.sidebarNav
       .getByRole('button')
@@ -54,11 +51,9 @@ export class SidebarPageModel {
       ).toBeVisible();
     }
   }
-
   public async clickSocketCloseButton(index: number = 0) {
     await this.page.getByRole('button', { name: 'Close Connection' }).nth(index).click();
   }
-
   private getStaticLocators() {
     return {
       sidebarHeader: this.page.getByText('WebSocket Connections', {

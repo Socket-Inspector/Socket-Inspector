@@ -9,7 +9,7 @@ export default defineConfig({
 
   retries: 0,
 
-  workers: 2,
+  workers: 3,
 
   fullyParallel: false,
 

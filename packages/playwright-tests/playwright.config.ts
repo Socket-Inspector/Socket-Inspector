@@ -7,11 +7,11 @@ export default defineConfig({
   // Fail the build on CI if you accidentally left test.only in the source code.
   forbidOnly: !!process.env.CI,
 
-  // Retry on CI only.
   retries: 0,
 
-  // Don't run tests in parallel
-  workers: 1,
+  workers: 2,
+
+  fullyParallel: false,
 
   // Reporter to use
   reporter: 'html',

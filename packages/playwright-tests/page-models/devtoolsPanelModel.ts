@@ -34,11 +34,15 @@ export class DevtoolsPanelModel {
   }
 
   public async togglePauseCapture() {
-    await this.page
-      .getByRole('button', {
-        name: /Allow non-custom messages|Block non-custom messages/,
-      })
-      .click();
+    const button = this.page.getByRole('button', {
+      name: /Allow non-custom messages|Block non-custom messages/,
+    });
+    const isPaused = (await button.getAttribute('aria-label')) === 'Allow non-custom messages';
+    await button.click();
+
+    // Wait for the round-trip to complete (UI updates when SocketDetailsPacket returns)
+    const expectedLabel = isPaused ? 'Block non-custom messages' : 'Allow non-custom messages';
+    await expect(button).toHaveAttribute('aria-label', expectedLabel);
   }
 
   public async selectDirectionFilter(filterOption: 'All' | 'Sent' | 'Received') {

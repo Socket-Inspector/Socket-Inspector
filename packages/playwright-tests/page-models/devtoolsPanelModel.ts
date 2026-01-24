@@ -96,15 +96,14 @@ export class DevtoolsPanelModel {
   }
 
   public async enterComposerPayload(payload: string) {
-    await this.page.getByRole('textbox', { name: 'Payload Editor' }).fill(payload);
+    const editor = this.page.getByRole('code').nth(0);
+    await editor.click();
+    await this.page.keyboard.press('ControlOrMeta+KeyA');
+    await this.page.keyboard.type(payload);
   }
 
   public async clearComposerPayload() {
     await this.enterComposerPayload('');
-    const editor = this.page.getByRole('textbox', { name: 'Payload Editor' });
-    await editor.focus();
-    await this.page.keyboard.press('ControlOrMeta+A');
-    await this.page.keyboard.press('Backspace');
   }
 
   public async submitComposerMessage() {

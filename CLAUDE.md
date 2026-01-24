@@ -26,7 +26,7 @@ pnpm typecheck
 pnpm test:unit
 
 # e2e tests
-pnpm e2e:prepare # build mock extension first
+pnpm prepare:e2e # build mock extension first
 pnpm e2e # run tests
 
 # full validation suite

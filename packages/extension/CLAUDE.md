@@ -1,5 +1,5 @@
 # Extension Package
-Contains the browser extension built with WXT
+Browser extension built with WXT
 
 ## Major Extension Components
 **Devtools Panel**
@@ -25,6 +25,5 @@ Contains the browser extension built with WXT
 
 ## React Guidelines
 - This project uses the **React Compiler**, which provides rendering optimizations, eliminating the need for manual useMemo, useCallback, and React.memo
-- Do **not** suggest unnecessary micro-optimizations for rendering performance (e.g., `useMemo`, `useCallback`, `React.memo`) unless they are semantically required for correctness.
 - Components should follow follow WCAG 2.1 AA digital-accessibility guidelines
 - NEVER use `forwardRef` since it is no longer needed in React 19. Pass ref as a prop instead.

@@ -34,3 +34,4 @@ Browser extension built with WXT
 - This project uses the **React Compiler**, which provides rendering optimizations, eliminating the need for manual useMemo, useCallback, and React.memo
 - Components should follow follow WCAG 2.1 AA digital-accessibility guidelines
 - NEVER use `forwardRef` since it is no longer needed in React 19. Pass ref as a prop instead.
+- This project uses the shadcn component library. Components are in the `components/shadcn` directory. DO NOT modify these components unless told otherwise.

@@ -27,6 +27,12 @@ export default defineBackground(() => {
       connections.get(tabId)!.connectContentPort(port);
     }
   });
+
+  browser.runtime.onInstalled.addListener(async () => {
+    try {
+      await browser.runtime.setUninstallURL('https://forms.gle/Huv4At1j8gvbZnSh8');
+    } catch {}
+  });
 });
 
 function parseDevtoolsTabId(connectionName: string) {

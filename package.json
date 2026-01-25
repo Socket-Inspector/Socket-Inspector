@@ -2,6 +2,7 @@
   "name": "socket-inspector-workspace",
   "private": true,
   "scripts": {
+    "dev": "pnpm --filter socket-inspector dev",
     "build": "pnpm --filter socket-inspector build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

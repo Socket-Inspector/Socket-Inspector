@@ -75,7 +75,16 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
                   size="icon"
                   aria-label="Copy to Clipboard"
                   onClick={() => {
-                    // TODO: Implement copy to clipboard functionality
+                    const textarea = document.createElement('textarea');
+                    textarea.value = selectedMessage.payload;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    textarea.setAttribute('aria-hidden', 'true');
+                    textarea.setAttribute('tabindex', '-1');
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
                   }}
                 >
                   <Copy className="size-5" />

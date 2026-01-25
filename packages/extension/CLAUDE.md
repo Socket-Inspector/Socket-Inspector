@@ -22,3 +22,9 @@ Contains the browser extension built with WXT
 - Patches the host page's WebSocket constructor, enabling the extension to manage WebSocket connections
 - Sends and receives data to and from the Content Script
 - path: `entrypoints/injectedScript.ts`
+
+## React Guidelines
+- This project uses the **React Compiler**, which provides rendering optimizations, eliminating the need for manual useMemo, useCallback, and React.memo
+- Do **not** suggest unnecessary micro-optimizations for rendering performance (e.g., `useMemo`, `useCallback`, `React.memo`) unless they are semantically required for correctness.
+- Components should follow follow WCAG 2.1 AA digital-accessibility guidelines
+- NEVER use `forwardRef` since it is no longer needed in React 19. Pass ref as a prop instead.

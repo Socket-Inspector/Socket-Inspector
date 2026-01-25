@@ -2,7 +2,7 @@ import { SocketState } from '@/hooks/useSocketState/stateTypes';
 import { ScrollArea } from './shadcn/ScrollArea';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { Button } from './shadcn/Button';
-import { ClipboardPaste } from 'lucide-react';
+import { ClipboardPaste, Copy } from 'lucide-react';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
 
@@ -68,6 +68,21 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
       <ScrollArea className="h-full w-full">
         <div className="flex items-center justify-end px-2">
           <TooltipProvider>
+            <Tooltip delayDuration={500}>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Copy to Clipboard"
+                  onClick={() => {
+                    // TODO: Implement copy to clipboard functionality
+                  }}
+                >
+                  <Copy className="size-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Copy to Clipboard</TooltipContent>
+            </Tooltip>
             <Tooltip delayDuration={500}>
               <TooltipTrigger asChild>
                 <Button

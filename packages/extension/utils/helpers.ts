@@ -23,8 +23,6 @@ export const copyToClipboard = async (text: string): Promise<void> => {
 
   // Legacy fallback
   const previouslyFocusedElement = document.activeElement as HTMLElement | null;
-  console.log('TV: previously focused?: ', previouslyFocusedElement);
-
   return new Promise((resolve) => {
     // Use setTimeout to defer execution until after context menus finish closing,
     // which resolves focus issues with Radix UI's ContextMenu component.

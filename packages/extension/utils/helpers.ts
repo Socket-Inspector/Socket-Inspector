@@ -16,14 +16,19 @@ export const touchLastError = () => {
 };
 
 export const copyToClipboard = (text: string) => {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  textarea.setAttribute('aria-hidden', 'true');
-  textarea.setAttribute('tabindex', '-1');
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand('copy');
-  document.body.removeChild(textarea);
+  // Use setTimeout to defer execution until after context menus finish closing,
+  // which resolves focus issues with Radix UI's ContextMenu component.
+  setTimeout(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    textarea.setAttribute('aria-hidden', 'true');
+    textarea.setAttribute('tabindex', '-1');
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }, 0);
 };

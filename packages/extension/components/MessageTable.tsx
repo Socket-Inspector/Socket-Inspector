@@ -18,6 +18,7 @@ import {
 } from '@/hooks/useSocketState/queries';
 import { TableActions, MessageFilterOption } from './MessageTableActions';
 import { MessageDirectionIcon } from './MessageDirectionIcon';
+import { copyToClipboard } from '@/utils/helpers';
 
 const TABLE_HEADER_HEIGHT = 32;
 const TABLE_BODY_ROW_HEIGHT = 25;
@@ -308,6 +309,13 @@ export function MessageTable() {
                       </TableRow>
                     </ContextMenuTrigger>
                     <ContextMenuContent>
+                      <ContextMenuItem
+                        onSelect={(e) => {
+                          copyToClipboard(message.payload);
+                        }}
+                      >
+                        Copy to Clipboard
+                      </ContextMenuItem>
                       <ContextMenuItem
                         onSelect={() => {
                           prefillComposer(message);

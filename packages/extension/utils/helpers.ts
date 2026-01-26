@@ -22,6 +22,10 @@ export const copyToClipboard = (text: string) => {
     const textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    textarea.style.width = '1px';
+    textarea.style.height = '1px';
     textarea.style.opacity = '0';
     textarea.setAttribute('aria-hidden', 'true');
     textarea.setAttribute('tabindex', '-1');

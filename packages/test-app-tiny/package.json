@@ -1,0 +1,16 @@
+{
+  "name": "test-app-tiny",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tvite build",
+    "preview": "vite preview",
+    "serve": "vite build && vite preview",
+    "serve:playwright": "VITE_BUN_SERVER_PORT=6857 vite build && vite preview --port 4298"
+  },
+  "devDependencies": {
+    "vite": "^7.3.0"
+  }
+}

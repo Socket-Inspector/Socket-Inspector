@@ -15,6 +15,7 @@
     "e2e:ui": "pnpm --filter playwright-tests test:ui",
     "shell-lint": "pnpm shellcheck build-scripts/*.sh",
     "serve:test-app": "pnpm --parallel --filter test-app-server --filter test-app-ui serve",
+    "serve:test-app-tiny": "pnpm --parallel --filter test-app-tiny --filter test-app-ui serve",
     "prepare:release": "bash ./build-scripts/release-pipeline.sh"
   },
   "devDependencies": {

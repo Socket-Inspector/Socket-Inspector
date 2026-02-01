@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tvite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "serve": "vite build && vite preview",
-    "serve:playwright": "VITE_BUN_SERVER_PORT=6857 vite build && vite preview --port 4298"
+    "serve": "vite build && vite preview --port 4311",
+    "serve:playwright": "vite build && vite preview --port 4312"
   },
   "devDependencies": {
     "vite": "^7.3.0"

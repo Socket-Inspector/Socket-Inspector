@@ -3,10 +3,12 @@ import { WindowConnector } from '@/utils/windowMessaging';
 import { MainWorldContentScriptDefinition } from 'wxt';
 
 const main: MainWorldContentScriptDefinition['main'] = async () => {
-   const connector = new WindowConnector({
-     window,
-     location: 'INJECTED_SCRIPT',
-   }).connect();
+  const connector = new WindowConnector({
+    window,
+    location: 'INJECTED_SCRIPT',
+  }).connect();
+
+  connector.subscribe(packet => {})
 };
 
 export default defineContentScript({

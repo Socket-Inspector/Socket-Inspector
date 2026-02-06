@@ -8,14 +8,6 @@ export type BufferedWindowConnectorArgs = {
   logger?: LogFn;
 };
 
-/**
- * TODO:
- * make sure no infinite loops
- * would this be easier if the extension just created 2 global variables on the window?
- * do we need to enforce a certain ordering?
- * is it possible the main script gets data from ESW before socket patched? is this an issue?
- */
-
 export class BufferedWindowConnector {
   private otherSideReady = false;
   private packetBuffer: Array<Packet> = [];

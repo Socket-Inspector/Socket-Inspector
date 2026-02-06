@@ -1,7 +1,11 @@
 import { defineContentScript } from '#imports';
 import { BufferedWindowConnector } from '@/utils/bufferedWindowConnector';
 
-const mainWorldScript = (scriptConnector: BufferedWindowConnector) => {};
+const mainWorldScript = (scriptConnector: BufferedWindowConnector) => {
+  scriptConnector.subscribe(packet => {
+
+  });
+};
 
 export default defineContentScript({
   matches: ['*://*/*'],
@@ -13,7 +17,7 @@ export default defineContentScript({
       window,
       location: 'INJECTED_SCRIPT',
     }).connect();
-    
+
     mainWorldScript(scriptConnector);
   },
 });

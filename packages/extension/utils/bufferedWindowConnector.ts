@@ -8,10 +8,17 @@ export type BufferedWindowConnectorArgs = {
   logger?: LogFn;
 };
 
+/**
+ * TODO:
+ * make sure no infinite loops
+ * would this be easier if the extension just created 2 global variables on the window?
+ * is it possible the main script gets data from ESW before socket patched? is this an issue?
+ */
+
 export class BufferedWindowConnector {
-  private windowConnector: WindowConnector;
   private otherSideReady = false;
   private packetBuffer: Array<Packet> = [];
+  private windowConnector: WindowConnector;
 
   constructor({ window, location, logger }: BufferedWindowConnectorArgs) {
     this.windowConnector = new WindowConnector({ window, location, logger });
@@ -24,13 +31,16 @@ export class BufferedWindowConnector {
 
   subscribe(onPacketReceived: (packet: Packet) => any) {
     this.windowConnector.subscribe((packet) => {
-      if (packet.type === 'ConnectorReadyPacket') {
+      if (packet.type === 'ConnectorReadyPacket' && !this.otherSideReady) {
         this.otherSideReady = true;
+        this.sendReadyPacket();
         this.sendBufferedPackets();
         return;
       }
       onPacketReceived(packet);
     });
+
+    this.sendReadyPacket();
   }
 
   sendPacket(packet: Packet) {
@@ -39,6 +49,10 @@ export class BufferedWindowConnector {
       return;
     }
     this.windowConnector.sendPacket(packet);
+  }
+
+  private sendReadyPacket() {
+    this.windowConnector.sendPacket({ type: 'ConnectorReadyPacket' });
   }
 
   private sendBufferedPackets() {

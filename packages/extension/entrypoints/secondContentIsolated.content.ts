@@ -1,23 +1,16 @@
 import { defineContentScript } from '#imports';
+import { BufferedWindowConnector } from '@/utils/bufferedWindowConnector';
 import { ServiceWorkerConnector } from '@/utils/serviceWorkerMessaging';
-import { WindowConnector } from '@/utils/windowMessaging';
-import { ContentScriptDefinition } from 'wxt';
 
-const main: ContentScriptDefinition['main'] = async () => {
-  const scriptConnector = new WindowConnector({
-    window,
-    location: 'CONTENT_SCRIPT'
-  }).connect();
-
-  const serviceWorkerConnector = new ServiceWorkerConnector({
-    channelName: 'CONTENT_SCRIPT_CHANNEL',
-  }).connect();
-
-  scriptConnector.subscribe(packet => {
+const isolatedScript = (
+  scriptConnector: BufferedWindowConnector,
+  serviceWorkerConnector: ServiceWorkerConnector,
+) => {
+  scriptConnector.subscribe((packet) => {
     serviceWorkerConnector.sendPacket(packet);
   });
 
-  serviceWorkerConnector.subscribe(packet => {
+  serviceWorkerConnector.subscribe((packet) => {
     scriptConnector.sendPacket(packet);
   });
 };
@@ -27,5 +20,16 @@ export default defineContentScript({
   runAt: 'document_start',
   world: 'ISOLATED',
   allFrames: false,
-  main,
+  main: () => {
+    const scriptConnector = new BufferedWindowConnector({
+      window,
+      location: 'CONTENT_SCRIPT',
+    }).connect();
+
+    const serviceWorkerConnector = new ServiceWorkerConnector({
+      channelName: 'CONTENT_SCRIPT_CHANNEL',
+    }).connect();
+
+    isolatedScript(scriptConnector, serviceWorkerConnector);
+  },
 });

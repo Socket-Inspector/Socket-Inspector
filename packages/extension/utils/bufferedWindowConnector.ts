@@ -1,9 +1,9 @@
-import { LogFn } from "./customLogger";
-import { Packet } from "./sharedTypes/sharedTypes";
-import { WindowConnector, WindowScriptName } from "./windowMessaging";
+import { LogFn } from './customLogger';
+import { Packet } from './sharedTypes/sharedTypes';
+import { WindowConnector, WindowScriptName } from './windowMessaging';
 
 export type BufferedWindowConnectorArgs = {
-  windowConnector: WindowConnector;
+  window: Window;
   location: WindowScriptName;
   logger?: LogFn;
 };
@@ -13,8 +13,8 @@ export class BufferedWindowConnector {
   private otherSideReady = false;
   private packetBuffer: Array<Packet> = [];
 
-  constructor({ windowConnector }: BufferedWindowConnectorArgs) {
-    this.windowConnector = windowConnector;
+  constructor({ window, location, logger }: BufferedWindowConnectorArgs) {
+    this.windowConnector = new WindowConnector({ window, location, logger });
   }
 
   connect() {

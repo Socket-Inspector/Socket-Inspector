@@ -17,10 +17,10 @@ export type WindowConnectorArgs = {
 };
 
 export class WindowConnector {
-  private window: Window;
-  private location: WindowScriptName;
+  public readonly location: WindowScriptName;
+  private readonly window: Window;
+  private readonly logger?: LogFn;
   private onPacketReceived?: (packet: Packet) => any;
-  private logger?: LogFn;
 
   constructor({ window, location, logger }: WindowConnectorArgs) {
     this.window = window;

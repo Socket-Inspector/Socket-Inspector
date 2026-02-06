@@ -3,26 +3,18 @@ import { Packet } from "./sharedTypes/sharedTypes";
 import { WindowConnector, WindowScriptName } from "./windowMessaging";
 
 export type BufferedWindowConnectorArgs = {
-  window: Window;
+  windowConnector: WindowConnector;
   location: WindowScriptName;
   logger?: LogFn;
 };
 
 export class BufferedWindowConnector {
-  private location: WindowScriptName;
-  private logger?: LogFn;
   private windowConnector: WindowConnector;
   private otherSideReady = false;
   private packetBuffer: Array<Packet> = [];
 
-  constructor({ window, location, logger }: BufferedWindowConnectorArgs) {
-    this.logger = logger;
-    this.location = location;
-    this.windowConnector = new WindowConnector({
-      window,
-      location,
-      logger,
-    });
+  constructor({ windowConnector }: BufferedWindowConnectorArgs) {
+    this.windowConnector = windowConnector;
   }
 
   connect() {

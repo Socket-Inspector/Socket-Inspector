@@ -29,7 +29,6 @@ import { WindowConnector } from '@/utils/windowMessaging';
 
 const setupRelaySync = () => {
   const logger = createLogger('ISOLATED_WORLD');
-  logger('inside the ISOLATED script');
 
   const windowConnector = new WindowConnector({
     window,
@@ -61,8 +60,6 @@ const setupRelaySync = () => {
       serviceWorkerConnector.sendPacket({ type: 'ClearDevtoolsStatePacket' });
     }
   });
-
-  logger('---------------------------------');
 };
 
 export default defineContentScript({

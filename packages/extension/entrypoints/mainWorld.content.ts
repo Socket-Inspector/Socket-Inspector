@@ -27,10 +27,6 @@ const patchSocketSync = () => {
   interceptor.apply();
 
   interceptor.on('connection', ({ client, server }) => {
-    // TODO: this must ALWAYS happen after the ISOLATED script is listening
-    //       how can we test this?
-    logger('intercepted the websocket');
-
     // host page constructed a WebSocket instance
     const socketUrl = client.url.href;
 
@@ -228,8 +224,6 @@ const patchSocketSync = () => {
       } catch {}
     }
   });
-
-  logger('---------------------------------');
 };
 
 export default defineContentScript({

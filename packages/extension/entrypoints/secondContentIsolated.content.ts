@@ -9,6 +9,8 @@ import { WindowConnector } from '@/utils/windowMessaging';
  *  and both scripts will run before a message is executed
  * 
  * why did i need the buffer before? (i think paranoia mainly)
+ * 
+ * is ClearDevtoolsStatePacket guaranteed to be sent before any main world packets?
  */
 
 const setupRelaySync = () => {
@@ -34,7 +36,7 @@ const setupRelaySync = () => {
     windowConnector.sendPacket(packet);
   });
 
-  logger('------------------------------');
+  serviceWorkerConnector.sendPacket({ type: 'ClearDevtoolsStatePacket' });
 };
 
 export default defineContentScript({

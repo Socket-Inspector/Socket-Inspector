@@ -8,7 +8,6 @@ const patchSocketSync = () => {
   windowConnector.subscribe((packet) => {
     logger(`Got this packet: ${JSON.stringify(packet)}`);
   });
-  logger('------------------------------');
 };
 
 export default defineContentScript({

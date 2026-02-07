@@ -18,7 +18,6 @@ type SocketConnection = {
 // TODO: remove the logs
 const patchSocketSync = () => {
   const logger = createLogger('MAIN_WORLD');
-  logger('inside the MAIN script');
 
   const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD', logger }).connect();
 
@@ -148,7 +147,6 @@ const patchSocketSync = () => {
   });
 
   windowConnector.subscribe((packet: Packet) => {
-    logger(`Got window packet: ${JSON.stringify(packet)}`);
     if (packet.type === 'UserInjectedSocketMessagePacket') {
       const { message } = packet.payload;
       const connection = sockets.get(message.socketId);

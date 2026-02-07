@@ -1,6 +1,5 @@
 import { defineContentScript } from '#imports';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
-import { createLogger } from '@/utils/customLogger';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   WebSocketClientConnection,
@@ -16,9 +15,7 @@ type SocketConnection = {
 };
 
 const patchSocketSync = () => {
-  const logger = createLogger('MAIN_WORLD');
-
-  const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD', logger }).connect();
+  const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD'}).connect();
 
   const sockets = new Map<SocketDetails['id'], SocketConnection>();
 

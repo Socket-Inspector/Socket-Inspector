@@ -15,7 +15,6 @@ type SocketConnection = {
   server: WebSocketServerConnection;
 };
 
-// TODO: remove the logs
 const patchSocketSync = () => {
   const logger = createLogger('MAIN_WORLD');
 

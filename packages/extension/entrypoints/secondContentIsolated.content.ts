@@ -21,9 +21,9 @@ import { WindowConnector } from '@/utils/windowMessaging';
  * test the built app
  *
  * script names
- * 
+ *
  * compare to the original scripts in the PR
- * 
+ *
  * service worker disconnect testing
  */
 

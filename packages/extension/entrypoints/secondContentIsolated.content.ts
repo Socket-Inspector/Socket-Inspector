@@ -17,10 +17,12 @@ import { WindowConnector } from '@/utils/windowMessaging';
  * make sure that both orderings of scripts work fine
  *
  * test the pageShow logic
- * 
+ *
  * test the built app
- * 
+ *
  * script names
+ *
+ * the playwright tests should all pass without any delay in the test app
  */
 
 const setupRelaySync = () => {

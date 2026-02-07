@@ -8,7 +8,8 @@
   "scripts": {
     "serve": "bun server.ts",
     "watch": "bun --watch server.ts",
-    "serve:playwright": "PORT=6857 bun server.ts"
+    "serve:playwright": "PORT=6857 bun server.ts",
+    "serve:playwright:test-app-tiny": "PORT=5890 bun server.ts"
   },
   "devDependencies": {
     "@types/bun": "^1.3.5"

@@ -15,6 +15,8 @@ import { WindowConnector } from '@/utils/windowMessaging';
  *   well because then CS ordering issues could happen
  * 
  * make sure that both orderings of scripts work fine
+ * 
+ * test the pageShow logic
  */
 
 const setupRelaySync = () => {
@@ -35,25 +37,20 @@ const setupRelaySync = () => {
   });
 
   serviceWorkerConnector.subscribe((packet) => {
-    logger(`Got packet from service worker: ${JSON.stringify(packet)}`);
     windowConnector.sendPacket(packet);
   });
 
   serviceWorkerConnector.sendPacket({ type: 'ClearDevtoolsStatePacket' });
 
   window.addEventListener('pageshow', (event) => {
-    logger('page show triggered');
     const loadedFromBFCache = event.persisted;
     if (loadedFromBFCache) {
-      logger('loaded from bf cache');
       serviceWorkerConnector.connect();
       // clear the devtools panel in case the 'new page' had websockets
       // that were captured prior to the BF cache restore
       serviceWorkerConnector.sendPacket({ type: 'ClearDevtoolsStatePacket' });
     }
   });
-
-  logger('---------------------------------');
 };
 
 export default defineContentScript({

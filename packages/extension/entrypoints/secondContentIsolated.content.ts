@@ -19,6 +19,8 @@ import { WindowConnector } from '@/utils/windowMessaging';
  * test the pageShow logic
  * 
  * test the built app
+ * 
+ * script names
  */
 
 const setupRelaySync = () => {

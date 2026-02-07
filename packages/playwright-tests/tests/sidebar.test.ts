@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
-import { SidebarPageModel } from '../page-models/sidebarPageModel';
+import { SidebarPageModel, SidebarSocket } from '../page-models/sidebarPageModel';
 import { HostPageModel } from '../page-models/hostPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
@@ -61,6 +61,36 @@ test('it can select a closed socket from the sidebar', async ({
       status: 'Disconnected',
     },
   ]);
+});
+
+test('it clears the old connections when host page is refreshed', async ({
+  page,
+  context,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanelModel.loadDevtoolsPanel();
+
+  const hostPage = await context.newPage();
+  const hostPageModel = new HostPageModel(hostPage);
+  await hostPageModel.navigateToHostPage();
+
+  const expectedSockets: Array<SidebarSocket> = [
+    {
+      url: hostPageModel.serverBaseUrl,
+      status: 'Connected',
+    },
+  ];
+
+  await devtoolsPanelModel.bringToFront();
+  await sidebarPageModel.assertSidebarSockets(expectedSockets);
+
+  await hostPage.reload();
+
+  await devtoolsPanelModel.bringToFront();
+  // old socket was cleared, so there should only be one socket in sidebar
+  await sidebarPageModel.assertSidebarSockets(expectedSockets);
 });
 
 // test.skip('closing a socket and reopening it', async ({ page, context, devtoolsPanelUrl }) => {

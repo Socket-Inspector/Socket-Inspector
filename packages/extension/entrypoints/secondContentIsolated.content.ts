@@ -21,8 +21,8 @@ import { WindowConnector } from '@/utils/windowMessaging';
  * test the built app
  *
  * script names
- *
- * the playwright tests should all pass without any delay in the test app
+ * 
+ * compare to the original scripts in the PR
  */
 
 const setupRelaySync = () => {

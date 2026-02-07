@@ -23,6 +23,8 @@ import { WindowConnector } from '@/utils/windowMessaging';
  * script names
  * 
  * compare to the original scripts in the PR
+ * 
+ * service worker disconnect testing
  */
 
 const setupRelaySync = () => {

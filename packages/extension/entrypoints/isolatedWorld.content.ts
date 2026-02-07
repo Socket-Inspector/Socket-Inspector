@@ -2,11 +2,6 @@ import { defineContentScript } from '#imports';
 import { ServiceWorkerConnector } from '@/utils/serviceWorkerMessaging';
 import { WindowConnector } from '@/utils/windowMessaging';
 
-/**
- * test the pageShow logic
- * service worker disconnect testing
- */
-
 const setupRelaySync = () => {
   const windowConnector = new WindowConnector({
     window,

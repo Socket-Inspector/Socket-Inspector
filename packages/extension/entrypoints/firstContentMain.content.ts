@@ -18,6 +18,7 @@ type SocketConnection = {
 // TODO: remove the logs
 const patchSocketSync = () => {
   const logger = createLogger('MAIN_WORLD');
+  logger('inside the MAIN script');
 
   const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD', logger }).connect();
 

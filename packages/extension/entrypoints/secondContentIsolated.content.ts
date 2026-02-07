@@ -29,6 +29,7 @@ import { WindowConnector } from '@/utils/windowMessaging';
 
 const setupRelaySync = () => {
   const logger = createLogger('ISOLATED_WORLD');
+  logger('inside the ISOLATED script');
 
   const windowConnector = new WindowConnector({
     window,
@@ -53,12 +54,15 @@ const setupRelaySync = () => {
   window.addEventListener('pageshow', (event) => {
     const loadedFromBFCache = event.persisted;
     if (loadedFromBFCache) {
+      logger('loaded from BF cache');
       serviceWorkerConnector.connect();
       // clear the devtools panel in case the 'new page' had websockets
       // that were captured prior to the BF cache restore
       serviceWorkerConnector.sendPacket({ type: 'ClearDevtoolsStatePacket' });
     }
   });
+
+  logger('---------------------------------');
 };
 
 export default defineContentScript({

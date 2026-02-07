@@ -6,9 +6,8 @@ const patchSocketSync = () => {
   const logger = createLogger('MAIN_WORLD');
   const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD', logger }).connect();
   windowConnector.subscribe((packet) => {
-    logger(`Got this packet: ${JSON.stringify(packet)}`)
+    logger(`Got this packet: ${JSON.stringify(packet)}`);
   });
-  windowConnector.sendDebugPacket('WHAZZZUP')
   logger('------------------------------');
 };
 

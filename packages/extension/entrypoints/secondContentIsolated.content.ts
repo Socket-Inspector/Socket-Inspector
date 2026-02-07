@@ -13,9 +13,9 @@ import { WindowConnector } from '@/utils/windowMessaging';
  * is ClearDevtoolsStatePacket guaranteed to be sent before any main world packets?
  *   actually, why not just send this packet from the other script?
  *   well because then CS ordering issues could happen
- * 
+ *
  * make sure that both orderings of scripts work fine
- * 
+ *
  * test the pageShow logic
  */
 

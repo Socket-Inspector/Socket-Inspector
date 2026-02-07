@@ -77,10 +77,6 @@ export const DebuggingPacketSchema = z.object({
   }),
 });
 
-export const ConnectorReadyPacketSchema = z.object({
-  type: z.literal('ConnectorReadyPacket'),
-});
-
 export const RequestSocketsPacketSchema = z.object({
   type: z.literal('RequestSocketsPacket'),
 });
@@ -118,7 +114,6 @@ export const PacketSchema = z.discriminatedUnion('type', [
   SocketMessagePacketSchema,
   KeepServiceWorkerAlivePacketSchema,
   DebuggingPacketSchema,
-  ConnectorReadyPacketSchema,
   RequestSocketsPacketSchema,
   ClearDevtoolsStatePacketSchema,
   UserInjectedSocketMessagePacketSchema,

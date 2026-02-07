@@ -1,10 +1,15 @@
 import { defineContentScript } from '#imports';
-import { BufferedWindowConnector } from '@/utils/bufferedWindowConnector';
+import { createLogger } from '@/utils/customLogger';
+import { WindowConnector } from '@/utils/windowMessaging';
 
-const mainWorldScript = (scriptConnector: BufferedWindowConnector) => {
-  scriptConnector.subscribe(packet => {
-
+const patchSocketSync = () => {
+  const logger = createLogger('MAIN_WORLD');
+  const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD', logger }).connect();
+  windowConnector.subscribe((packet) => {
+    logger(`Got this packet: ${JSON.stringify(packet)}`)
   });
+  windowConnector.sendDebugPacket('WHAZZZUP')
+  logger('------------------------------');
 };
 
 export default defineContentScript({
@@ -13,11 +18,6 @@ export default defineContentScript({
   world: 'MAIN',
   allFrames: false,
   main: () => {
-    const scriptConnector = new BufferedWindowConnector({
-      window,
-      location: 'INJECTED_SCRIPT',
-    }).connect();
-
-    mainWorldScript(scriptConnector);
+    patchSocketSync();
   },
 });

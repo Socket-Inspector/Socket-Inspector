@@ -1,18 +1,21 @@
 import { defineContentScript } from '#imports';
-import { BufferedWindowConnector } from '@/utils/bufferedWindowConnector';
-import { ServiceWorkerConnector } from '@/utils/serviceWorkerMessaging';
+import { createLogger } from '@/utils/customLogger';
+import { WindowConnector } from '@/utils/windowMessaging';
 
-const isolatedScript = (
-  scriptConnector: BufferedWindowConnector,
-  serviceWorkerConnector: ServiceWorkerConnector,
-) => {
-  scriptConnector.subscribe((packet) => {
-    serviceWorkerConnector.sendPacket(packet);
-  });
+/**
+ * TODO:
+ * this works based on premise that window postmessage sent will be queued
+ *  and both scripts will run before a message is executed
+ */
 
-  serviceWorkerConnector.subscribe((packet) => {
-    scriptConnector.sendPacket(packet);
+const setupRelaySync = () => {
+  const logger = createLogger('ISOLATED_WORLD');
+  const windowConnector = new WindowConnector({ window, location: 'ISOLATED_WORLD', logger }).connect();
+  windowConnector.subscribe((packet) => {
+    logger(`Got this packet: ${JSON.stringify(packet)}`)
   });
+  windowConnector.sendDebugPacket('WHAZZZUP')
+  logger('------------------------------');
 };
 
 export default defineContentScript({
@@ -21,15 +24,6 @@ export default defineContentScript({
   world: 'ISOLATED',
   allFrames: false,
   main: () => {
-    const scriptConnector = new BufferedWindowConnector({
-      window,
-      location: 'CONTENT_SCRIPT',
-    }).connect();
-
-    const serviceWorkerConnector = new ServiceWorkerConnector({
-      channelName: 'CONTENT_SCRIPT_CHANNEL',
-    }).connect();
-
-    isolatedScript(scriptConnector, serviceWorkerConnector);
+    setupRelaySync();
   },
 });

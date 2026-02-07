@@ -54,7 +54,7 @@ export default defineConfig({
     // test app tiny
     {
       cwd: '../test-app-tiny',
-      command: 'pnpm serve:playwright',
+      command: 'pnpm serve:test-app-tiny:playwright',
       url: 'http://localhost:4312',
       reuseExistingServer: false,
       stdout: 'pipe',
@@ -62,7 +62,7 @@ export default defineConfig({
     },
     {
       cwd: '../test-app-server',
-      command: 'pnpm serve:playwright:test-app-tiny',
+      command: 'pnpm serve:test-app-tiny:playwright',
       url: 'http://localhost:5890/playwright-ready',
       reuseExistingServer: false,
       stdout: 'pipe',

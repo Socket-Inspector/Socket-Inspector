@@ -65,14 +65,7 @@ export const useSocket = (url: string) => {
   };
 
   useEffect(() => {
-    /**
-     * using setTimeout because the prod build is too fast
-     * that is, without setTimeout, the websocket will be constructed
-     * before mswjs is injected into the page
-     */
-    setTimeout(() => {
-      return connectSocket();
-    }, 55);
+    return connectSocket();
   }, [url]);
 
   const closeSocket = () => {

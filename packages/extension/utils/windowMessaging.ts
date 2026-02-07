@@ -44,8 +44,6 @@ export class WindowConnector {
         return;
       }
 
-      // this.logger?.(`received window message from other side: ${windowMessage.packet.type}`)
-
       if (!windowMessage.packet) {
         return;
       }

@@ -2,7 +2,7 @@ import { LogFn } from './customLogger';
 import { createDebugPacket } from './packetFactory';
 import { Packet } from './sharedTypes/sharedTypes';
 
-export type WindowScriptName = 'CONTENT_SCRIPT' | 'INJECTED_SCRIPT';
+export type WindowScriptName = 'ISOLATED_WORLD' | 'MAIN_WORLD';
 
 export type WindowMessage = {
   socketExtensionValidationKey: 'SOCKET_EXTENSION_VALIDATION_KEY';
@@ -17,10 +17,10 @@ export type WindowConnectorArgs = {
 };
 
 export class WindowConnector {
-  private window: Window;
-  private location: WindowScriptName;
+  public readonly location: WindowScriptName;
+  private readonly window: Window;
+  private readonly logger?: LogFn;
   private onPacketReceived?: (packet: Packet) => any;
-  private logger?: LogFn;
 
   constructor({ window, location, logger }: WindowConnectorArgs) {
     this.window = window;
@@ -83,62 +83,5 @@ export class WindowConnector {
 
   private isOwnMessage(windowMessage: WindowMessage): boolean {
     return windowMessage.messageSource === this.location;
-  }
-}
-
-export type InjectedScriptWindowConnectorArgs = {
-  window: Window;
-  logger?: LogFn;
-};
-
-export class InjectedScriptWindowConnector {
-  private logger?: LogFn;
-  private windowConnector: WindowConnector;
-  private injectedScriptReady = false;
-  private packetBuffer: Array<Packet> = [];
-
-  constructor({ window, logger }: InjectedScriptWindowConnectorArgs) {
-    this.logger = logger;
-    this.windowConnector = new WindowConnector({
-      window,
-      location: 'CONTENT_SCRIPT',
-      logger,
-    });
-  }
-
-  connect() {
-    this.windowConnector.connect();
-    return this;
-  }
-
-  subscribe(onPacketReceived: (packet: Packet) => any) {
-    this.windowConnector.subscribe((packet) => {
-      if (packet.type === 'ConnectorReadyPacket') {
-        this.injectedScriptReady = true;
-        this.sendBufferedPackets();
-        return;
-      }
-      onPacketReceived(packet);
-    });
-    return this;
-  }
-
-  sendPacket(packet: Packet) {
-    if (!this.injectedScriptReady) {
-      this.packetBuffer.push(packet);
-      return;
-    }
-    this.windowConnector.sendPacket(packet);
-  }
-
-  sendDebugPacket(message: string) {
-    this.sendPacket(createDebugPacket(message));
-  }
-
-  private sendBufferedPackets() {
-    for (let packet of this.packetBuffer) {
-      this.sendPacket(packet);
-    }
-    this.packetBuffer = [];
   }
 }

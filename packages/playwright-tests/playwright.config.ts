@@ -34,6 +34,7 @@ export default defineConfig({
 
   // TODO: HTML report locking the process on failure
   webServer: [
+    // main test app
     {
       cwd: '../test-app-ui',
       command: 'pnpm serve:playwright',
@@ -46,6 +47,23 @@ export default defineConfig({
       cwd: '../test-app-server',
       command: 'pnpm serve:playwright',
       url: 'http://localhost:6857/playwright-ready',
+      reuseExistingServer: false,
+      // stdout: 'pipe',
+      stderr: 'pipe',
+    },
+    // test app tiny
+    {
+      cwd: '../test-app-tiny',
+      command: 'pnpm serve:test-app-tiny:playwright',
+      url: 'http://localhost:4312',
+      reuseExistingServer: false,
+      // stdout: 'pipe',
+      stderr: 'pipe',
+    },
+    {
+      cwd: '../test-app-server',
+      command: 'pnpm serve:test-app-tiny',
+      url: 'http://localhost:5890/playwright-ready',
       reuseExistingServer: false,
       // stdout: 'pipe',
       stderr: 'pipe',

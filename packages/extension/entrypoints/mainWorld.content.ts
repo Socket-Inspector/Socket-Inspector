@@ -1,4 +1,4 @@
-import { defineUnlistedScript } from '#imports';
+import { defineContentScript } from '#imports';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
@@ -14,18 +14,13 @@ type SocketConnection = {
   server: WebSocketServerConnection;
 };
 
-export default defineUnlistedScript(() => {
-  const contentScriptConnector = new WindowConnector({
-    window,
-    location: 'INJECTED_SCRIPT',
-  }).connect();
+const patchSocketSync = () => {
+  const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD' }).connect();
 
   const sockets = new Map<SocketDetails['id'], SocketConnection>();
 
   const interceptor = new WebSocketInterceptor();
   interceptor.apply();
-
-  // TODO: leverage dispose method?
 
   interceptor.on('connection', ({ client, server }) => {
     // host page constructed a WebSocket instance
@@ -50,7 +45,7 @@ export default defineUnlistedScript(() => {
     });
 
     const sendSocketDetailsPacket = () => {
-      contentScriptConnector.sendPacket({
+      windowConnector.sendPacket({
         type: 'SocketDetailsPacket',
         payload: { socket: interceptedSocket },
       });
@@ -94,7 +89,7 @@ export default defineUnlistedScript(() => {
           },
         },
       };
-      contentScriptConnector.sendPacket(clientMessagePacket);
+      windowConnector.sendPacket(clientMessagePacket);
     });
 
     server.addEventListener('message', (event: MessageEvent<WebSocketData>) => {
@@ -126,7 +121,7 @@ export default defineUnlistedScript(() => {
           },
         },
       };
-      contentScriptConnector.sendPacket(serverMessagePacket);
+      windowConnector.sendPacket(serverMessagePacket);
     });
 
     client.addEventListener('close', () => {
@@ -143,7 +138,7 @@ export default defineUnlistedScript(() => {
     sendSocketDetailsPacket();
   });
 
-  contentScriptConnector.subscribe((packet: Packet) => {
+  windowConnector.subscribe((packet: Packet) => {
     if (packet.type === 'UserInjectedSocketMessagePacket') {
       const { message } = packet.payload;
       const connection = sockets.get(message.socketId);
@@ -177,7 +172,7 @@ export default defineUnlistedScript(() => {
             },
           },
         };
-        contentScriptConnector.sendPacket(clientMessagePacket);
+        windowConnector.sendPacket(clientMessagePacket);
       } else if (message.destination === 'server') {
         try {
           connection.server.send(message.payload);
@@ -199,7 +194,7 @@ export default defineUnlistedScript(() => {
             },
           },
         };
-        contentScriptConnector.sendPacket(serverMessagePacket);
+        windowConnector.sendPacket(serverMessagePacket);
       }
     } else if (packet.type === 'PauseSocketPacket' || packet.type === 'ResumeSocketPacket') {
       const { socketId } = packet.payload;
@@ -210,7 +205,7 @@ export default defineUnlistedScript(() => {
 
       connection.socket.isPaused = packet.type === 'PauseSocketPacket';
 
-      contentScriptConnector.sendPacket({
+      windowConnector.sendPacket({
         type: 'SocketDetailsPacket',
         payload: { socket: connection.socket },
       });
@@ -225,6 +220,14 @@ export default defineUnlistedScript(() => {
       } catch {}
     }
   });
+};
 
-  contentScriptConnector.sendPacket({ type: 'ConnectorReadyPacket' });
+export default defineContentScript({
+  matches: ['*://*/*'],
+  runAt: 'document_start',
+  world: 'MAIN',
+  allFrames: false,
+  main: () => {
+    patchSocketSync();
+  },
 });

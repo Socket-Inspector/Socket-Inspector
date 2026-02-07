@@ -2,6 +2,7 @@ import { test } from '../fixtures';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
 import { SidebarPageModel, SidebarSocket } from '../page-models/sidebarPageModel';
 import { HostPageModel } from '../page-models/hostPageModel';
+import { TinyHostPageModel } from '../page-models/tinyHostPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
 test('it can select an open socket from the sidebar', async ({
@@ -105,6 +106,36 @@ test('it clears the old connections when host page is refreshed', async ({
  * validate the open socket DID receive the messages
  */
 // });
+
+test('it clears the old connections when tiny app host page is refreshed', async ({
+  page,
+  context,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanelModel.loadDevtoolsPanel();
+
+  const hostPage = await context.newPage();
+  const hostPageModel = new TinyHostPageModel(hostPage);
+  await hostPageModel.navigateToHostPage();
+
+  const expectedSockets: Array<SidebarSocket> = [
+    {
+      url: hostPageModel.serverBaseUrl,
+      status: 'Connected',
+    },
+  ];
+
+  await devtoolsPanelModel.bringToFront();
+  await sidebarPageModel.assertSidebarSockets(expectedSockets);
+
+  await hostPage.reload();
+
+  await devtoolsPanelModel.bringToFront();
+  // old socket was cleared, so there should only be one socket in sidebar
+  await sidebarPageModel.assertSidebarSockets(expectedSockets);
+});
 
 // test.skip('socket error', async ({ page, context, devtoolsPanelUrl }) => {
 // test that socket shows as closed (or maybe doesn't show at all if error is during handshake?)

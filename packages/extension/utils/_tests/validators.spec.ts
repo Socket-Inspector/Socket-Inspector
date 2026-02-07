@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { isPacket } from '../sharedTypes/validators';
 
 describe('isPacket', () => {
-  it('returns true for ConnectorReadyPacket packet', () => {
-    const packet = { type: 'ConnectorReadyPacket' } as const;
+  it('returns true for KeepAlivePacket packet', () => {
+    const packet = { type: 'KeepAlivePacket' } as const;
     expect(isPacket(packet)).toBe(true);
   });
 

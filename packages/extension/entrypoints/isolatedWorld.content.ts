@@ -20,6 +20,7 @@ const setupRelaySync = () => {
     windowConnector.sendPacket(packet);
   });
 
+  // clear devtools when navigating to new page or refreshing current page
   serviceWorkerConnector.sendPacket({ type: 'ClearDevtoolsStatePacket' });
 
   window.addEventListener('pageshow', (event) => {

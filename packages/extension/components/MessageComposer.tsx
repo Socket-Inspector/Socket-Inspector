@@ -1,5 +1,3 @@
-'use client';
-
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';

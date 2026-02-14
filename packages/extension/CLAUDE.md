@@ -13,21 +13,20 @@ Browser extension built with WXT
 
 **Extension Service Worker**
 
-- Relays data between the Devtools Panel and the Content Script
-- If multiple browser tabs are open, there can be multiple Devtools Panels and Content Scripts connected to the extension service worker
+- Relays data between the `Devtools Panel` and the `Isolated Content Script`
+- If multiple browser tabs are open, there can be multiple `Devtools Panels` and `Isolated Content Scripts `connected to the `Extension Service Worker`
 - path: `entrypoints/background.ts`
 
-**Content Script**
+**Isolated Content Script**
 
-- Relays data between the Extension Service Worker and the Injected Script
-- The browser injects the Content Script into the host page; then the Content Script injects the Injected Script into the host page.
-- path: `entrypoints/contentScript.content.ts`
+- Relays data between the `Extension Service Worker` and the `Main Content Script`
+- path: `entrypoints/isolatedWorld.content.ts`
 
-**Injected Script**
+**Main Content Script**
 
 - Patches the host page's WebSocket constructor, enabling the extension to manage WebSocket connections
-- Sends and receives data to and from the Content Script
-- path: `entrypoints/injectedScript.ts`
+- Sends and receives data to and from the `Isolated Content Script`
+- path: `entrypoints/mainWorld.content.ts`
 
 ## React Guidelines
 

@@ -8,7 +8,8 @@ pnpm workspace with the following packages:
 
 - `packages/extension` - the extension itself
 - `packages/test-app-ui` - host page for testing the extension
-- `packages/test-app-server` - websocket server consumed by `test-app-ui`
+- `packages/test-app-tiny` - another host page for testing
+- `packages/test-app-server` - websocket server consumed by `test-app-ui` and `test-app-tiny`
 - `packages/playwright-tests` - e2e tests
 
 ## Common Commands

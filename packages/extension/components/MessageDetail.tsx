@@ -9,7 +9,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shad
 import { copyToClipboard } from '@/utils/helpers';
 import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
 import { Label } from './shadcn/Label';
-import { Separator } from './shadcn/Separator';
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();
@@ -35,7 +34,7 @@ type MessageDetailContentProps = {
 };
 function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailContentProps) {
   const { dispatch } = useSocketContext();
-  const [viewMode, setViewMode] = useState<'text' | 'json'>('text');
+  const [viewMode, setViewMode] = useState<'text' | 'socket-io'>('text');
 
   if (!selectedSocket) {
     return null;
@@ -77,7 +76,7 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
             className="mr-auto flex flex-row"
             orientation="horizontal"
             value={viewMode}
-            onValueChange={(value: string) => setViewMode(value as 'text' | 'json')}
+            onValueChange={(value: string) => setViewMode(value as 'text' | 'socket-io')}
           >
             <div className="flex items-center gap-1.5">
               <RadioGroupItem value="text" id="radio-view-text" />
@@ -86,9 +85,9 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
               </Label>
             </div>
             <div className="flex items-center gap-1.5">
-              <RadioGroupItem value="json" id="radio-view-json" />
-              <Label htmlFor="radio-view-json" className="text-xs">
-                JSON
+              <RadioGroupItem value="socket-io" id="radio-view-socket-io" />
+              <Label htmlFor="radio-view-socket-io" className="text-xs">
+                Socket.IO
               </Label>
             </div>
           </RadioGroup>

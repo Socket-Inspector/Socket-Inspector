@@ -79,15 +79,15 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
             onValueChange={(value: string) => setViewMode(value as 'text' | 'socket-io')}
           >
             <div className="flex items-center gap-1.5">
-              <RadioGroupItem value="text" id="radio-view-text" />
-              <Label htmlFor="radio-view-text" className="text-xs">
-                Text
-              </Label>
-            </div>
-            <div className="flex items-center gap-1.5">
               <RadioGroupItem value="socket-io" id="radio-view-socket-io" />
               <Label htmlFor="radio-view-socket-io" className="text-xs">
                 Socket.IO
+              </Label>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <RadioGroupItem value="text" id="radio-view-text" />
+              <Label htmlFor="radio-view-text" className="text-xs">
+                Text
               </Label>
             </div>
           </RadioGroup>

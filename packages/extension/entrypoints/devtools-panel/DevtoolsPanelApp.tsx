@@ -11,6 +11,7 @@ import { EmptySocketSelection } from '@/components/EmptySocketSelection';
 import { MessageTable } from '@/components/MessageTable';
 import { MessageDetail } from '@/components/MessageDetail';
 import { MessageComposer } from '@/components/MessageComposer';
+import { MessageComposerSocketIO } from '@/components/MessageComposerSocketIO';
 
 export default function DevtoolsPanelApp() {
   const breakpoint = useBreakpoint();
@@ -84,7 +85,8 @@ function AppPanels({ layout }: AppPanelsProps) {
             <>
               <ResizableHandle></ResizableHandle>
               <ResizablePanel id="composer-panel-right" order={3} defaultSize={30} minSize={2}>
-                <MessageComposer></MessageComposer>
+                {/* <MessageComposer></MessageComposer> */}
+                <MessageComposerSocketIO></MessageComposerSocketIO>
               </ResizablePanel>
             </>
           )}

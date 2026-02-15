@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { SocketState } from '@/hooks/useSocketState/stateTypes';
 import { ScrollArea } from './shadcn/ScrollArea';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
@@ -6,6 +7,9 @@ import { ClipboardPaste, Copy } from 'lucide-react';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
 import { copyToClipboard } from '@/utils/helpers';
+import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
+import { Label } from './shadcn/Label';
+import { Separator } from './shadcn/Separator';
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();
@@ -31,6 +35,7 @@ type MessageDetailContentProps = {
 };
 function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailContentProps) {
   const { dispatch } = useSocketContext();
+  const [viewMode, setViewMode] = useState<'text' | 'json'>('text');
 
   if (!selectedSocket) {
     return null;
@@ -67,7 +72,26 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
-        <div className="flex items-center justify-end px-2">
+        <div className="flex items-center border-b px-2">
+          <RadioGroup
+            className="mr-auto flex flex-row"
+            orientation="horizontal"
+            value={viewMode}
+            onValueChange={(value: string) => setViewMode(value as 'text' | 'json')}
+          >
+            <div className="flex items-center gap-1.5">
+              <RadioGroupItem value="text" id="radio-view-text" />
+              <Label htmlFor="radio-view-text" className="text-xs">
+                Text
+              </Label>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <RadioGroupItem value="json" id="radio-view-json" />
+              <Label htmlFor="radio-view-json" className="text-xs">
+                JSON
+              </Label>
+            </div>
+          </RadioGroup>
           <TooltipProvider>
             <Tooltip delayDuration={500}>
               <TooltipTrigger asChild>

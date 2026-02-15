@@ -9,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shad
 import { copyToClipboard } from '@/utils/helpers';
 import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
 import { Label } from './shadcn/Label';
+import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();
@@ -67,6 +68,8 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
   if (!selectedMessage) {
     return null;
   }
+
+  const isSocketIO = viewMode === 'socket-io';
 
   return (
     <div className="h-full w-full">
@@ -132,9 +135,10 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
             </Tooltip>
           </TooltipProvider>
         </div>
-        <pre className="m-4 mt-1 font-mono text-xs break-all whitespace-pre-wrap">
-          {selectedMessage.payload}
-        </pre>
+        <MessageDetailContentBody
+          message={selectedMessage}
+          socketIOView={isSocketIO}>
+        </MessageDetailContentBody>
       </ScrollArea>
     </div>
   );
@@ -152,5 +156,27 @@ function MessageDetailEmptyView({ headline, helperText }: MessageDetailEmptyView
         <p className="text-muted-foreground max-w-xs text-xs">{helperText}</p>
       </div>
     </div>
+  );
+}
+
+type MessageDetailContentBodyProps = {
+  message: SocketMessage;
+  socketIOView: boolean;
+};
+function MessageDetailContentBody({ message, socketIOView }: MessageDetailContentBodyProps) {
+  if (socketIOView) {
+    // just doing same as before for now
+    return (
+      <pre className="m-4 mt-1 font-mono text-xs break-all whitespace-pre-wrap">
+        {message.payload}
+      </pre>
+    );
+  }
+
+  // just doing same as before for now
+  return (
+    <pre className="m-4 mt-1 font-mono text-xs break-all whitespace-pre-wrap">
+      {message.payload}
+    </pre>
   );
 }

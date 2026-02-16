@@ -19,7 +19,7 @@
     "prepare:release": "bash ./build-scripts/release-pipeline.sh"
   },
   "devDependencies": {
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "shellcheck": "^4.1.0"
   }

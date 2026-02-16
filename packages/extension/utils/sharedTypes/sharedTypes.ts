@@ -7,9 +7,7 @@ import {
   SocketDetailsPacketSchema,
   SocketMessagePacketSchema,
   UserInjectedSocketMessagePacketSchema,
-  KeepServiceWorkerAlivePacketSchema,
   DebuggingPacketSchema,
-  RequestSocketsPacketSchema,
   ClearDevtoolsStatePacketSchema,
   PauseSocketPacketSchema,
   ResumeSocketPacketSchema,
@@ -27,9 +25,7 @@ export type UserInjectedSocketMessage = z.infer<typeof UserInjectedSocketMessage
 export type SocketDetailsPacket = z.infer<typeof SocketDetailsPacketSchema>;
 export type SocketMessagePacket = z.infer<typeof SocketMessagePacketSchema>;
 export type UserInjectedSocketMessagePacket = z.infer<typeof UserInjectedSocketMessagePacketSchema>;
-export type KeepServiceWorkerAlivePacket = z.infer<typeof KeepServiceWorkerAlivePacketSchema>;
 export type DebuggingPacket = z.infer<typeof DebuggingPacketSchema>;
-export type RequestSocketsPacket = z.infer<typeof RequestSocketsPacketSchema>;
 export type ClearDevtoolsStatePacket = z.infer<typeof ClearDevtoolsStatePacketSchema>;
 export type PauseSocketPacket = z.infer<typeof PauseSocketPacketSchema>;
 export type ResumeSocketPacket = z.infer<typeof ResumeSocketPacketSchema>;

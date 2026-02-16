@@ -2,6 +2,7 @@ import { cn } from '@/utils/cn';
 import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
 import { Button } from './shadcn/Button';
 import { Label } from './shadcn/Label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
 
 export function MessageComposerSocketIO() {
   return (
@@ -66,6 +67,54 @@ export function MessageComposerSocketIO() {
               <Label htmlFor="radio-payload-raw">Text</Label>
             </div>
           </RadioGroup>
+        </div>
+      </div>
+
+      <div className="mb-5 grid grid-cols-1 gap-4 @sm:grid-cols-2">
+        <div className="grid gap-2">
+          <h3
+            className={cn(
+              'flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
+            )}
+          >
+            Namespace
+          </h3>
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Namespace" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Message">/</SelectItem>
+                <SelectItem value="Dogs">Dogs</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="mb-5 grid grid-cols-1 gap-4 @sm:grid-cols-2">
+        <div className="grid gap-2">
+          <h3
+            className={cn(
+              'flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
+            )}
+          >
+            Event Name
+          </h3>
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Event Name" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Message">Message</SelectItem>
+                <SelectItem value="Dogs">Dogs</SelectItem>
+                <SelectItem value="Cats">Cats</SelectItem>
+                <SelectItem value="steam">STEAM</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

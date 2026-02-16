@@ -34,7 +34,6 @@ export const SocketMessageSchema = z.object({
   timestampISO: z.string(),
   endpoints: SocketMessageEndpointsSchema,
   payload: z.string(),
-  socketDetails: SocketDetailsSchema,
 });
 
 export const UserInjectedSocketMessageSchema = z.object({

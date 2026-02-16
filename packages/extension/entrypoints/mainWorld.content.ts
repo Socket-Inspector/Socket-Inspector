@@ -85,7 +85,6 @@ const patchSocketSync = () => {
               destination: 'server',
             },
             payload: event.data,
-            socketDetails: interceptedSocket,
           },
         },
       };
@@ -117,7 +116,6 @@ const patchSocketSync = () => {
               destination: 'client',
             },
             payload: event.data,
-            socketDetails: interceptedSocket,
           },
         },
       };
@@ -168,7 +166,6 @@ const patchSocketSync = () => {
                 destination: 'client',
               },
               payload: message.payload,
-              socketDetails: connection.socket,
             },
           },
         };
@@ -190,7 +187,6 @@ const patchSocketSync = () => {
                 destination: 'server',
               },
               payload: message.payload,
-              socketDetails: connection.socket,
             },
           },
         };

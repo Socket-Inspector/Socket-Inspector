@@ -80,14 +80,12 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
             {
               id: 'ad9f580b-f93f-47d8-8ee8-3cd4943314bd',
               timestampISO: '2025-08-30T20:41:19.076Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -122,14 +120,12 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
             {
               id: 'ad9f580b-f93f-47d8-8ee8-3cd4943314bd',
               timestampISO: '2025-08-30T20:41:19.076Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -153,14 +149,12 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
             {
               id: 'ad9f580b-f93f-47d8-8ee8-3cd4943314bd',
               timestampISO: '2025-08-30T20:41:19.076Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -201,14 +195,12 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
             {
               id: 'ad9f580b-f93f-47d8-8ee8-3cd4943314bd',
               timestampISO: '2025-08-30T20:41:19.076Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -272,14 +264,12 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
             {
               id: 'ad9f580b-f93f-47d8-8ee8-3cd4943314bd',
               timestampISO: '2025-08-30T20:41:19.076Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -311,14 +301,12 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
             {
               id: 'ad9f580b-f93f-47d8-8ee8-3cd4943314bd',
               timestampISO: '2025-08-30T20:41:19.076Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -357,7 +345,6 @@ describe('reducer', () => {
             timestampISO: '2025-08-30T20:41:19.061Z',
             endpoints: { source: 'client', destination: 'server' },
             payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
           },
         },
       };
@@ -380,7 +367,6 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -402,7 +388,6 @@ describe('reducer', () => {
             timestampISO: '2025-08-30T20:41:19.076Z',
             endpoints: { source: 'server', destination: 'client' },
             payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
           },
         },
       };
@@ -425,14 +410,12 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"fr"}}',
-
             },
             {
               id: 'ad9f580b-f93f-47d8-8ee8-3cd4943314bd',
               timestampISO: '2025-08-30T20:41:19.076Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: '{"type":"EchoResponse","payload":{"message":"fr"}}',
-
             },
           ],
         },
@@ -457,7 +440,6 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"original"}}',
-
             },
           ],
         },
@@ -478,7 +460,6 @@ describe('reducer', () => {
             timestampISO: '2025-08-30T20:41:20.000Z',
             endpoints: { source: 'client', destination: 'server' },
             payload: '{"type":"EchoRequest","payload":{"message":"duplicate"}}',
-
           },
         },
       };
@@ -519,7 +500,6 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T21:55:05.802Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: '{"type":"EchoRequest","payload":{"message":"hi"}}',
-
             },
           },
         };
@@ -553,7 +533,6 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: 'm1',
-
             },
           ],
           [OTHER_SOCKET_ID]: [
@@ -562,7 +541,6 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:20.000Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: 'm2',
-
             },
           ],
         },
@@ -591,7 +569,6 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: 'm1',
-
             },
           ],
         },
@@ -616,7 +593,6 @@ describe('reducer', () => {
               timestampISO: '2025-08-30T20:41:19.061Z',
               endpoints: { source: 'client', destination: 'server' },
               payload: 'm1',
-
             },
           ],
         },
@@ -649,14 +625,12 @@ describe('reducer', () => {
               timestampISO: '2025-09-26T01:12:58.810Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: 'message: 16',
-
             },
             {
               id: 'SECOND_MESSAGE_ID',
               timestampISO: '2025-09-26T01:12:58.821Z',
               endpoints: { source: 'server', destination: 'client' },
               payload: 'message: 17',
-
             },
           ],
         },
@@ -677,7 +651,6 @@ describe('reducer', () => {
             timestampISO: '2025-09-26T01:13:30.907Z',
             endpoints: { source: 'chrome_extension', destination: 'client' },
             payload: 'CUSTOM_MESSAGE',
-
           },
         },
       };

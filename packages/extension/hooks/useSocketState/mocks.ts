@@ -28,119 +28,102 @@ export const getMockChatAppState = (): SocketState => {
           timestampISO: '2025-09-14T16:09:11.164Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_joined","sender":"emmanuel"}',
-
         },
         {
           id: 'MOCK_MESSAGE_PRE_1`',
           timestampISO: '2025-09-14T16:10:12.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_joined","sender":"fumio"}',
-
         },
         {
           id: 'MOCK_MESSAGE_PRE_2`',
           timestampISO: '2025-09-14T17:11:42.644Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_joined","sender":"satya"}',
-
         },
         {
           id: 'MOCK_MESSAGE_FOR_COMPOSER`',
           timestampISO: '2025-09-14T17:12:41.814Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: getMockComposerPayload(),
-
         },
         {
           id: 'MOCK_MESSAGE_PRE_3`',
           timestampISO: '2025-09-14T17:12:42.844Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_joined","sender":"bola"}',
-
         },
         {
           id: 'MOCK_MESSAGE_1`',
           timestampISO: '2025-09-14T19:58:42.844Z',
           endpoints: { source: 'client', destination: 'server' },
           payload: '{"type":"user_joined","sender":"alice"}',
-
         },
         {
           id: 'MOCK_MESSAGE_2',
           timestampISO: '2025-09-14T19:50:01.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_joined","sender":"bob"}',
-
         },
         {
           id: 'MOCK_MESSAGE_A',
           timestampISO: '2025-09-14T19:52:01.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_joined","sender":"dave"}',
-
         },
         {
           id: 'MOCK_MESSAGE_B',
           timestampISO: '2025-09-14T19:52:02.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"message","sender":"dave","text":"Hey team!"}',
-
         },
         {
           id: 'MOCK_MESSAGE_3',
           timestampISO: '2025-09-14T21:12:01.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"message","sender":"bob","text":"Hello everyone!"}',
-
         },
         {
           id: 'MOCK_MESSAGE_4',
           timestampISO: '2025-09-14T21:34:01.144Z',
           endpoints: { source: 'chrome_extension', destination: 'client' },
           payload: '{"type":"message","sender":"Mock User","text":"Mock Message"}',
-
         },
         {
           id: 'MOCK_MESSAGE_G',
           timestampISO: '2025-09-14T21:35:01.144Z',
           endpoints: { source: 'chrome_extension', destination: 'server' },
           payload: '{"type":"message","sender":"alice","text":"Mock Message from Alice"}',
-
         },
         {
           id: 'MOCK_MESSAGE_6',
           timestampISO: '2025-09-14T21:38:01.144Z',
           endpoints: { source: 'client', destination: 'server' },
           payload: '{"type":"message","sender":"alice","text":"Real Message from Alice"}',
-
         },
         {
           id: 'MOCK_MESSAGE_8',
           timestampISO: '2025-09-14T21:38:33.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_left","sender":"dave"}',
-
         },
         {
           id: 'MOCK_MESSAGE_9',
           timestampISO: '2025-09-14T21:43:33.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_left","sender":"bob"}',
-
         },
         {
           id: 'MOCK_MESSAGE_10',
           timestampISO: '2025-09-14T21:45:33.144Z',
           endpoints: { source: 'server', destination: 'client' },
           payload: '{"type":"user_left","sender":"emmanuel"}',
-
         },
         {
           id: 'MOCK_MESSAGE_15',
           timestampISO: '2025-09-14T21:47:33.144Z',
           endpoints: { source: 'chrome_extension', destination: 'server' },
           payload: '{"type":"user_left","sender":"alice"}',
-
         },
       ],
     },

@@ -34,7 +34,6 @@ export const SocketMessageSchema = z.object({
   timestampISO: z.string(),
   endpoints: SocketMessageEndpointsSchema,
   payload: z.string(),
-  socketDetails: SocketDetailsSchema,
 });
 
 export const UserInjectedSocketMessageSchema = z.object({
@@ -66,19 +65,11 @@ export const UserInjectedSocketMessagePacketSchema = z.object({
   }),
 });
 
-export const KeepServiceWorkerAlivePacketSchema = z.object({
-  type: z.literal('KeepAlivePacket'),
-});
-
 export const DebuggingPacketSchema = z.object({
   type: z.literal('DebuggingPacket'),
   payload: z.object({
     message: z.string(),
   }),
-});
-
-export const RequestSocketsPacketSchema = z.object({
-  type: z.literal('RequestSocketsPacket'),
 });
 
 export const ClearDevtoolsStatePacketSchema = z.object({
@@ -112,9 +103,7 @@ export const CloseConnectionPacketSchema = z.object({
 export const PacketSchema = z.discriminatedUnion('type', [
   SocketDetailsPacketSchema,
   SocketMessagePacketSchema,
-  KeepServiceWorkerAlivePacketSchema,
   DebuggingPacketSchema,
-  RequestSocketsPacketSchema,
   ClearDevtoolsStatePacketSchema,
   UserInjectedSocketMessagePacketSchema,
   PauseSocketPacketSchema,

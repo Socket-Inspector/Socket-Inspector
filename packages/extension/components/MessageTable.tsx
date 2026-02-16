@@ -36,8 +36,7 @@ export function MessageTable() {
   const isPaused = selectedSocketDetails?.isPaused ?? false;
   const selectedSocketId = selectedSocketDetails?.id;
 
-  const selectedSocketMessages = querySelectedSocketMessages(socketState);
-  const filteredMessages = selectedSocketMessages
+  const filteredMessages = querySelectedSocketMessages(socketState)
     .filter((message) => message.payload.toLowerCase().includes(searchText.toLowerCase()))
     .filter(
       (message) =>

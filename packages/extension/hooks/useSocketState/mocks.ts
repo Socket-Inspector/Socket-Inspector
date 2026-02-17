@@ -131,6 +131,7 @@ export const getMockChatAppState = (): SocketState => {
       id: 'FOCUSED_MOCK_SOCKET',
       selectedMessageId: 'ea8b3aa3-2659-4339-8f4e-9a4768e755c2',
     },
+    socketIODetails: {},
   };
   return mock;
 };

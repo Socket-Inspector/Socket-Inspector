@@ -3,6 +3,7 @@ import { Packet, SocketDetails, SocketMessage } from '@/utils/sharedTypes/shared
 export type SocketState = {
   sockets: Array<SocketDetails>;
   socketMessages: Record<SocketDetails['id'], Array<SocketMessage>>;
+  socketIODetails: Record<SocketDetails['id'], SocketIODetails>;
   selectedSocket?: {
     id: string;
     selectedMessageId?: string;
@@ -10,6 +11,10 @@ export type SocketState = {
     unseenCustomMessageId?: string;
   };
 };
+
+export type SocketIODetails =
+  | { isSocketIO: false }
+  | { isSocketIO: true; namespaces: Array<string>; eventNames: Array<string> };
 
 export type MessageComposerFormData = {
   destination: 'client' | 'server';
@@ -48,6 +53,11 @@ export type ClearUnseenCustomMessageIdAction = {
   type: 'CLEAR_UNSEEN_CUSTOM_MESSAGE_ID_ACTION';
 };
 
+export type SocketIODetectedAction = {
+  type: 'SOCKET_IO_DETECTED';
+  payload: { socketId: SocketDetails['id'] };
+};
+
 export type ReducerAction =
   | SelectSocketAction
   | SelectSocketMessageAction
@@ -56,4 +66,5 @@ export type ReducerAction =
   | PrefillMessageComposerAction
   | ClearMessageComposerPrefillAction
   | ClearUnseenCustomMessageIdAction
+  | SocketIODetectedAction
   | Packet;

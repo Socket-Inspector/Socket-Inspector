@@ -9,12 +9,14 @@ import {
   ClearMessageComposerPrefillAction,
   SocketState,
   ClearUnseenCustomMessageIdAction,
+  SocketIODetectedAction,
 } from './stateTypes';
 
 export const getInitialState = (): SocketState => {
   return {
     sockets: [],
     socketMessages: {},
+    socketIODetails: {},
   };
 };
 
@@ -39,6 +41,8 @@ export const reducer = (prevState: SocketState, action: ReducerAction): SocketSt
     return applyClearMessageComposerPrefillAction(prevState, action);
   } else if (action.type === 'CLEAR_UNSEEN_CUSTOM_MESSAGE_ID_ACTION') {
     return applyClearUnseenCustomMessageIdAction(prevState, action);
+  } else if (action.type === 'SOCKET_IO_DETECTED') {
+    return applySocketIODetectedAction(prevState, action);
   }
   return prevState;
 };
@@ -198,4 +202,12 @@ const applyClearUnseenCustomMessageIdAction = (
     ...prevState,
     selectedSocket: { ...prevState.selectedSocket, unseenCustomMessageId: undefined },
   };
+};
+
+// TODO:
+const applySocketIODetectedAction = (
+  prevState: SocketState,
+  _action: SocketIODetectedAction,
+): SocketState => {
+  return prevState;
 };

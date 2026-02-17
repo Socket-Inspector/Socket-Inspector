@@ -208,12 +208,8 @@ const applyDetectedSocketIOPacket = (
   packet: DetectedSocketIOPacket,
 ): SocketState => {
   const { socketId } = packet.payload;
-  console.log('TV: detected socket IO: ', socketId);
-
-  // TODO: use this in cs
-  // const socketIODetails: SocketIODetails = isSocketIOConnection(socket.url)
-  //   ? { isSocketIO: true, namespaces: [], eventNames: [] }
-  //   : { isSocketIO: false };
-
+  /**
+   * TODO: set socketIODetails[socketId] to have isSocketIO: true
+   */
   return prevState;
 };

@@ -139,10 +139,10 @@ const patchSocketSync = () => {
 
     sendSocketDetailsPacket();
 
-    // TODO: consider just adding a socket IO field to socket details
     const isSocketIO = isEngineIOv4Url(socketUrl);
+    logger('isSocketIO: ', isSocketIO);
     if (isSocketIO) {
-      // TODO:
+      // TODO: send the DetectedSocketIOPacket
     }
   });
 

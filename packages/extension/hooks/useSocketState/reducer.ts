@@ -62,6 +62,21 @@ const applySocketDetailsPacket = (
   }
 };
 
+const applyDetectedSocketIOPacket = (
+  prevState: SocketState,
+  packet: DetectedSocketIOPacket,
+): SocketState => {
+  const { socketId } = packet.payload;
+
+  return {
+    ...prevState,
+    socketIODetails: {
+      ...prevState.socketIODetails,
+      [socketId]: { isSocketIO: true, namespaces: [], eventNames: [] },
+    },
+  };
+};
+
 const applySocketMessagePacket = (
   prevState: SocketState,
   packet: SocketMessagePacket,
@@ -200,20 +215,5 @@ const applyClearUnseenCustomMessageIdAction = (
   return {
     ...prevState,
     selectedSocket: { ...prevState.selectedSocket, unseenCustomMessageId: undefined },
-  };
-};
-
-const applyDetectedSocketIOPacket = (
-  prevState: SocketState,
-  packet: DetectedSocketIOPacket,
-): SocketState => {
-  const { socketId } = packet.payload;
-
-  return {
-    ...prevState,
-    socketIODetails: {
-      ...prevState.socketIODetails,
-      [socketId]: { isSocketIO: true, namespaces: [], eventNames: [] },
-    },
   };
 };

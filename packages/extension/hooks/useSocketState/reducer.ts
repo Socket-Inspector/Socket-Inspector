@@ -208,8 +208,12 @@ const applyDetectedSocketIOPacket = (
   packet: DetectedSocketIOPacket,
 ): SocketState => {
   const { socketId } = packet.payload;
-  /**
-   * TODO: set socketIODetails[socketId] to have isSocketIO: true
-   */
-  return prevState;
+
+  return {
+    ...prevState,
+    socketIODetails: {
+      ...prevState.socketIODetails,
+      [socketId]: { isSocketIO: true, namespaces: [], eventNames: [] },
+    },
+  };
 };

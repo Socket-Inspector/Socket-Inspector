@@ -1,5 +1,4 @@
 import { defineContentScript } from '#imports';
-import { createLogger } from '@/utils/customLogger';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
 import { isEngineIOv4Url } from '@/utils/socketIOHelpers';
 import { WindowConnector } from '@/utils/windowMessaging';
@@ -15,8 +14,6 @@ type SocketConnection = {
   client: WebSocketClientConnection;
   server: WebSocketServerConnection;
 };
-
-const logger = createLogger('MAIN');
 
 const patchSocketSync = () => {
   const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD' }).connect();
@@ -139,10 +136,11 @@ const patchSocketSync = () => {
 
     sendSocketDetailsPacket();
 
-    const isSocketIO = isEngineIOv4Url(socketUrl);
-    logger('isSocketIO: ', isSocketIO);
-    if (isSocketIO) {
-      // TODO: send the DetectedSocketIOPacket
+    if (isEngineIOv4Url(socketUrl)) {
+      windowConnector.sendPacket({
+        type: 'DetectedSocketIOPacketSchema',
+        payload: { socketId: socketId },
+      });
     }
   });
 

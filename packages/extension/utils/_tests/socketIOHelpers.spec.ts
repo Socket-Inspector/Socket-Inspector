@@ -22,5 +22,8 @@ describe('isEngineIOv4Url', () => {
     it('returns false when urlString is not a url', () => {
       expect(isEngineIOv4Url('not-a-url')).toBe(false);
     });
+    it('returns false when the url has no query params', () => {
+      expect(isEngineIOv4Url('ws://localhost:7812/socket.io/')).toBe(false);
+    });
   });
 });

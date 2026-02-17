@@ -1,7 +1,7 @@
 import { defineContentScript } from '#imports';
 import { createLogger } from '@/utils/customLogger';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
-import { isSocketIOConnection } from '@/utils/socketIOHelpers';
+import { isEngineIOv4Url } from '@/utils/socketIOHelpers';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   WebSocketClientConnection,
@@ -140,8 +140,7 @@ const patchSocketSync = () => {
     sendSocketDetailsPacket();
 
     // TODO: consider just adding a socket IO field to socket details
-    logger('checking if socket IO: ', JSON.stringify(interceptedSocket.url));
-    const isSocketIO = isSocketIOConnection(socketUrl);
+    const isSocketIO = isEngineIOv4Url(socketUrl);
     if (isSocketIO) {
       // TODO:
     }

@@ -223,7 +223,7 @@ describe('reducer', () => {
           },
         ],
         socketMessages: {},
-        socketIODetails: {}
+        socketIODetails: {},
       };
 
       const action: SelectSocketAction = {

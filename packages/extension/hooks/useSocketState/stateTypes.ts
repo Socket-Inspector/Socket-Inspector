@@ -53,11 +53,6 @@ export type ClearUnseenCustomMessageIdAction = {
   type: 'CLEAR_UNSEEN_CUSTOM_MESSAGE_ID_ACTION';
 };
 
-export type SocketIODetectedAction = {
-  type: 'SOCKET_IO_DETECTED';
-  payload: { socketId: SocketDetails['id'] };
-};
-
 export type ReducerAction =
   | SelectSocketAction
   | SelectSocketMessageAction
@@ -66,5 +61,4 @@ export type ReducerAction =
   | PrefillMessageComposerAction
   | ClearMessageComposerPrefillAction
   | ClearUnseenCustomMessageIdAction
-  | SocketIODetectedAction
   | Packet;

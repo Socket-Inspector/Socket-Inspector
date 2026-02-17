@@ -1,4 +1,4 @@
-import { SocketDetailsPacket, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
+import { DetectedSocketIOPacket, SocketDetailsPacket, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
 import {
   ReducerAction,
   SelectSocketAction,
@@ -9,9 +9,7 @@ import {
   ClearMessageComposerPrefillAction,
   SocketState,
   ClearUnseenCustomMessageIdAction,
-  SocketIODetails,
 } from './stateTypes';
-import { isSocketIOConnection } from '@/utils/socketIOHelpers';
 
 export const getInitialState = (): SocketState => {
   return {
@@ -42,6 +40,8 @@ export const reducer = (prevState: SocketState, action: ReducerAction): SocketSt
     return applyClearMessageComposerPrefillAction(prevState, action);
   } else if (action.type === 'CLEAR_UNSEEN_CUSTOM_MESSAGE_ID_ACTION') {
     return applyClearUnseenCustomMessageIdAction(prevState, action);
+  } else if (action.type === 'DetectedSocketIOPacketSchema') {
+    return applyDetectedSocketIOPacket(prevState, action);
   }
   return prevState;
 };
@@ -51,12 +51,6 @@ const applySocketDetailsPacket = (
   packet: SocketDetailsPacket,
 ): SocketState => {
   const { socket } = packet.payload;
-
-  // TODO: use this
-  // const socketIODetails: SocketIODetails = isSocketIOConnection(socket.url)
-  //   ? { isSocketIO: true, namespaces: [], eventNames: [] }
-  //   : { isSocketIO: false };
-
   const existingSocket = prevState.sockets.some((s) => s.id === socket.id);
   if (existingSocket) {
     return {
@@ -207,4 +201,19 @@ const applyClearUnseenCustomMessageIdAction = (
     ...prevState,
     selectedSocket: { ...prevState.selectedSocket, unseenCustomMessageId: undefined },
   };
+};
+
+const applyDetectedSocketIOPacket = (
+  prevState: SocketState,
+  packet: DetectedSocketIOPacket,
+): SocketState => {
+  const { socketId } = packet.payload;
+  console.log('TV: detected socket IO: ', socketId);
+
+  // TODO: use this in cs
+  // const socketIODetails: SocketIODetails = isSocketIOConnection(socket.url)
+  //   ? { isSocketIO: true, namespaces: [], eventNames: [] }
+  //   : { isSocketIO: false };
+
+  return prevState;
 };

@@ -1,5 +1,7 @@
 import { defineContentScript } from '#imports';
+import { createLogger } from '@/utils/customLogger';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
+import { isSocketIOConnection } from '@/utils/socketIOHelpers';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   WebSocketClientConnection,
@@ -13,6 +15,8 @@ type SocketConnection = {
   client: WebSocketClientConnection;
   server: WebSocketServerConnection;
 };
+
+const logger = createLogger('MAIN');
 
 const patchSocketSync = () => {
   const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD' }).connect();
@@ -134,6 +138,13 @@ const patchSocketSync = () => {
     });
 
     sendSocketDetailsPacket();
+
+    // TODO: consider just adding a socket IO field to socket details
+    logger('checking if socket IO: ', JSON.stringify(interceptedSocket.url));
+    const isSocketIO = isSocketIOConnection(socketUrl);
+    if (isSocketIO) {
+      // TODO:
+    }
   });
 
   windowConnector.subscribe((packet: Packet) => {
@@ -152,7 +163,7 @@ const patchSocketSync = () => {
       if (message.destination === 'client') {
         try {
           connection.client.send(message.payload);
-        } catch {}
+        } catch { }
 
         const clientMessagePacket: SocketMessagePacket = {
           type: 'SocketMessagePacket',
@@ -173,7 +184,7 @@ const patchSocketSync = () => {
       } else if (message.destination === 'server') {
         try {
           connection.server.send(message.payload);
-        } catch {}
+        } catch { }
 
         const serverMessagePacket: SocketMessagePacket = {
           type: 'SocketMessagePacket',
@@ -213,7 +224,7 @@ const patchSocketSync = () => {
       }
       try {
         connection.client.close(code, reason);
-      } catch {}
+      } catch { }
     }
   });
 };

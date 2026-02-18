@@ -139,7 +139,7 @@ const patchSocketSync = () => {
     if (isEngineIOv4Url(socketUrl)) {
       windowConnector.sendPacket({
         type: 'DetectedSocketIOPacketSchema',
-        payload: { socketId: socketId },
+        payload: { socketId },
       });
     }
   });

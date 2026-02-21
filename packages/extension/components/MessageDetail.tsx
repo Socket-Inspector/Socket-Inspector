@@ -36,8 +36,6 @@ type MessageDetailContentProps = {
 function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailContentProps) {
   const { dispatch } = useSocketContext();
 
-  const [messageFormat, setMessageFormat] = useState<MessageDetailFormat>('TEXT');
-
   if (!selectedSocket) {
     return null;
   }
@@ -77,12 +75,11 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
         <div className="flex items-center justify-between border-b px-2">
-          {/* TODO: rendering issue when socket io is false */}
           {isSocketIO && (
             <MessageDetailFormatSelector
-              value={messageFormat}
+              value="SOCKET_IO"
               onChange={(newValue) => {
-                setMessageFormat(newValue);
+                // setMessageFormat(newValue);
               }}
             ></MessageDetailFormatSelector>
           )}

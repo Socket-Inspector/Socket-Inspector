@@ -1,6 +1,11 @@
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { querySelectedMessage, querySelectedSocketIODetails, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
+import {
+  querySelectedMessage,
+  querySelectedSocketIODetails,
+  querySelectedSocketMessages,
+} from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
+import { ScrollArea } from '../shadcn/ScrollArea';
 
 export function MessageDetailNew() {
   const { socketState } = useSocketContext();
@@ -40,18 +45,23 @@ function MessageDetailContent() {
   }
 
   const { isSocketIO } = querySelectedSocketIODetails(socketState);
-
-  if (isSocketIO) {
-    return <MessageDetailSocketIO></MessageDetailSocketIO>;
-  }
-
-  return <MessageDetailWebSocket></MessageDetailWebSocket>;
+  return (
+    <div className="h-full w-full">
+      <ScrollArea className="h-full w-full">
+        {isSocketIO ? (
+          <MessageDetailSocketIO></MessageDetailSocketIO>
+        ) : (
+          <MessageDetailWebSocket></MessageDetailWebSocket>
+        )}
+      </ScrollArea>
+    </div>
+  );
 }
 
 function MessageDetailSocketIO() {
-  return <div></div>
+  return <div></div>;
 }
 
 function MessageDetailWebSocket() {
-  return <div></div>
+  return <div></div>;
 }

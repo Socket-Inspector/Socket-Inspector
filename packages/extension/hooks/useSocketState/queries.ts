@@ -55,14 +55,17 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
     return undefined;
   }
   const { selectedMessageId } = selectedSocket;
-  return state.socketMessages[selectedMessageId]?.find(message => message.id === selectedMessageId) ?? undefined;
+  return (
+    state.socketMessages[selectedMessageId]?.find((message) => message.id === selectedMessageId) ??
+    undefined
+  );
 };
 
 export type SocketIODetails =
   | {
-    isSocketIO: false;
-  }
-  | { isSocketIO: true, socketIO: SocketIOConnection };
+      isSocketIO: false;
+    }
+  | { isSocketIO: true; socketIO: SocketIOConnection };
 
 export const querySelectedSocketIODetails = (state: SocketState): SocketIODetails => {
   const { selectedSocket } = state;
@@ -72,4 +75,4 @@ export const querySelectedSocketIODetails = (state: SocketState): SocketIODetail
   }
 
   return { isSocketIO: false };
-}
+};

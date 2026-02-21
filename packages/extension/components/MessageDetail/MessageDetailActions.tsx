@@ -1,13 +1,16 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../shadcn/Tooltip";
-import { Copy, ClipboardPaste } from "lucide-react";
-import { Button } from "../shadcn/Button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadcn/Tooltip';
+import { Copy, ClipboardPaste } from 'lucide-react';
+import { Button } from '../shadcn/Button';
 
 export type MessageDetailActionsProps = {
   onCopyToClipboardClicked: () => void;
   onCopyToComposerClicked: () => void;
 };
 
-export function MessageDetailActions({ onCopyToClipboardClicked, onCopyToComposerClicked }: MessageDetailActionsProps) {
+export function MessageDetailActions({
+  onCopyToClipboardClicked,
+  onCopyToComposerClicked,
+}: MessageDetailActionsProps) {
   return (
     <div>
       <TooltipProvider>
@@ -43,5 +46,5 @@ export function MessageDetailActions({ onCopyToClipboardClicked, onCopyToCompose
         </Tooltip>
       </TooltipProvider>
     </div>
-  )
+  );
 }

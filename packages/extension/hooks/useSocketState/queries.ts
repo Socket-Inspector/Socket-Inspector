@@ -47,6 +47,16 @@ export const querySelectedSocketMessages = (state: SocketState): Array<SocketMes
   return state.socketMessages[selectedSocketId] ?? [];
 };
 
+// TODO: testing/review on this
+export const querySelectedMessage = (state: SocketState): SocketMessage | undefined => {
+  const { selectedSocket } = state;
+  if (!selectedSocket || !selectedSocket.selectedMessageId) {
+    return undefined;
+  }
+  const { selectedMessageId } = selectedSocket;
+  return state.socketMessages[selectedMessageId]?.find(message => message.id === selectedMessageId) ?? undefined;
+};
+
 export type SocketIODetails =
   | {
     isSocketIO: false;

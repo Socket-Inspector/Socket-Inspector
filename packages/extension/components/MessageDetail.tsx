@@ -6,6 +6,8 @@ import { ClipboardPaste, Copy } from 'lucide-react';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
 import { copyToClipboard } from '@/utils/helpers';
+import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
+import { Label } from './shadcn/Label';
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();
@@ -129,5 +131,38 @@ function MessageDetailEmptyView({ headline, helperText }: MessageDetailEmptyView
         <p className="text-muted-foreground max-w-xs text-xs">{helperText}</p>
       </div>
     </div>
+  );
+}
+
+type MessageDetailFormat = 'SOCKET_IO' | 'TEXT';
+type MessageDetailFormatSelectorProps = {
+  value: MessageDetailFormat;
+  onChange: (format: MessageDetailFormat) => void;
+};
+function MessageDetailFormatSelector({ value, onChange }: MessageDetailFormatSelectorProps) {
+  return (
+    <RadioGroup
+      orientation="horizontal"
+      value={value}
+      onValueChange={(newValue: string) => {
+        if (newValue !== 'SOCKET_IO' && newValue !== 'TEXT') {
+          throw new Error(`Invalid detail format: ${newValue}`);
+        }
+        onChange(newValue);
+      }}
+    >
+      <div className="flex items-center gap-1.5">
+        <RadioGroupItem value="socket-io" id="radio-view-socket-io" />
+        <Label htmlFor="radio-view-socket-io" className="text-xs">
+          Socket.IO
+        </Label>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <RadioGroupItem value="text" id="radio-view-text" />
+        <Label htmlFor="radio-view-text" className="text-xs">
+          Text
+        </Label>
+      </div>
+    </RadioGroup>
   );
 }

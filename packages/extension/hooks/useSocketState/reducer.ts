@@ -44,7 +44,7 @@ export const reducer = (prevState: SocketState, action: ReducerAction): SocketSt
     return applyClearMessageComposerPrefillAction(prevState, action);
   } else if (action.type === 'CLEAR_UNSEEN_CUSTOM_MESSAGE_ID_ACTION') {
     return applyClearUnseenCustomMessageIdAction(prevState, action);
-  } else if (action.type === 'DetectedSocketIOPacketSchema') {
+  } else if (action.type === 'DetectedSocketIOPacket') {
     return applyDetectedSocketIOPacket(prevState, action);
   }
   return prevState;

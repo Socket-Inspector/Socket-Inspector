@@ -100,7 +100,7 @@ export const CloseConnectionPacketSchema = z.object({
 });
 
 export const DetectedSocketIOPacketSchema = z.object({
-  type: z.literal('DetectedSocketIOPacketSchema'),
+  type: z.literal('DetectedSocketIOPacket'),
   payload: z.object({
     socketId: z.string(),
   }),

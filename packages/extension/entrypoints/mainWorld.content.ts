@@ -138,7 +138,7 @@ const patchSocketSync = () => {
 
     if (isEngineIOv4Url(socketUrl)) {
       windowConnector.sendPacket({
-        type: 'DetectedSocketIOPacketSchema',
+        type: 'DetectedSocketIOPacket',
         payload: { socketId },
       });
     }

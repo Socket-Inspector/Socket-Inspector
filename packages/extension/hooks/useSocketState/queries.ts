@@ -54,5 +54,5 @@ export type SocketIODetails =
   | { isSocketIO: true, socketIO: SocketIOConnection };
 
 export const querySocketIODetails = (socketId: SocketDetails['id']): SocketIODetails => {
-  throw 'not yet';
+  return { isSocketIO: false };
 };

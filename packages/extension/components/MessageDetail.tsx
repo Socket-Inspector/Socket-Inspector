@@ -70,18 +70,22 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
     return null;
   }
 
-  const { isSocketIO } = querySocketIODetails(selectedSocket.id);
+  // const { isSocketIO } = querySocketIODetails(selectedSocket.id);
+  const isSocketIO = true;
 
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
         <div className="flex items-center justify-between border-b px-2">
-          <MessageDetailFormatSelector
-            value={messageFormat}
-            onChange={(newValue) => {
-              setMessageFormat(newValue);
-            }}
-          ></MessageDetailFormatSelector>
+          {/* TODO: rendering issue when socket io is false */}
+          {isSocketIO && (
+            <MessageDetailFormatSelector
+              value={messageFormat}
+              onChange={(newValue) => {
+                setMessageFormat(newValue);
+              }}
+            ></MessageDetailFormatSelector>
+          )}
           <div>
             <TooltipProvider>
               <Tooltip delayDuration={500}>

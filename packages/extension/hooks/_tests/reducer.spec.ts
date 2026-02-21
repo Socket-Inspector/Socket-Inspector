@@ -499,7 +499,11 @@ describe('reducer', () => {
        * keeps parity with chrome devtools
        */
       it('the socket is not added to socketMessages but the message is stored', () => {
-        const startingState: SocketState = { sockets: [], socketMessages: {}, socketIOConnections: {} };
+        const startingState: SocketState = {
+          sockets: [],
+          socketMessages: {},
+          socketIOConnections: {},
+        };
         const action: ReducerAction = {
           type: 'SocketMessagePacket',
           payload: {

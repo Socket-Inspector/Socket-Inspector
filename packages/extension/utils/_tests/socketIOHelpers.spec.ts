@@ -9,7 +9,8 @@ describe('isEngineIOv4Url', () => {
       expect(result).toBe(true);
     });
     it('returns true upgrading from long polling', () => {
-      const SocketIOUpgradeUrl = 'ws://localhost:7812/socket.io/?EIO=4&transport=websocket&sid=WXIHQm5DQtpna3W-AAAa';
+      const SocketIOUpgradeUrl =
+        'ws://localhost:7812/socket.io/?EIO=4&transport=websocket&sid=WXIHQm5DQtpna3W-AAAa';
       const result = isEngineIOv4Url(SocketIOUpgradeUrl);
       expect(result).toBe(true);
     });

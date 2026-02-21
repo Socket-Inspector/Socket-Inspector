@@ -3,6 +3,7 @@ import { Packet, SocketDetails, SocketMessage } from '@/utils/sharedTypes/shared
 export type SocketState = {
   sockets: Array<SocketDetails>;
   socketMessages: Record<SocketDetails['id'], Array<SocketMessage>>;
+  socketIOConnections: Record<SocketDetails['id'], SocketIOConnection>;
   selectedSocket?: {
     id: string;
     selectedMessageId?: string;
@@ -10,6 +11,8 @@ export type SocketState = {
     unseenCustomMessageId?: string;
   };
 };
+
+export type SocketIOConnection = { namespaces: Array<string>; eventNames: Array<string> };
 
 export type MessageComposerFormData = {
   destination: 'client' | 'server';

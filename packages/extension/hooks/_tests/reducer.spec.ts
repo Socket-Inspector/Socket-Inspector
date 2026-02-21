@@ -34,6 +34,7 @@ describe('reducer', () => {
           },
         ],
         socketMessages: {},
+        socketIOConnections: {},
       });
 
       // Socket is CONNECTED
@@ -61,6 +62,7 @@ describe('reducer', () => {
           },
         ],
         socketMessages: {},
+        socketIOConnections: {},
       });
     });
     it('CONNECTED to CLOSED', () => {
@@ -90,6 +92,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       };
 
       const closedPacket: SocketDetailsPacket = {
@@ -130,6 +133,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       });
     });
     it('socket connects when there is a CLOSED socket with the same URL', () => {
@@ -159,6 +163,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       };
 
       const connectingPacket: SocketDetailsPacket = {
@@ -205,6 +210,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       });
     });
   });
@@ -221,6 +227,7 @@ describe('reducer', () => {
           },
         ],
         socketMessages: {},
+        socketIOConnections: {},
       };
 
       const action: SelectSocketAction = {
@@ -239,6 +246,7 @@ describe('reducer', () => {
         ],
         socketMessages: {},
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       });
     });
     it('can change the selected socket', () => {
@@ -274,6 +282,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       };
       const selectNextSocket: SelectSocketAction = {
         type: 'SELECT_SOCKET',
@@ -311,6 +320,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '661d82ca-23d2-4d1b-b069-be5ff140db1f' },
+        socketIOConnections: {},
       });
     });
   });
@@ -328,6 +338,7 @@ describe('reducer', () => {
         ],
         socketMessages: {},
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       };
 
       // first message arrives
@@ -371,6 +382,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       });
 
       // second message arrives
@@ -420,6 +432,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: '4a2e45fc-c3d9-4429-8194-e7be165c9d3c' },
+        socketIOConnections: {},
       });
     });
 
@@ -444,6 +457,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: 'TEST_SOCKET_ID' },
+        socketIOConnections: {},
       };
 
       const duplicateMessageAction: SocketMessagePacket = {
@@ -485,7 +499,11 @@ describe('reducer', () => {
        * keeps parity with chrome devtools
        */
       it('the socket is not added to socketMessages but the message is stored', () => {
-        const startingState: SocketState = { sockets: [], socketMessages: {} };
+        const startingState: SocketState = {
+          sockets: [],
+          socketMessages: {},
+          socketIOConnections: {},
+        };
         const action: ReducerAction = {
           type: 'SocketMessagePacket',
           payload: {
@@ -545,6 +563,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: SOCKET_ID },
+        socketIOConnections: {},
       };
 
       const action: ReducerAction = { type: 'CLEAR_SELECTED_SOCKET_MESSAGES' };
@@ -573,6 +592,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: SOCKET_ID, selectedMessageId: 'MSG_1' },
+        socketIOConnections: {},
       };
 
       const action: ReducerAction = { type: 'CLEAR_SELECTED_SOCKET_MESSAGES' };
@@ -597,6 +617,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: SOCKET_ID, selectedMessageId: 'MSG_1' },
+        socketIOConnections: {},
       };
 
       const action: ReducerAction = { type: 'CLEAR_SELECTED_SOCKET_MESSAGES' };
@@ -635,6 +656,7 @@ describe('reducer', () => {
           ],
         },
         selectedSocket: { id: 'AN_EXCELLENT_SOCKET' },
+        socketIOConnections: {},
       };
 
       const customMessageAction: SocketMessagePacket = {

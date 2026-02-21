@@ -1,8 +1,6 @@
-// logger.ts (shared by every extension context)
-
 export type LogFn = (...data: unknown[]) => void;
 
-const GLOBAL_PREFIX = 'SOCKET_EXTENSION';
+const GLOBAL_PREFIX = 'SOCKET_INSPECTOR';
 
 /**
  * Creates a namespaced logger whose output is

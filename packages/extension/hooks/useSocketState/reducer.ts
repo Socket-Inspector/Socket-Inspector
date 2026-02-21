@@ -1,4 +1,8 @@
-import { SocketDetailsPacket, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
+import {
+  DetectedSocketIOPacket,
+  SocketDetailsPacket,
+  SocketMessagePacket,
+} from '@/utils/sharedTypes/sharedTypes';
 import {
   ReducerAction,
   SelectSocketAction,
@@ -15,6 +19,7 @@ export const getInitialState = (): SocketState => {
   return {
     sockets: [],
     socketMessages: {},
+    socketIOConnections: {},
   };
 };
 
@@ -39,6 +44,8 @@ export const reducer = (prevState: SocketState, action: ReducerAction): SocketSt
     return applyClearMessageComposerPrefillAction(prevState, action);
   } else if (action.type === 'CLEAR_UNSEEN_CUSTOM_MESSAGE_ID_ACTION') {
     return applyClearUnseenCustomMessageIdAction(prevState, action);
+  } else if (action.type === 'DetectedSocketIOPacket') {
+    return applyDetectedSocketIOPacket(prevState, action);
   }
   return prevState;
 };
@@ -57,6 +64,22 @@ const applySocketDetailsPacket = (
   } else {
     return { ...prevState, sockets: [...prevState.sockets, socket] };
   }
+};
+
+const applyDetectedSocketIOPacket = (
+  prevState: SocketState,
+  packet: DetectedSocketIOPacket,
+): SocketState => {
+  const { socketId } = packet.payload;
+  const existing = prevState.socketIOConnections[socketId];
+
+  return {
+    ...prevState,
+    socketIOConnections: {
+      ...prevState.socketIOConnections,
+      [socketId]: existing ?? { namespaces: [], eventNames: [] },
+    },
+  };
 };
 
 const applySocketMessagePacket = (

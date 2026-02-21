@@ -9,6 +9,7 @@ import { copyToClipboard } from '@/utils/helpers';
 import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
 import { Label } from './shadcn/Label';
 import { useState } from 'react';
+import { querySocketIODetails } from '@/hooks/useSocketState/queries';
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();
@@ -69,10 +70,12 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
     return null;
   }
 
+  const { isSocketIO } = querySocketIODetails(selectedSocket.id);
+
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
-        <div className="flex items-center justify-between px-2 border-b">
+        <div className="flex items-center justify-between border-b px-2">
           <MessageDetailFormatSelector
             value={messageFormat}
             onChange={(newValue) => {

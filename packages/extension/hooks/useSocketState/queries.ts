@@ -1,5 +1,5 @@
 import { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
-import { SocketState } from './stateTypes';
+import { SocketIOConnection, SocketState } from './stateTypes';
 
 export const querySelectedSocketDetails = (state: SocketState): SocketDetails | undefined => {
   if (!state.selectedSocket) {
@@ -45,4 +45,14 @@ export const querySelectedSocketMessages = (state: SocketState): Array<SocketMes
   }
 
   return state.socketMessages[selectedSocketId] ?? [];
+};
+
+export type SocketIODetails =
+  | {
+    isSocketIO: false;
+  }
+  | { isSocketIO: true, socketIO: SocketIOConnection };
+
+export const querySocketIODetails = (socketId: SocketDetails['id']): SocketIODetails => {
+  throw 'not yet';
 };

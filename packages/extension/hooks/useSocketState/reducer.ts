@@ -44,6 +44,7 @@ export const reducer = (prevState: SocketState, action: ReducerAction): SocketSt
   } else if (action.type === 'CLEAR_UNSEEN_CUSTOM_MESSAGE_ID_ACTION') {
     return applyClearUnseenCustomMessageIdAction(prevState, action);
   } else if (action.type === 'DetectedSocketIOPacketSchema') {
+    // TODO: remove logger stuff
     logger('state before socket IO detected: ', prevState);
     const newState = applyDetectedSocketIOPacket(prevState, action);
     logger('state after socket IO detected: ', newState);

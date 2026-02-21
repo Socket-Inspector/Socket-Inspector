@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shad
 import { copyToClipboard } from '@/utils/helpers';
 import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
 import { Label } from './shadcn/Label';
+import { useState } from 'react';
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();
@@ -33,6 +34,8 @@ type MessageDetailContentProps = {
 };
 function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailContentProps) {
   const { dispatch } = useSocketContext();
+
+  const [messageFormat, setMessageFormat] = useState<MessageDetailFormat>('TEXT');
 
   if (!selectedSocket) {
     return null;
@@ -70,6 +73,12 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
         <div className="flex items-center justify-end px-2">
+          <MessageDetailFormatSelector
+            value={messageFormat}
+            onChange={(newValue) => {
+              setMessageFormat(newValue);
+            }}
+          ></MessageDetailFormatSelector>
           <TooltipProvider>
             <Tooltip delayDuration={500}>
               <TooltipTrigger asChild>
@@ -152,13 +161,13 @@ function MessageDetailFormatSelector({ value, onChange }: MessageDetailFormatSel
       }}
     >
       <div className="flex items-center gap-1.5">
-        <RadioGroupItem value="socket-io" id="radio-view-socket-io" />
+        <RadioGroupItem value="SOCKET_IO" id="radio-view-socket-io" />
         <Label htmlFor="radio-view-socket-io" className="text-xs">
           Socket.IO
         </Label>
       </div>
       <div className="flex items-center gap-1.5">
-        <RadioGroupItem value="text" id="radio-view-text" />
+        <RadioGroupItem value="TEXT" id="radio-view-text" />
         <Label htmlFor="radio-view-text" className="text-xs">
           Text
         </Label>

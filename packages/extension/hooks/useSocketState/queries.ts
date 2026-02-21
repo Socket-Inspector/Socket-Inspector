@@ -48,6 +48,7 @@ export const querySelectedSocketMessages = (state: SocketState): Array<SocketMes
 };
 
 // TODO: testing/review on this
+// TODO: why not just use existing querySelectedSocketMessages?
 export const querySelectedMessage = (state: SocketState): SocketMessage | undefined => {
   const { selectedSocket } = state;
   if (!selectedSocket || !selectedSocket.selectedMessageId) {

@@ -8,6 +8,8 @@ export type MessageDetailFormatSelectorProps = {
   onChange: (format: MessageDetailFormat) => void;
 };
 
+// TODO: REMOVE
+
 export function MessageDetailFormatSelector({ value, onChange }: MessageDetailFormatSelectorProps) {
   return (
     <RadioGroup

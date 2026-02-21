@@ -1,14 +1,15 @@
-import { useState } from "react";
-import { Label } from "../shadcn/Label";
-import { RadioGroup, RadioGroupItem } from "../shadcn/RadioGroup";
+import { useState } from 'react';
+import { Label } from '../shadcn/Label';
+import { RadioGroup, RadioGroupItem } from '../shadcn/RadioGroup';
+import { MessageDetailActions } from './MessageDetailActions';
 
 type MessageFormat = 'SOCKET_IO' | 'TEXT';
 
 export function MessageDetailSocketIO() {
-  const [format, setFormat] = useState<MessageFormat>('SOCKET_IO')
+  const [format, setFormat] = useState<MessageFormat>('SOCKET_IO');
 
   return (
-    <div className="flex items-center justify-end px-2">
+    <div className="flex items-center border-b px-2">
       <RadioGroup
         className="flex flex-row gap-3"
         orientation="horizontal"
@@ -33,6 +34,14 @@ export function MessageDetailSocketIO() {
           </Label>
         </div>
       </RadioGroup>
+      <MessageDetailActions
+        onCopyToClipboardClicked={() => {
+          // TODO:
+        }}
+        onCopyToComposerClicked={() => {
+          // TODO:
+        }}
+      ></MessageDetailActions>
     </div>
-  )
+  );
 }

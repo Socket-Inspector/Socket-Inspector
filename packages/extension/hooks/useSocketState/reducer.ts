@@ -16,7 +16,7 @@ export const getInitialState = (): SocketState => {
   return {
     sockets: [],
     socketMessages: {},
-    socketIODetails: {},
+    socketIOConnections: {},
   };
 };
 
@@ -77,9 +77,9 @@ const applyDetectedSocketIOPacket = (
 
   return {
     ...prevState,
-    socketIODetails: {
-      ...prevState.socketIODetails,
-      [socketId]: { isSocketIO: true, namespaces: [], eventNames: [] },
+    socketIOConnections: {
+      ...prevState.socketIOConnections,
+      [socketId]: { namespaces: [], eventNames: [] },
     },
   };
 };

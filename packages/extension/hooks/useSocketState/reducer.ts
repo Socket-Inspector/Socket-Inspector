@@ -10,7 +10,6 @@ import {
   SocketState,
   ClearUnseenCustomMessageIdAction,
 } from './stateTypes';
-import { createLogger } from '@/utils/customLogger';
 
 export const getInitialState = (): SocketState => {
   return {
@@ -19,8 +18,6 @@ export const getInitialState = (): SocketState => {
     socketIOConnections: {},
   };
 };
-
-const logger = createLogger('DEVTOOLS');
 
 export const reducer = (prevState: SocketState, action: ReducerAction): SocketState => {
   if (action.type === 'SocketDetailsPacket') {

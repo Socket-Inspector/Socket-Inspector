@@ -9,7 +9,7 @@ import {
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { EmptySocketSelection } from '@/components/EmptySocketSelection';
 import { MessageTable } from '@/components/MessageTable';
-import { MessageDetail } from '@/components/MessageDetail';
+import { MessageDetail } from '@/components/MessageDetail/MessageDetail';
 import { MessageComposer } from '@/components/MessageComposer';
 
 export default function DevtoolsPanelApp() {

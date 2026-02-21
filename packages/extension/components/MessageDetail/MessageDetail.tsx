@@ -1,13 +1,13 @@
 import { SocketState } from '@/hooks/useSocketState/stateTypes';
-import { ScrollArea } from './shadcn/ScrollArea';
+import { ScrollArea } from '../shadcn/ScrollArea';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { Button } from './shadcn/Button';
+import { Button } from '../shadcn/Button';
 import { ClipboardPaste, Copy } from 'lucide-react';
 import { processJsonPayload } from '@/utils/payloadProcessors';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadcn/Tooltip';
 import { copyToClipboard } from '@/utils/helpers';
-import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
-import { Label } from './shadcn/Label';
+import { RadioGroup, RadioGroupItem } from '../shadcn/RadioGroup';
+import { Label } from '../shadcn/Label';
 import { useState } from 'react';
 import { querySocketIODetails } from '@/hooks/useSocketState/queries';
 

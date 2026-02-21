@@ -74,12 +74,13 @@ const applyDetectedSocketIOPacket = (
   packet: DetectedSocketIOPacket,
 ): SocketState => {
   const { socketId } = packet.payload;
+  const existing = prevState.socketIOConnections[socketId];
 
   return {
     ...prevState,
     socketIOConnections: {
       ...prevState.socketIOConnections,
-      [socketId]: { namespaces: [], eventNames: [] },
+      [socketId]: existing ?? { namespaces: [], eventNames: [] },
     },
   };
 };

@@ -8,8 +8,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../sha
 import { copyToClipboard } from '@/utils/helpers';
 import { RadioGroup, RadioGroupItem } from '../shadcn/RadioGroup';
 import { Label } from '../shadcn/Label';
-import { useState } from 'react';
-import { querySocketIODetails } from '@/hooks/useSocketState/queries';
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();

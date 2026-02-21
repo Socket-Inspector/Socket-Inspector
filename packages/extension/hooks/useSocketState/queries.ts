@@ -64,6 +64,12 @@ export type SocketIODetails =
   }
   | { isSocketIO: true, socketIO: SocketIOConnection };
 
-export const querySocketIODetails = (socketId: SocketDetails['id']): SocketIODetails => {
+export const querySelectedSocketIODetails = (state: SocketState): SocketIODetails => {
+  const { selectedSocket } = state;
+
+  if (!selectedSocket) {
+    return { isSocketIO: false };
+  }
+
   return { isSocketIO: false };
-};
+}

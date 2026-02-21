@@ -72,53 +72,55 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
-        <div className="flex items-center px-2 border-b">
+        <div className="flex items-center justify-between px-2 border-b">
           <MessageDetailFormatSelector
             value={messageFormat}
             onChange={(newValue) => {
               setMessageFormat(newValue);
             }}
           ></MessageDetailFormatSelector>
-          <TooltipProvider>
-            <Tooltip delayDuration={500}>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Copy to Clipboard"
-                  onClick={() => copyToClipboard(selectedMessage.payload)}
-                >
-                  <Copy className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Copy to Clipboard</TooltipContent>
-            </Tooltip>
-            <Tooltip delayDuration={500}>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Copy to Message Composer"
-                  onClick={() => {
-                    const validJSON = processJsonPayload(selectedMessage.payload).success;
-                    dispatch({
-                      type: 'PREFILL_MESSAGE_COMPOSER',
-                      payload: {
-                        composerPrefill: {
-                          destination: selectedMessage.endpoints.destination,
-                          payloadType: validJSON ? 'json' : 'raw',
-                          payload: selectedMessage.payload,
+          <div>
+            <TooltipProvider>
+              <Tooltip delayDuration={500}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Copy to Clipboard"
+                    onClick={() => copyToClipboard(selectedMessage.payload)}
+                  >
+                    <Copy className="size-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy to Clipboard</TooltipContent>
+              </Tooltip>
+              <Tooltip delayDuration={500}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Copy to Message Composer"
+                    onClick={() => {
+                      const validJSON = processJsonPayload(selectedMessage.payload).success;
+                      dispatch({
+                        type: 'PREFILL_MESSAGE_COMPOSER',
+                        payload: {
+                          composerPrefill: {
+                            destination: selectedMessage.endpoints.destination,
+                            payloadType: validJSON ? 'json' : 'raw',
+                            payload: selectedMessage.payload,
+                          },
                         },
-                      },
-                    });
-                  }}
-                >
-                  <ClipboardPaste className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Copy to Message Composer</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                      });
+                    }}
+                  >
+                    <ClipboardPaste className="size-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy to Message Composer</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
         <pre className="m-4 mt-1 font-mono text-xs break-all whitespace-pre-wrap">
           {selectedMessage.payload}

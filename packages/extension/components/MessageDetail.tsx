@@ -72,7 +72,7 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
-        <div className="flex items-center justify-end px-2">
+        <div className="flex items-center px-2">
           <MessageDetailFormatSelector
             value={messageFormat}
             onChange={(newValue) => {

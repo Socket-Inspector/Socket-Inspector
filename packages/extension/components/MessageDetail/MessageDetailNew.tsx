@@ -6,6 +6,7 @@ import {
 } from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
+import { MessageDetailSocketIO } from './MessageDetailSocketIO';
 
 export function MessageDetailNew() {
   const { socketState } = useSocketContext();
@@ -56,10 +57,6 @@ function MessageDetailContent() {
       </ScrollArea>
     </div>
   );
-}
-
-function MessageDetailSocketIO() {
-  return <div></div>;
 }
 
 function MessageDetailWebSocket() {

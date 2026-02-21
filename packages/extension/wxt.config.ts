@@ -19,12 +19,6 @@ export default defineConfig({
       description:
         'Debug WebSockets in Chrome DevTools. Inspect traffic, send custom messages, and simulate server disconnections.',
       host_permissions: ['*://*/*'],
-      web_accessible_resources: [
-        {
-          resources: ['injectedScript.js'],
-          matches: ['*://*/*'],
-        },
-      ],
       permissions: ['storage'],
       minimum_chrome_version: '102',
     };

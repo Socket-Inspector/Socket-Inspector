@@ -9,6 +9,6 @@ export const isEngineIOv4Url = (urlString: string) => {
   }
 };
 
-export const parseSocketIOPacket = (encodedPacket: string) => {
+export const parseSocketIOPacket = (_encodedPacket: string) => {
   return {};
 };

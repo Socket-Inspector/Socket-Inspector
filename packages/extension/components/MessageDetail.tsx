@@ -72,7 +72,7 @@ function MessageDetailContent({ selectedSocket, socketMessages }: MessageDetailC
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
-        <div className="flex items-center px-2">
+        <div className="flex items-center px-2 border-b">
           <MessageDetailFormatSelector
             value={messageFormat}
             onChange={(newValue) => {
@@ -151,6 +151,7 @@ type MessageDetailFormatSelectorProps = {
 function MessageDetailFormatSelector({ value, onChange }: MessageDetailFormatSelectorProps) {
   return (
     <RadioGroup
+      className="flex flex-row gap-3"
       orientation="horizontal"
       value={value}
       onValueChange={(newValue: string) => {

@@ -161,14 +161,14 @@ function MessageDetailFormatSelector({ value, onChange }: MessageDetailFormatSel
       }}
     >
       <div className="flex items-center gap-1.5">
-        <RadioGroupItem value="SOCKET_IO" id="radio-view-socket-io" />
-        <Label htmlFor="radio-view-socket-io" className="text-xs">
+        <RadioGroupItem value="SOCKET_IO" id="radio-format-socket-io" />
+        <Label htmlFor="radio-format-socket-io" className="text-xs">
           Socket.IO
         </Label>
       </div>
       <div className="flex items-center gap-1.5">
-        <RadioGroupItem value="TEXT" id="radio-view-text" />
-        <Label htmlFor="radio-view-text" className="text-xs">
+        <RadioGroupItem value="TEXT" id="radio-format-text" />
+        <Label htmlFor="radio-format-text" className="text-xs">
           Text
         </Label>
       </div>

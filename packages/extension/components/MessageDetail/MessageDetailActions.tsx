@@ -1,18 +1,21 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadcn/Tooltip';
 import { Copy, ClipboardPaste } from 'lucide-react';
 import { Button } from '../shadcn/Button';
+import { cn } from '../../utils/cn';
 
 export type MessageDetailActionsProps = {
   onCopyToClipboardClicked: () => void;
   onCopyToComposerClicked: () => void;
+  className?: string;
 };
 
 export function MessageDetailActions({
   onCopyToClipboardClicked,
   onCopyToComposerClicked,
+  className,
 }: MessageDetailActionsProps) {
   return (
-    <div>
+    <div className={cn(className)}>
       <TooltipProvider>
         <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>

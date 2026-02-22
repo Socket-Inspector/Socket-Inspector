@@ -10,6 +10,11 @@ import { MessageDetailSocketIO } from './MessageDetailSocketIO';
 import { MessageDetailWebSocket } from './MessageDetailWebSocket';
 import { createLogger } from '@/utils/customLogger';
 
+/**
+ * TODO:
+ * test scrolling
+ */
+
 const logger = createLogger('DEVTOOLS');
 
 export function MessageDetailNew() {

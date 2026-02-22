@@ -1,6 +1,5 @@
 import { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 import { SocketIOConnection, SocketState } from './stateTypes';
-import { createLogger } from '@/utils/customLogger';
 
 export const querySelectedSocketDetails = (state: SocketState): SocketDetails | undefined => {
   if (!state.selectedSocket) {

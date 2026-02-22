@@ -7,14 +7,6 @@ import { MessageDetailWebSocket } from './MessageDetailWebSocket';
 import { copyToClipboard } from '@/utils/helpers';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 
-/**
- * TODO:
- * test scrolling
- * test copying json and non-json over to the composer
- * test various null states & empty states
- * keyboard nav still working
- */
-
 export function MessageDetail() {
   const { socketState, dispatch } = useSocketContext();
 

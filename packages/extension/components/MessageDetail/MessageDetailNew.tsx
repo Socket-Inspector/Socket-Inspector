@@ -61,7 +61,8 @@ function MessageDetailContent() {
   }
 
   // const { isSocketIO } = querySelectedSocketIODetails(socketState);
-  const isSocketIO = true;
+  // harcoding to false until feature is complete
+  const isSocketIO = false;
 
   const copyPayloadToClipboard = () => {
     logger('copyPayloadToClipboard')

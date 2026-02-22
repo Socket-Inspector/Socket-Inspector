@@ -7,6 +7,7 @@ import {
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
 import { MessageDetailSocketIO } from './MessageDetailSocketIO';
+import { MessageDetailWebSocket } from './MessageDetailWebSocket';
 
 export function MessageDetailNew() {
   const { socketState } = useSocketContext();
@@ -36,7 +37,8 @@ function MessageDetailContent() {
     );
   }
 
-  if (!querySelectedMessage(socketState)) {
+  const selectedMessage = querySelectedMessage(socketState);
+  if (!selectedMessage) {
     return (
       <MessageDetailEmptyView
         headline="Select a message"
@@ -52,13 +54,9 @@ function MessageDetailContent() {
         {isSocketIO ? (
           <MessageDetailSocketIO></MessageDetailSocketIO>
         ) : (
-          <MessageDetailWebSocket></MessageDetailWebSocket>
+          <MessageDetailWebSocket rawText={selectedMessage.payload}></MessageDetailWebSocket>
         )}
       </ScrollArea>
     </div>
   );
-}
-
-function MessageDetailWebSocket() {
-  return <div></div>;
 }

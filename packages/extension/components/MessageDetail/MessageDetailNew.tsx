@@ -60,13 +60,16 @@ function MessageDetailContent() {
     );
   }
 
-  const { isSocketIO } = querySelectedSocketIODetails(socketState);
+  // const { isSocketIO } = querySelectedSocketIODetails(socketState);
+  const isSocketIO = true;
 
   const copyPayloadToClipboard = () => {
+    logger('copyPayloadToClipboard')
     copyToClipboard(selectedMessage.payload);
   };
 
   const prefillMessageComposer = () => {
+    logger('PREFILLING THE COMPOSER')
     const validJSON = processJsonPayload(selectedMessage.payload).success;
     dispatch({
       type: 'PREFILL_MESSAGE_COMPOSER',
@@ -84,7 +87,10 @@ function MessageDetailContent() {
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
         {isSocketIO ? (
-          <MessageDetailSocketIO></MessageDetailSocketIO>
+          <MessageDetailSocketIO
+            onCopyToClipboardClicked={copyPayloadToClipboard}
+            onCopyToComposerClicked={prefillMessageComposer}
+          ></MessageDetailSocketIO>
         ) : (
           <MessageDetailWebSocket
             rawText={selectedMessage.payload}

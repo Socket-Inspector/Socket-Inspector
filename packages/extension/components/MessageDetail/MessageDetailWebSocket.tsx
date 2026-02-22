@@ -7,7 +7,6 @@ export type MessageDetailWebSocketProps = {
   onCopyToComposerClicked: () => void;
 };
 
-// TODO: not sure whether to make this pure or not
 export function MessageDetailWebSocket({
   rawText,
   onCopyToClipboardClicked,

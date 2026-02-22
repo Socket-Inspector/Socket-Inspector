@@ -6,7 +6,15 @@ import { MessageDetailRawDisplay } from './MessageDetailRawDisplay';
 
 type MessageFormat = 'SOCKET_IO' | 'TEXT';
 
-export function MessageDetailSocketIO() {
+export type MessageDetailSocketIOProps = {
+  onCopyToClipboardClicked: () => void;
+  onCopyToComposerClicked: () => void;
+};
+
+export function MessageDetailSocketIO({
+  onCopyToClipboardClicked,
+  onCopyToComposerClicked,
+}: MessageDetailSocketIOProps) {
   const [messageFormat, setMessageFormat] = useState<MessageFormat>('SOCKET_IO');
 
   return (
@@ -37,12 +45,8 @@ export function MessageDetailSocketIO() {
           </div>
         </RadioGroup>
         <MessageDetailActions
-          onCopyToClipboardClicked={() => {
-            // TODO:
-          }}
-          onCopyToComposerClicked={() => {
-            // TODO:
-          }}
+          onCopyToClipboardClicked={onCopyToClipboardClicked}
+          onCopyToComposerClicked={onCopyToComposerClicked}
         ></MessageDetailActions>
       </div>
       {messageFormat === 'SOCKET_IO' ? (

@@ -71,5 +71,11 @@ export const querySelectedSocketIODetails = (state: SocketState): SocketIODetail
     return { isSocketIO: false };
   }
 
-  return { isSocketIO: false };
+  const socketIO = state.socketIOConnections[selectedSocket.id];
+
+  if (!socketIO) {
+    return { isSocketIO: false };
+  }
+
+  return { isSocketIO: true, socketIO };
 };

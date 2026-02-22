@@ -2,6 +2,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../sha
 import { Copy, ClipboardPaste } from 'lucide-react';
 import { Button } from '../shadcn/Button';
 
+/**
+ * TODO:
+ * consider swapping to multi-row layout when shrinking the panel horizontally (not sure about vertical though)
+ */
+
 export type MessageDetailActionsProps = {
   onCopyToClipboardClicked: () => void;
   onCopyToComposerClicked: () => void;

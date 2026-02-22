@@ -47,7 +47,6 @@ export const querySelectedSocketMessages = (state: SocketState): Array<SocketMes
   return state.socketMessages[selectedSocketId] ?? [];
 };
 
-// TODO: validate that querySelectedSocketMessages() is safe
 export const querySelectedMessage = (state: SocketState): SocketMessage | undefined => {
   const { selectedSocket } = state;
   if (!selectedSocket || !selectedSocket.selectedMessageId) {

@@ -29,7 +29,6 @@ type MessageDetailContentProps = {
   dispatch: SocketContext['dispatch'];
 };
 function MessageDetailContent({ socketState, dispatch }: MessageDetailContentProps) {
-  // TODO: validate that querySelectedSocketMessages() is safe
   if (querySelectedSocketMessages(socketState).length === 0) {
     return (
       <MessageDetailEmptyView

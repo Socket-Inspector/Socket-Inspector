@@ -8,6 +8,9 @@ import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
 import { MessageDetailSocketIO } from './MessageDetailSocketIO';
 import { MessageDetailWebSocket } from './MessageDetailWebSocket';
+import { createLogger } from '@/utils/customLogger';
+
+const logger = createLogger('DEVTOOLS');
 
 export function MessageDetailNew() {
   const { socketState } = useSocketContext();
@@ -21,6 +24,7 @@ export function MessageDetailNew() {
       <h2 className="sr-only" id="message-detail-heading">
         Selected Message Details
       </h2>
+      <MessageDetailContent></MessageDetailContent>
     </aside>
   );
 }
@@ -28,6 +32,7 @@ export function MessageDetailNew() {
 function MessageDetailContent() {
   const { socketState } = useSocketContext();
 
+  // TODO: validate that querySelectedSocketMessages() is safe
   if (querySelectedSocketMessages(socketState).length === 0) {
     return (
       <MessageDetailEmptyView

@@ -16,6 +16,8 @@ import { processJsonPayload } from '@/utils/payloadProcessors';
  * TODO:
  * test scrolling
  * test copying json and non-json over to the composer
+ * test various null states & empty states
+ * keyboard nav still working
  */
 
 const logger = createLogger('DEVTOOLS');

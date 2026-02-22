@@ -9,8 +9,8 @@ import {
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { EmptySocketSelection } from '@/components/EmptySocketSelection';
 import { MessageTable } from '@/components/MessageTable';
-import { MessageDetail } from '@/components/MessageDetail/MessageDetail';
 import { MessageComposer } from '@/components/MessageComposer';
+import { MessageDetailNew } from '@/components/MessageDetail/MessageDetailNew';
 
 export default function DevtoolsPanelApp() {
   const breakpoint = useBreakpoint();
@@ -68,7 +68,7 @@ function AppPanels({ layout }: AppPanelsProps) {
                 defaultSize={layout === 'three_column' ? 30 : 14}
                 minSize={2}
               >
-                <MessageDetail></MessageDetail>
+                <MessageDetailNew></MessageDetailNew>
               </ResizablePanel>
               {layout === 'two_column' && (
                 <>

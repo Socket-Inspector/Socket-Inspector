@@ -11,7 +11,7 @@ export function MessageDetailSocketIO() {
 
   return (
     <>
-      <div className="flex items-center border-b px-2">
+      <div className="flex items-center justify-between border-b px-2">
         <RadioGroup
           className="flex flex-row gap-3"
           orientation="horizontal"

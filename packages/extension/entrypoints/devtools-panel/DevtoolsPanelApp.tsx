@@ -9,8 +9,8 @@ import {
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { EmptySocketSelection } from '@/components/EmptySocketSelection';
 import { MessageTable } from '@/components/MessageTable';
-import { MessageDetail } from '@/components/MessageDetail';
 import { MessageComposer } from '@/components/MessageComposer';
+import { MessageDetail } from '@/components/MessageDetail/MessageDetail';
 
 export default function DevtoolsPanelApp() {
   const breakpoint = useBreakpoint();

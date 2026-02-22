@@ -54,8 +54,6 @@ export function MessageDetailSocketIO() {
   );
 }
 
-type MessageDetailSocketIODisplayProps = {};
-
 function MessageDetailSocketIODisplay() {
   return <div>HELLO I AM SOCKET IO</div>;
 }

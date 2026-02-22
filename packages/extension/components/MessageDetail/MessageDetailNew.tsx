@@ -9,10 +9,13 @@ import { ScrollArea } from '../shadcn/ScrollArea';
 import { MessageDetailSocketIO } from './MessageDetailSocketIO';
 import { MessageDetailWebSocket } from './MessageDetailWebSocket';
 import { createLogger } from '@/utils/customLogger';
+import { copyToClipboard } from '@/utils/helpers';
+import { processJsonPayload } from '@/utils/payloadProcessors';
 
 /**
  * TODO:
  * test scrolling
+ * test copying json and non-json over to the composer
  */
 
 const logger = createLogger('DEVTOOLS');
@@ -35,7 +38,7 @@ export function MessageDetailNew() {
 }
 
 function MessageDetailContent() {
-  const { socketState } = useSocketContext();
+  const { socketState, dispatch } = useSocketContext();
 
   // TODO: validate that querySelectedSocketMessages() is safe
   if (querySelectedSocketMessages(socketState).length === 0) {
@@ -57,15 +60,37 @@ function MessageDetailContent() {
     );
   }
 
-  // const { isSocketIO } = querySelectedSocketIODetails(socketState);
-  const isSocketIO = true;
+  const { isSocketIO } = querySelectedSocketIODetails(socketState);
+
+  const copyPayloadToClipboard = () => {
+    copyToClipboard(selectedMessage.payload);
+  };
+
+  const prefillMessageComposer = () => {
+    const validJSON = processJsonPayload(selectedMessage.payload).success;
+    dispatch({
+      type: 'PREFILL_MESSAGE_COMPOSER',
+      payload: {
+        composerPrefill: {
+          destination: selectedMessage.endpoints.destination,
+          payloadType: validJSON ? 'json' : 'raw',
+          payload: selectedMessage.payload,
+        },
+      },
+    });
+  };
+
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
         {isSocketIO ? (
           <MessageDetailSocketIO></MessageDetailSocketIO>
         ) : (
-          <MessageDetailWebSocket rawText={selectedMessage.payload}></MessageDetailWebSocket>
+          <MessageDetailWebSocket
+            rawText={selectedMessage.payload}
+            onCopyToClipboardClicked={copyPayloadToClipboard}
+            onCopyToComposerClicked={prefillMessageComposer}
+          ></MessageDetailWebSocket>
         )}
       </ScrollArea>
     </div>

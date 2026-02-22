@@ -1,21 +1,24 @@
-import { createLogger } from '@/utils/customLogger';
 import { MessageDetailActions } from './MessageDetailActions';
 import { MessageDetailRawDisplay } from './MessageDetailRawDisplay';
 
 export type MessageDetailWebSocketProps = {
   rawText: string;
+  onCopyToClipboardClicked: () => void;
+  onCopyToComposerClicked: () => void;
 };
 
-const logger = createLogger('MD');
-
 // TODO: not sure whether to make this pure or not
-export function MessageDetailWebSocket({ rawText }: MessageDetailWebSocketProps) {
+export function MessageDetailWebSocket({
+  rawText,
+  onCopyToClipboardClicked,
+  onCopyToComposerClicked,
+}: MessageDetailWebSocketProps) {
   return (
     <>
       <div className="flex items-center justify-end px-2">
         <MessageDetailActions
-          onCopyToClipboardClicked={() => {}}
-          onCopyToComposerClicked={() => {}}
+          onCopyToClipboardClicked={onCopyToClipboardClicked}
+          onCopyToComposerClicked={onCopyToComposerClicked}
         ></MessageDetailActions>
       </div>
       <MessageDetailRawDisplay rawText={rawText}></MessageDetailRawDisplay>

@@ -52,7 +52,8 @@ function MessageDetailContent() {
     );
   }
 
-  const { isSocketIO } = querySelectedSocketIODetails(socketState);
+  // const { isSocketIO } = querySelectedSocketIODetails(socketState);
+  const isSocketIO = true;
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">

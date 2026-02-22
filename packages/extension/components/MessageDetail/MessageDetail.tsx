@@ -22,7 +22,7 @@ import { processJsonPayload } from '@/utils/payloadProcessors';
 
 const logger = createLogger('DEVTOOLS');
 
-export function MessageDetailNew() {
+export function MessageDetail() {
   const { socketState } = useSocketContext();
 
   if (!socketState.selectedSocket) {

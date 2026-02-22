@@ -7,7 +7,7 @@ import { MessageDetailRawDisplay } from './MessageDetailRawDisplay';
 type MessageFormat = 'SOCKET_IO' | 'TEXT';
 
 export function MessageDetailSocketIO() {
-  const [format, setFormat] = useState<MessageFormat>('SOCKET_IO');
+  const [messageFormat, setMessageFormat] = useState<MessageFormat>('SOCKET_IO');
 
   return (
     <>
@@ -15,12 +15,12 @@ export function MessageDetailSocketIO() {
         <RadioGroup
           className="flex flex-row gap-3"
           orientation="horizontal"
-          value={format}
+          value={messageFormat}
           onValueChange={(newValue: string) => {
             if (newValue !== 'SOCKET_IO' && newValue !== 'TEXT') {
               throw new Error(`Invalid detail format: ${newValue}`);
             }
-            setFormat(newValue);
+            setMessageFormat(newValue);
           }}
         >
           <div className="flex items-center gap-1.5">
@@ -45,7 +45,17 @@ export function MessageDetailSocketIO() {
           }}
         ></MessageDetailActions>
       </div>
-      <MessageDetailRawDisplay rawText="TEST"></MessageDetailRawDisplay>
+      {messageFormat === 'SOCKET_IO' ? (
+        <MessageDetailSocketIODisplay></MessageDetailSocketIODisplay>
+      ) : (
+        <MessageDetailRawDisplay rawText="TEST"></MessageDetailRawDisplay>
+      )}
     </>
   );
+}
+
+type MessageDetailSocketIODisplayProps = {};
+
+function MessageDetailSocketIODisplay() {
+  return <div>HELLO I AM SOCKET IO</div>;
 }

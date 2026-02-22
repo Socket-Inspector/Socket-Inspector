@@ -14,8 +14,8 @@ export function MessageDetailWebSocket({ rawText }: MessageDetailWebSocketProps)
     <>
       <div className="flex items-center justify-end px-2">
         <MessageDetailActions
-          onCopyToClipboardClicked={() => { }}
-          onCopyToComposerClicked={() => { }}
+          onCopyToClipboardClicked={() => {}}
+          onCopyToComposerClicked={() => {}}
         ></MessageDetailActions>
       </div>
       <MessageDetailRawDisplay rawText={rawText}></MessageDetailRawDisplay>

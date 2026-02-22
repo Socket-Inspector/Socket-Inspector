@@ -61,8 +61,8 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
 
 export type SocketIODetails =
   | {
-    isSocketIO: false;
-  }
+      isSocketIO: false;
+    }
   | { isSocketIO: true; socketIO: SocketIOConnection };
 
 export const querySelectedSocketIODetails = (state: SocketState): SocketIODetails => {

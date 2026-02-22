@@ -1,4 +1,4 @@
-import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
+import { SocketContext, useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { querySelectedMessage, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
@@ -16,7 +16,7 @@ import { processJsonPayload } from '@/utils/payloadProcessors';
  */
 
 export function MessageDetail() {
-  const { socketState } = useSocketContext();
+  const { socketState, dispatch } = useSocketContext();
 
   if (!socketState.selectedSocket) {
     return null;
@@ -27,14 +27,16 @@ export function MessageDetail() {
       <h2 className="sr-only" id="message-detail-heading">
         Selected Message Details
       </h2>
-      <MessageDetailContent></MessageDetailContent>
+      <MessageDetailContent socketState={socketState} dispatch={dispatch}></MessageDetailContent>
     </aside>
   );
 }
 
-function MessageDetailContent() {
-  const { socketState, dispatch } = useSocketContext();
-
+type MessageDetailContentProps = {
+  socketState: SocketContext['socketState'];
+  dispatch: SocketContext['dispatch'];
+};
+function MessageDetailContent({ socketState, dispatch }: MessageDetailContentProps) {
   // TODO: validate that querySelectedSocketMessages() is safe
   if (querySelectedSocketMessages(socketState).length === 0) {
     return (

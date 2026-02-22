@@ -67,12 +67,10 @@ function MessageDetailContent() {
   const isSocketIO = false;
 
   const copyPayloadToClipboard = () => {
-    logger('copyPayloadToClipboard')
     copyToClipboard(selectedMessage.payload);
   };
 
   const prefillMessageComposer = () => {
-    logger('PREFILLING THE COMPOSER')
     const validJSON = processJsonPayload(selectedMessage.payload).success;
     dispatch({
       type: 'PREFILL_MESSAGE_COMPOSER',

@@ -1,14 +1,9 @@
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import {
-  querySelectedMessage,
-  querySelectedSocketIODetails,
-  querySelectedSocketMessages,
-} from '@/hooks/useSocketState/queries';
+import { querySelectedMessage, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
 import { MessageDetailSocketIO } from './MessageDetailSocketIO';
 import { MessageDetailWebSocket } from './MessageDetailWebSocket';
-import { createLogger } from '@/utils/customLogger';
 import { copyToClipboard } from '@/utils/helpers';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 
@@ -19,8 +14,6 @@ import { processJsonPayload } from '@/utils/payloadProcessors';
  * test various null states & empty states
  * keyboard nav still working
  */
-
-const logger = createLogger('DEVTOOLS');
 
 export function MessageDetail() {
   const { socketState } = useSocketContext();

@@ -2,7 +2,7 @@
   "name": "socket-inspector",
   "displayName": "Socket Inspector",
   "private": true,
-  "version": "1.0.9",
+  "version": "1.0.10",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@monaco-editor/react": "4.7.0",
-    "@mswjs/interceptors": "^0.38.7",
+    "@mswjs/interceptors": "0.41.3",
     "@radix-ui/react-context-menu": "^2.2.15",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.7",

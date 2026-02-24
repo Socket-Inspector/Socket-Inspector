@@ -1,5 +1,5 @@
 import { SocketContext, useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { querySelectedMessage, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
+import { querySelectedMessage, querySelectedSocketIODetails, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
 import { MessageDetailSocketIO } from './MessageDetailSocketIO';
@@ -48,9 +48,9 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
     );
   }
 
-  // const { isSocketIO } = querySelectedSocketIODetails(socketState);
+  const { isSocketIO } = querySelectedSocketIODetails(socketState);
   // harcoding to false until feature is complete
-  const isSocketIO = false;
+  // const isSocketIO = false;
 
   const copyPayloadToClipboard = () => {
     copyToClipboard(selectedMessage.payload);
@@ -75,6 +75,7 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
       <ScrollArea className="h-full w-full">
         {isSocketIO ? (
           <MessageDetailSocketIO
+            rawText={selectedMessage.payload}
             onCopyToClipboardClicked={copyPayloadToClipboard}
             onCopyToComposerClicked={prefillMessageComposer}
           ></MessageDetailSocketIO>

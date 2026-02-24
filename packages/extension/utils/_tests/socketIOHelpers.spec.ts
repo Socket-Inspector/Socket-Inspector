@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isEngineIOv4Url } from '../socketIOHelpers';
+import { isEngineIOv4Url, parseSocketIOPacket } from '../socketIOHelpers';
 
 describe('isEngineIOv4Url', () => {
   describe('valid Engine.IO v4 URL', () => {
@@ -26,5 +26,37 @@ describe('isEngineIOv4Url', () => {
     it('returns false when the url has no query params', () => {
       expect(isEngineIOv4Url('ws://localhost:7812/socket.io/')).toBe(false);
     });
+  });
+});
+
+// TODO: add asserts, etc
+describe('parseSocketIOPacket', () => {
+  it('parses 0{"sid":"T-PVhYXxifpJJirPAAJ6","upgrades":[],"pingInterval":25000,"pingTimeout":20000,"maxPayload":1000000}', () => {
+    const rawText = `0{"sid":"T-PVhYXxifpJJirPAAJ6","upgrades":[],"pingInterval":25000,"pingTimeout":20000,"maxPayload":1000000}`;
+    const parsed = parseSocketIOPacket(rawText);
+  })
+  it('parses 40{"sid":"RVSAtEn8n7lkZ4F4AAJ7"}', () => {
+    const rawText = `40{"sid":"RVSAtEn8n7lkZ4F4AAJ7"}`;
+    const parsed = parseSocketIOPacket(rawText);
+  });
+  it('parses 2', () => {
+    const rawText = `2`;
+    const parsed = parseSocketIOPacket(rawText);
+  });
+  it('parses 3', () => {
+    const rawText = `3`;
+    const parsed = parseSocketIOPacket(rawText);
+  });
+  it('parses 42["STEAM","Blowing1","Blowing2"]', () => {
+    const rawText = `42["STEAM","Blowing1","Blowing2"]`;
+    const parsed = parseSocketIOPacket(rawText);
+  });
+  it('parses 42["message","CATS"]', () => {
+    const rawText = `42["message","CATS"]`;
+    const parsed = parseSocketIOPacket(rawText);
+  });
+  it('parses 42["MAIN","HELLO WORLD"]', () => {
+    const rawText = `42["MAIN","HELLO WORLD"]`;
+    const parsed = parseSocketIOPacket(rawText);
   });
 });

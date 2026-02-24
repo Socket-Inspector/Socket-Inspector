@@ -1,12 +1,6 @@
-import { browser } from '#imports';
 import { AppIcon } from '@/components/SocketInspectorIcon';
 import { Separator } from '@/components/shadcn/Separator';
 import { ExternalLinkFooter } from '@/components/ExternalLinkFooter';
-
-import { createLogger } from '@/utils/customLogger.ts';
-const logger = createLogger('POPUP');
-
-const extensionId = browser.runtime.id;
 
 export default function App() {
   return (

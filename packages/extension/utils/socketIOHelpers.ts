@@ -40,21 +40,29 @@ export const parseSocketIOPacket = async (encodedPacket: string) => {
     console.log('socketIOPacket: ', socketIOPacket);
 
     if (socketIOPacket.type === SocketIOPacketType.EVENT) {
-      console.log('socket IO EVENT packet data: ', socketIOPacket.data)
+      console.log('socket IO EVENT packet data: ', extractEventPacketData(socketIOPacket));
     }
   }
 };
 
 export const extractEventPacketData = (socketIOPacket: SocketIOPacket) => {
   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
-    // error
+    return {
+      success: false,
+      errorMessage: 'Must be socketIO EVENT packet'
+    };
   }
 
   const { data } = socketIOPacket;
+
   if (!data || !Array.isArray(data) || data.length === 0) {
-    // error
+    return {
+      success: false,
+      errorMessage: 'Invalid EVENT packet data field'
+    };
   }
 
+  // TODO: safe to assume the first element is always the event name?
   const eventName = data[0];
   const eventArgs = data.slice(1);
 

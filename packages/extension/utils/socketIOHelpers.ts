@@ -14,6 +14,8 @@ export const isEngineIOv4Url = (urlString: string) => {
   }
 };
 
+// TODO: any errors here? 
+//       does decoded always fire?
 const parseSocketIO = async (encodedPacket: string): Promise<SocketIOPacket> => {
   return new Promise(resolve => {
     const decoder = new Decoder();
@@ -29,23 +31,30 @@ const parseSocketIO = async (encodedPacket: string): Promise<SocketIOPacket> => 
  *  Any error handling?
  */
 export const parseSocketIOPacket = async (encodedPacket: string) => {
-  console.log('-------------');
-  console.log('encoded: ', encodedPacket);
+  try {
+    const engineIOPacket = decodePacket(encodedPacket);
 
-  const engineIOPacket = decodePacket(encodedPacket);
-  console.log('engineIO decoded: ', engineIOPacket);
+    if (engineIOPacket.type === 'message' && engineIOPacket.data) {
+      const socketIOPacket = await parseSocketIO(engineIOPacket.data)
+      return {
+        success: true,
+        socketIOPacket
+      };
+    }
 
-  if (engineIOPacket.type === 'message' && engineIOPacket.data) {
-    const socketIOPacket = await parseSocketIO(engineIOPacket.data)
-    console.log('socketIOPacket: ', socketIOPacket);
-
-    if (socketIOPacket.type === SocketIOPacketType.EVENT) {
-      console.log('socket IO EVENT packet data: ', extractEventPacketData(socketIOPacket));
+    return {
+      success: false,
+      errorMessage: 'Must be engineIO message packet'
+    };
+  } catch {
+    return {
+      success: false,
+      errorMessage: 'exception thrown in parseSocketIOPacket'
     }
   }
 };
 
-export const extractEventPacketData = (socketIOPacket: SocketIOPacket) => {
+export const parseEventData = (socketIOPacket: SocketIOPacket) => {
   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
     return {
       success: false,
@@ -66,5 +75,11 @@ export const extractEventPacketData = (socketIOPacket: SocketIOPacket) => {
   const eventName = data[0];
   const eventArgs = data.slice(1);
 
-  return { eventName, eventArgs };
+  return {
+    success: true,
+    eventData: {
+      eventName,
+      eventArgs
+    }
+  };
 };

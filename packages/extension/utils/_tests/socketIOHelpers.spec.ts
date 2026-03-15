@@ -1,8 +1,6 @@
 import { describe, it, expect, assert } from 'vitest';
 import { isEngineIOv4Url, parseIOMessage } from '../socketIOHelpers';
-import {
-  PacketType as SocketIOPacketType,
-} from 'socket.io-parser';
+import { PacketType as SocketIOPacketType } from 'socket.io-parser';
 
 describe('isEngineIOv4Url', () => {
   describe('valid Engine.IO v4 URL', () => {

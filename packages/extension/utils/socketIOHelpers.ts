@@ -18,21 +18,21 @@ export function isEngineIOv4Url(urlString: string) {
 
 export type IOProtocolParse =
   | {
-    lastSuccess: 'NONE';
-    parseResults: [];
-  }
+      lastSuccess: 'NONE';
+      parseResults: [];
+    }
   | {
-    lastSuccess: 'ENGINE_IO';
-    parseResults: [EngineIOPacket];
-  }
+      lastSuccess: 'ENGINE_IO';
+      parseResults: [EngineIOPacket];
+    }
   | {
-    lastSuccess: 'SOCKET_IO';
-    parseResults: [EngineIOPacket, SocketIOPacket];
-  }
+      lastSuccess: 'SOCKET_IO';
+      parseResults: [EngineIOPacket, SocketIOPacket];
+    }
   | {
-    lastSuccess: 'SOCKET_IO_EVENT';
-    parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
-  };
+      lastSuccess: 'SOCKET_IO_EVENT';
+      parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
+    };
 
 export type SocketIOEvent = {
   eventName: string;
@@ -44,16 +44,16 @@ export function parseIOMessage(rawString: string): IOProtocolParse {
   if (!engineIO.success) {
     return {
       lastSuccess: 'NONE',
-      parseResults: []
-    }
+      parseResults: [],
+    };
   }
 
   const socketIO = parseSocketIO(engineIO.packet);
   if (!socketIO.success) {
     return {
       lastSuccess: 'ENGINE_IO',
-      parseResults: [engineIO.packet]
-    }
+      parseResults: [engineIO.packet],
+    };
   }
 
   const eventData = parseEventData(socketIO.packet);
@@ -61,14 +61,14 @@ export function parseIOMessage(rawString: string): IOProtocolParse {
   if (!eventData.success) {
     return {
       lastSuccess: 'SOCKET_IO',
-      parseResults: [engineIO.packet, socketIO.packet]
-    }
+      parseResults: [engineIO.packet, socketIO.packet],
+    };
   }
 
   return {
     lastSuccess: 'SOCKET_IO_EVENT',
-    parseResults: [engineIO.packet, socketIO.packet, eventData.event]
-  }
+    parseResults: [engineIO.packet, socketIO.packet, eventData.event],
+  };
 }
 
 type EngineIOParseResult =
@@ -94,8 +94,11 @@ type SocketIOParseResult =
 
 function parseSocketIO(engineIOPacket: EngineIOPacket): SocketIOParseResult {
   try {
-    if (!engineIOPacket.data || engineIOPacket.type !== 'message') {
+    if (engineIOPacket.type !== 'message') {
       return { success: false, errorMessage: 'Must be an Engine.IO message packet' };
+    }
+    if (!engineIOPacket.data) {
+      return { success: false, errorMessage: 'Engine.IO message packet has no data' };
     }
     const decoder = new Decoder();
     let result: SocketIOParseResult = {
@@ -105,7 +108,12 @@ function parseSocketIO(engineIOPacket: EngineIOPacket): SocketIOParseResult {
     decoder.on('decoded', (decodedPacket: SocketIOPacket) => {
       result = { success: true, packet: decodedPacket };
     });
+    // Note: for BINARY_EVENT/BINARY_ACK packets with attachments, the decoder
+    // won't emit 'decoded' until all binary attachments are provided via
+    // subsequent add() calls. Since we only handle single text frames, those
+    // packets will return the default failure result.
     decoder.add(engineIOPacket.data);
+    decoder.destroy();
     return result;
   } catch {
     return { success: false, errorMessage: 'Failed to decode Socket.IO packet' };

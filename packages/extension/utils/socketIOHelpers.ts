@@ -16,39 +16,58 @@ export function isEngineIOv4Url(urlString: string) {
   }
 }
 
+export type IOProtocolParse =
+  | {
+    lastSuccess: 'NONE';
+    parseResults: [];
+  }
+  | {
+    lastSuccess: 'ENGINE_IO';
+    parseResults: [EngineIOPacket];
+  }
+  | {
+    lastSuccess: 'SOCKET_IO';
+    parseResults: [EngineIOPacket, SocketIOPacket];
+  }
+  | {
+    lastSuccess: 'SOCKET_IO_EVENT';
+    parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
+  };
+
 export type SocketIOEvent = {
   eventName: string;
   eventArgs: unknown[];
 };
 
-export type IOProtocolParse =
-  | []
-  | [EngineIOPacket]
-  | [EngineIOPacket, SocketIOPacket]
-  | [EngineIOPacket, SocketIOPacket, SocketIOEvent];
-
 export function parseIOMessage(rawString: string): IOProtocolParse {
-  try {
-    const engineIO = parseEngineIO(rawString);
-    if (!engineIO.success) {
-      return [];
+  const engineIO = parseEngineIO(rawString);
+  if (!engineIO.success) {
+    return {
+      lastSuccess: 'NONE',
+      parseResults: []
     }
+  }
 
-    const socketIO = parseSocketIO(engineIO.packet);
-    if (!socketIO.success) {
-      return [engineIO.packet];
+  const socketIO = parseSocketIO(engineIO.packet);
+  if (!socketIO.success) {
+    return {
+      lastSuccess: 'ENGINE_IO',
+      parseResults: [engineIO.packet]
     }
+  }
 
-    const eventData = parseEventData(socketIO.packet);
+  const eventData = parseEventData(socketIO.packet);
 
-    if (!eventData.success) {
-      return [engineIO.packet, socketIO.packet]
+  if (!eventData.success) {
+    return {
+      lastSuccess: 'SOCKET_IO',
+      parseResults: [engineIO.packet, socketIO.packet]
     }
+  }
 
-    return [engineIO.packet, socketIO.packet, eventData.event];
-
-  } catch {
-    return [];
+  return {
+    lastSuccess: 'SOCKET_IO_EVENT',
+    parseResults: [engineIO.packet, socketIO.packet, eventData.event]
   }
 }
 
@@ -121,6 +140,6 @@ export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseRe
     event: {
       eventName,
       eventArgs,
-    }
+    },
   };
 }

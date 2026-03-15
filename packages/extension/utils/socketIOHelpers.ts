@@ -16,7 +16,43 @@ export function isEngineIOv4Url(urlString: string) {
   }
 }
 
-export type EngineIOParseResult =
+export type SocketIOEvent = {
+  eventName: string;
+  eventArgs: unknown[];
+};
+
+export type IOProtocolParse =
+  | []
+  | [EngineIOPacket]
+  | [EngineIOPacket, SocketIOPacket]
+  | [EngineIOPacket, SocketIOPacket, SocketIOEvent];
+
+export function parseIOMessage(rawString: string): IOProtocolParse {
+  try {
+    const engineIO = parseEngineIO(rawString);
+    if (!engineIO.success) {
+      return [];
+    }
+
+    const socketIO = parseSocketIO(engineIO.packet);
+    if (!socketIO.success) {
+      return [engineIO.packet];
+    }
+
+    const eventData = parseEventData(socketIO.packet);
+
+    if (!eventData.success) {
+      return [engineIO.packet, socketIO.packet]
+    }
+
+    return [engineIO.packet, socketIO.packet, eventData.event];
+
+  } catch {
+    return [];
+  }
+}
+
+type EngineIOParseResult =
   | { success: true; packet: EngineIOPacket }
   | { success: false; errorMessage: string };
 
@@ -33,12 +69,15 @@ export function parseEngineIO(rawString: string): EngineIOParseResult {
   }
 }
 
-export type SocketIOParseResult =
+type SocketIOParseResult =
   | { success: true; packet: SocketIOPacket }
   | { success: false; errorMessage: string };
 
-export function parseSocketIO(encodedPacket: EngineIOPacket['data']): SocketIOParseResult {
+function parseSocketIO(engineIOPacket: EngineIOPacket): SocketIOParseResult {
   try {
+    if (!engineIOPacket.data || engineIOPacket.type !== 'message') {
+      return { success: false, errorMessage: 'Must be an Engine.IO message packet' };
+    }
     const decoder = new Decoder();
     let result: SocketIOParseResult = {
       success: false,
@@ -47,15 +86,15 @@ export function parseSocketIO(encodedPacket: EngineIOPacket['data']): SocketIOPa
     decoder.on('decoded', (decodedPacket: SocketIOPacket) => {
       result = { success: true, packet: decodedPacket };
     });
-    decoder.add(encodedPacket);
+    decoder.add(engineIOPacket.data);
     return result;
   } catch {
     return { success: false, errorMessage: 'Failed to decode Socket.IO packet' };
   }
 }
 
-export type EventDataParseResult =
-  | { success: true; eventName: string; eventArgs: unknown[] }
+type EventDataParseResult =
+  | { success: true; event: SocketIOEvent }
   | { success: false; errorMessage: string };
 
 export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseResult {
@@ -79,7 +118,9 @@ export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseRe
 
   return {
     success: true,
-    eventName,
-    eventArgs,
+    event: {
+      eventName,
+      eventArgs,
+    }
   };
 }

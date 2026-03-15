@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { isEngineIOv4Url, parseSocketIOPacket } from '../socketIOHelpers';
+import { describe, it, expect, assert } from 'vitest';
+import { isEngineIOv4Url, parseIOMessage } from '../socketIOHelpers';
+import {
+  PacketType as SocketIOPacketType,
+} from 'socket.io-parser';
 
 describe('isEngineIOv4Url', () => {
   describe('valid Engine.IO v4 URL', () => {
@@ -29,34 +32,60 @@ describe('isEngineIOv4Url', () => {
   });
 });
 
-// TODO: add asserts, etc
-describe('parseSocketIOPacket', () => {
-  it('parses 0{"sid":"T-PVhYXxifpJJirPAAJ6","upgrades":[],"pingInterval":25000,"pingTimeout":20000,"maxPayload":1000000}', () => {
+describe('packet parsing', () => {
+  it('parses engineIO open packet', () => {
     const rawText = `0{"sid":"T-PVhYXxifpJJirPAAJ6","upgrades":[],"pingInterval":25000,"pingTimeout":20000,"maxPayload":1000000}`;
-    const parsed = parseSocketIOPacket(rawText);
-  })
-  it('parses 40{"sid":"RVSAtEn8n7lkZ4F4AAJ7"}', () => {
-    const rawText = `40{"sid":"RVSAtEn8n7lkZ4F4AAJ7"}`;
-    const parsed = parseSocketIOPacket(rawText);
+    const parse = parseIOMessage(rawText);
+    assert(parse.parseResults.length === 1);
+    assert(parse.lastSuccess === 'ENGINE_IO');
+    assert(parse.parseResults[0].type === 'open');
   });
-  it('parses 2', () => {
-    const rawText = `2`;
-    const parsed = parseSocketIOPacket(rawText);
+  it('parses engineIO ping', () => {
+    const parse = parseIOMessage('2');
+    assert(parse.parseResults.length === 1);
+    assert(parse.lastSuccess === 'ENGINE_IO');
+    assert(parse.parseResults[0].type === 'ping');
   });
-  it('parses 3', () => {
-    const rawText = `3`;
-    const parsed = parseSocketIOPacket(rawText);
+  it('parses engineIO pong', () => {
+    const parse = parseIOMessage('3');
+    assert(parse.parseResults.length === 1);
+    assert(parse.lastSuccess === 'ENGINE_IO');
+    assert(parse.parseResults[0].type === 'pong');
   });
-  it('parses 42["STEAM","Blowing1","Blowing2"]', () => {
-    const rawText = `42["STEAM","Blowing1","Blowing2"]`;
-    const parsed = parseSocketIOPacket(rawText);
+  it('parses socketIO root namespace connection', () => {
+    const rawString = `40{"sid":"RVSAtEn8n7lkZ4F4AAJ7"}`;
+    const parse = parseIOMessage(rawString);
+    assert(parse.parseResults.length === 2);
+    assert(parse.lastSuccess === 'SOCKET_IO');
+    assert(parse.parseResults[1].nsp === '/');
+    assert(parse.parseResults[1].type === SocketIOPacketType.CONNECT);
+    console.log(JSON.stringify(parse));
   });
-  it('parses 42["message","CATS"]', () => {
-    const rawText = `42["message","CATS"]`;
-    const parsed = parseSocketIOPacket(rawText);
+  it('parses socketIO event with multiple args', () => {
+    const parse = parseIOMessage('42["STEAM","Blowing1","Blowing2"]');
+    assert(parse.lastSuccess === 'SOCKET_IO_EVENT');
+    assert(parse.parseResults.length === 3);
+    assert(parse.parseResults[1].type === SocketIOPacketType.EVENT);
+    const event = parse.parseResults[2];
+    expect(event.eventName).toBe('STEAM');
+    expect(event.eventArgs).toEqual(['Blowing1', 'Blowing2']);
   });
-  it('parses 42["MAIN","HELLO WORLD"]', () => {
-    const rawText = `42["MAIN","HELLO WORLD"]`;
-    const parsed = parseSocketIOPacket(rawText);
+  it('parses socketIO event with single arg', () => {
+    const parse = parseIOMessage('42["message","CATS"]');
+    assert(parse.lastSuccess === 'SOCKET_IO_EVENT');
+    assert(parse.parseResults.length === 3);
+    assert(parse.parseResults[1].type === SocketIOPacketType.EVENT);
+    const event = parse.parseResults[2];
+    expect(event.eventName).toBe('message');
+    expect(event.eventArgs).toEqual(['CATS']);
+  });
+  it('parses socketIO event with string arg containing spaces', () => {
+    const parse = parseIOMessage('42["MAIN","HELLO WORLD"]');
+    assert(parse.lastSuccess === 'SOCKET_IO_EVENT');
+    assert(parse.parseResults.length === 3);
+    assert(parse.parseResults[1].type === SocketIOPacketType.EVENT);
+    const event = parse.parseResults[2];
+    expect(event.eventName).toBe('MAIN');
+    expect(event.eventArgs).toEqual(['HELLO WORLD']);
   });
 });

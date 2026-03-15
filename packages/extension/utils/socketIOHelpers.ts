@@ -1,5 +1,4 @@
 import { decodePacket, Packet as EngineIOPacket } from 'engine.io-parser';
-
 import {
   Decoder,
   Packet as SocketIOPacket,

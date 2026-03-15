@@ -1,9 +1,16 @@
-import { decodePacket } from 'engine.io-parser';
-import { Decoder, Packet as SocketIOPacket, PacketType as SocketIOPacketType } from 'socket.io-parser';
+import {
+  decodePacket,
+  Packet as EngineIOPacket,
+  PacketType as EngineIOPacketType
+} from 'engine.io-parser';
 
-// TODO: ^ check for any blue argon's in the above packages
+import {
+  Decoder,
+  Packet as SocketIOPacket,
+  PacketType as SocketIOPacketType
+} from 'socket.io-parser';
 
-export const isEngineIOv4Url = (urlString: string) => {
+export function isEngineIOv4Url(urlString: string) {
   try {
     const url = new URL(urlString);
     return (
@@ -14,47 +21,43 @@ export const isEngineIOv4Url = (urlString: string) => {
   }
 };
 
-// TODO: any errors here? 
-//       does decoded always fire?
-const parseSocketIO = async (encodedPacket: string): Promise<SocketIOPacket> => {
-  return new Promise(resolve => {
-    const decoder = new Decoder();
-    decoder.on('decoded', (decodedPacket) => {
-      resolve(decodedPacket);
-    });
-    decoder.add(encodedPacket);
-  });
-};
+export type EngineIOParseResult =
+  { success: true; packet: EngineIOPacket } |
+  { success: false; }
 
-/**
- * TODO:
- *  Any error handling?
- */
-export const parseSocketIOPacket = async (encodedPacket: string) => {
+export type SocketIOParseResult =
+  { success: true; packet: SocketIOPacket } |
+  { success: false; }
+
+export function parseEngineIO(rawString: string): EngineIOParseResult {
   try {
-    const engineIOPacket = decodePacket(encodedPacket);
+    const packet = decodePacket(rawString);
+    if (packet.type === 'error') {
+      return { success: false };
+    } else {
+      return { success: true, packet }
+    }
+  } catch {
+    return { success: false }
+  }
+}
 
+export async function parseSocketIO(engineIOPacket: EngineIOPacket): Promise<SocketIOParseResult> {
+  try {
     if (engineIOPacket.type === 'message' && engineIOPacket.data) {
-      const socketIOPacket = await parseSocketIO(engineIOPacket.data)
+      const socketIOPacket = await parseSocketIOHelper(engineIOPacket.data);
       return {
         success: true,
-        socketIOPacket
-      };
+        packet: socketIOPacket
+      }
     }
-
-    return {
-      success: false,
-      errorMessage: 'Must be engineIO message packet'
-    };
+    return { success: false };
   } catch {
-    return {
-      success: false,
-      errorMessage: 'exception thrown in parseSocketIOPacket'
-    }
+    return { success: false }
   }
-};
+}
 
-export const parseEventData = (socketIOPacket: SocketIOPacket) => {
+export function parseEventData(socketIOPacket: SocketIOPacket) {
   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
     return {
       success: false,
@@ -82,4 +85,16 @@ export const parseEventData = (socketIOPacket: SocketIOPacket) => {
       eventArgs
     }
   };
+};
+
+// TODO: error handling
+// TODO: what if 'decoded' doesnt fire?
+function parseSocketIOHelper(encodedPacket: EngineIOPacket['data']): Promise<SocketIOPacket> {
+  return new Promise(resolve => {
+    const decoder = new Decoder();
+    decoder.on('decoded', (decodedPacket) => {
+      resolve(decodedPacket);
+    });
+    decoder.add(encodedPacket);
+  });
 };

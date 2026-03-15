@@ -88,4 +88,28 @@ describe('packet parsing', () => {
     expect(event.eventName).toBe('MAIN');
     expect(event.eventArgs).toEqual(['HELLO WORLD']);
   });
+  it('parses socketIO root namespace connection without data', () => {
+    const parse = parseIOMessage('40');
+    assert(parse.lastSuccess === 'SOCKET_IO');
+    assert(parse.parseResults.length === 2);
+    assert(parse.parseResults[1].type === SocketIOPacketType.CONNECT);
+    assert(parse.parseResults[1].nsp === '/');
+  });
+  it('parses socketIO custom namespace connection', () => {
+    const parse = parseIOMessage('40/dogs,');
+    assert(parse.lastSuccess === 'SOCKET_IO');
+    assert(parse.parseResults.length === 2);
+    assert(parse.parseResults[1].type === SocketIOPacketType.CONNECT);
+    assert(parse.parseResults[1].nsp === '/dogs');
+  });
+  it('parses socketIO event on custom namespace', () => {
+    const parse = parseIOMessage('42/dogs,["DOG","WOOF"]');
+    assert(parse.lastSuccess === 'SOCKET_IO_EVENT');
+    assert(parse.parseResults.length === 3);
+    assert(parse.parseResults[1].type === SocketIOPacketType.EVENT);
+    assert(parse.parseResults[1].nsp === '/dogs');
+    const event = parse.parseResults[2];
+    expect(event.eventName).toBe('DOG');
+    expect(event.eventArgs).toEqual(['WOOF']);
+  });
 });

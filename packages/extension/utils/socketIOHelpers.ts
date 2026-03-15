@@ -1,7 +1,6 @@
 import {
   decodePacket,
   Packet as EngineIOPacket,
-  PacketType as EngineIOPacketType
 } from 'engine.io-parser';
 
 import {
@@ -42,20 +41,24 @@ export function parseEngineIO(rawString: string): EngineIOParseResult {
   }
 }
 
-export async function parseSocketIO(engineIOPacket: EngineIOPacket): Promise<SocketIOParseResult> {
-  try {
-    if (engineIOPacket.type === 'message' && engineIOPacket.data) {
-      const socketIOPacket = await parseSocketIOHelper(engineIOPacket.data);
-      return {
-        success: true,
-        packet: socketIOPacket
-      }
+export function parseSocketIO(encodedPacket: EngineIOPacket['data']): Promise<SocketIOParseResult> {
+  return new Promise(resolve => {
+    try {
+      const decoder = new Decoder();
+      decoder.on('decoded', (decodedPacket: SocketIOPacket) => {
+        resolve({
+          success: true,
+          packet: decodedPacket
+        });
+      });
+      decoder.add(encodedPacket);
+    } catch {
+      resolve({
+        success: false,
+      })
     }
-    return { success: false };
-  } catch {
-    return { success: false }
-  }
-}
+  });
+};
 
 export function parseEventData(socketIOPacket: SocketIOPacket) {
   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
@@ -85,16 +88,4 @@ export function parseEventData(socketIOPacket: SocketIOPacket) {
       eventArgs
     }
   };
-};
-
-// TODO: error handling
-// TODO: what if 'decoded' doesnt fire?
-function parseSocketIOHelper(encodedPacket: EngineIOPacket['data']): Promise<SocketIOPacket> {
-  return new Promise(resolve => {
-    const decoder = new Decoder();
-    decoder.on('decoded', (decodedPacket) => {
-      resolve(decodedPacket);
-    });
-    decoder.add(encodedPacket);
-  });
 };

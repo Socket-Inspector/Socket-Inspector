@@ -24,10 +24,6 @@ export type EngineIOParseResult =
   { success: true; packet: EngineIOPacket } |
   { success: false; }
 
-export type SocketIOParseResult =
-  { success: true; packet: SocketIOPacket } |
-  { success: false; }
-
 export function parseEngineIO(rawString: string): EngineIOParseResult {
   try {
     const packet = decodePacket(rawString);
@@ -41,51 +37,50 @@ export function parseEngineIO(rawString: string): EngineIOParseResult {
   }
 }
 
-export function parseSocketIO(encodedPacket: EngineIOPacket['data']): Promise<SocketIOParseResult> {
-  return new Promise(resolve => {
-    try {
-      const decoder = new Decoder();
-      decoder.on('decoded', (decodedPacket: SocketIOPacket) => {
-        resolve({
-          success: true,
-          packet: decodedPacket
-        });
-      });
-      decoder.add(encodedPacket);
-    } catch {
-      resolve({
-        success: false,
-      })
-    }
-  });
+export type SocketIOParseResult =
+  { success: true; packet: SocketIOPacket } |
+  { success: false; }
+
+export function parseSocketIO(encodedPacket: EngineIOPacket['data']): SocketIOParseResult {
+  try {
+    const decoder = new Decoder();
+    let result: SocketIOParseResult = { success: false };
+    decoder.on('decoded', (decodedPacket: SocketIOPacket) => {
+      result = { success: true, packet: decodedPacket };
+    });
+    decoder.add(encodedPacket);
+    return result;
+  } catch {
+    return { success: false };
+  }
 };
 
-export function parseEventData(socketIOPacket: SocketIOPacket) {
+export type EventDataParseResult =
+  { success: true; eventName: string; eventArgs: unknown[] } |
+  { success: false; }
+
+export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseResult {
   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
-    return {
-      success: false,
-      errorMessage: 'Must be socketIO EVENT packet'
-    };
+    return { success: false };
   }
 
   const { data } = socketIOPacket;
 
   if (!data || !Array.isArray(data) || data.length === 0) {
-    return {
-      success: false,
-      errorMessage: 'Invalid EVENT packet data field'
-    };
+    return { success: false };
   }
 
-  // TODO: safe to assume the first element is always the event name?
   const eventName = data[0];
+
+  if (typeof eventName !== 'string') {
+    return { success: false };
+  }
+
   const eventArgs = data.slice(1);
 
   return {
     success: true,
-    eventData: {
-      eventName,
-      eventArgs
-    }
+    eventName,
+    eventArgs
   };
 };

@@ -1,5 +1,9 @@
 import { SocketContext, useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { querySelectedMessage, querySelectedSocketIODetails, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
+import {
+  querySelectedMessage,
+  querySelectedSocketIODetails,
+  querySelectedSocketMessages,
+} from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
 import { MessageDetailSocketIO } from './MessageDetailSocketIO';

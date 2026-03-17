@@ -6,10 +6,12 @@ import {
 } from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
-import { MessageDetailSocketIO } from './MessageDetailSocketIO';
+import { MessageDetailSocketIO, MessageDetailSocketIOProps } from './MessageDetailSocketIO';
 import { MessageDetailWebSocket } from './MessageDetailWebSocket';
 import { copyToClipboard } from '@/utils/helpers';
 import { processJsonPayload } from '@/utils/payloadProcessors';
+import { parseIOMessage } from '@/utils/socketIOHelpers';
+import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 
 export function MessageDetail() {
   const { socketState, dispatch } = useSocketContext();
@@ -52,9 +54,9 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
     );
   }
 
-  const { isSocketIO } = querySelectedSocketIODetails(socketState);
-  // harcoding to false until feature is complete
-  // const isSocketIO = false;
+  // TODO: restore to false if feature not complete
+  // const isSocketIOConnection = false;
+  const socketIORenderInfo = getSocketIORenderInfo(socketState, selectedMessage);
 
   const copyPayloadToClipboard = () => {
     copyToClipboard(selectedMessage.payload);
@@ -77,9 +79,10 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
-        {isSocketIO ? (
+        {socketIORenderInfo.renderSocketIO ? (
           <MessageDetailSocketIO
             rawText={selectedMessage.payload}
+            parseResult={socketIORenderInfo.parseResult}
             onCopyToClipboardClicked={copyPayloadToClipboard}
             onCopyToComposerClicked={prefillMessageComposer}
           ></MessageDetailSocketIO>
@@ -93,4 +96,37 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
       </ScrollArea>
     </div>
   );
+}
+
+type SocketIORenderInfo =
+  | { renderSocketIO: false }
+  | {
+    renderSocketIO: true;
+    parseResult: MessageDetailSocketIOProps['parseResult'];
+  };
+
+function getSocketIORenderInfo(
+  socketState: SocketContext['socketState'],
+  selectedMessage: SocketMessage,
+): SocketIORenderInfo {
+  const { isSocketIOConnection } = querySelectedSocketIODetails(socketState);
+
+  if (!isSocketIOConnection) {
+    return {
+      renderSocketIO: false,
+    };
+  }
+
+  const socketIOParseResult = parseIOMessage(selectedMessage.payload);
+
+  if (socketIOParseResult.lastSuccess === 'NONE') {
+    return {
+      renderSocketIO: false,
+    };
+  }
+
+  return {
+    renderSocketIO: true,
+    parseResult: socketIOParseResult,
+  };
 }

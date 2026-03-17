@@ -59,22 +59,22 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
 
 export type SocketIODetails =
   | {
-      isSocketIO: false;
+      isSocketIOConnection: false;
     }
-  | { isSocketIO: true; socketIO: SocketIOConnection };
+  | { isSocketIOConnection: true; socketIOConnection: SocketIOConnection };
 
 export const querySelectedSocketIODetails = (state: SocketState): SocketIODetails => {
   const { selectedSocket } = state;
 
   if (!selectedSocket) {
-    return { isSocketIO: false };
+    return { isSocketIOConnection: false };
   }
 
   const socketIO = state.socketIOConnections[selectedSocket.id];
 
   if (!socketIO) {
-    return { isSocketIO: false };
+    return { isSocketIOConnection: false };
   }
 
-  return { isSocketIO: true, socketIO };
+  return { isSocketIOConnection: true, socketIOConnection: socketIO };
 };

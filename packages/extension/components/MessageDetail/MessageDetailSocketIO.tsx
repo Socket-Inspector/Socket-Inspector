@@ -75,7 +75,10 @@ function MessageDetailSocketIODisplay({ parseResult }: MessageDetailSocketIODisp
   const engineIOTemplate = <pre>Engine IO packet type: {engineIOParse.type}</pre>;
 
   const socketIOTemplate = socketIOParse ? (
-    <pre>Socket IO packet type: {getSocketIOPacketDescription(socketIOParse.type)}</pre>
+    <>
+      <pre>Socket IO packet namespace: {socketIOParse.nsp}</pre>
+      <pre>Socket IO packet type: {getSocketIOPacketDescription(socketIOParse.type)}</pre>
+    </>
   ) : null;
 
   const socketIOMessageTemplate = socketIOEventParse ? (

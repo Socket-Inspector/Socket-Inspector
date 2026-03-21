@@ -7,21 +7,21 @@ import {
 
 export type IOProtocolParse =
   | {
-    lastSuccess: 'NONE';
-    parseResults: [];
-  }
+      lastSuccess: 'NONE';
+      parseResults: [];
+    }
   | {
-    lastSuccess: 'ENGINE_IO';
-    parseResults: [EngineIOPacket];
-  }
+      lastSuccess: 'ENGINE_IO';
+      parseResults: [EngineIOPacket];
+    }
   | {
-    lastSuccess: 'SOCKET_IO';
-    parseResults: [EngineIOPacket, SocketIOPacket];
-  }
+      lastSuccess: 'SOCKET_IO';
+      parseResults: [EngineIOPacket, SocketIOPacket];
+    }
   | {
-    lastSuccess: 'SOCKET_IO_EVENT';
-    parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
-  };
+      lastSuccess: 'SOCKET_IO_EVENT';
+      parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
+    };
 
 export type SocketIOEvent = {
   eventName: string;

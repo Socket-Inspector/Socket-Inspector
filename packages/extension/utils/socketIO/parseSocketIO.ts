@@ -3,38 +3,79 @@ import {
   Packet as SocketIOPacket,
   PacketType as SocketIOPacketType,
 } from 'socket.io-parser';
-import { EngineIOPacket } from './parseEngineIO';
 
-export type { SocketIOPacket, SocketIOPacketType };
+import { decodePacket, Packet as EngineIOPacket } from 'engine.io-parser';
+
+export type { SocketIOPacket, SocketIOPacketType, EngineIOPacket };
 
 export type SocketIOParseResult =
-  | { success: true; packet: SocketIOPacket }
-  | { success: false; errorMessage: string };
+  | { error: true }
+  | { engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket };
 
-export function parseSocketIO(engineIOPacket: EngineIOPacket): SocketIOParseResult {
+export function parseSocketIO(rawString: string): SocketIOParseResult {
+  let engineIOPacket: EngineIOPacket;
   try {
-    if (engineIOPacket.type !== 'message') {
-      return { success: false, errorMessage: 'Must be an Engine.IO message packet' };
-    }
-    if (!engineIOPacket.data) {
-      return { success: false, errorMessage: 'Engine.IO message packet has no data' };
-    }
+    engineIOPacket = decodePacket(rawString);
+  } catch {
+    return { error: true }
+  }
+
+  const cannotBeSocketIO = engineIOPacket.type !== 'message' || !engineIOPacket.data;
+  if (cannotBeSocketIO) {
+    return { engineIOPacket };
+  }
+
+  let socketIOPacket: SocketIOPacket | null = null;
+  try {
     const decoder = new Decoder();
-    let result: SocketIOParseResult = {
-      success: false,
-      errorMessage: 'Failed to decode Socket.IO packet',
-    };
     decoder.on('decoded', (decodedPacket: SocketIOPacket) => {
-      result = { success: true, packet: decodedPacket };
+      socketIOPacket = decodedPacket;
     });
-    // Note: for BINARY_EVENT/BINARY_ACK packets with attachments, the decoder
-    // won't emit 'decoded' until all binary attachments are provided via
-    // subsequent add() calls. Since we only handle single text frames, those
-    // packets will return the default failure result.
+    /**
+     * TODO:
+     * for BINARY_EVENT/BINARY_ACK packets with attachments,
+     * the decoder won't emit 'decoded' until all binary attachments 
+     * are provided via subsequent add() calls
+     */
     decoder.add(engineIOPacket.data);
     decoder.destroy();
-    return result;
+
+    if (socketIOPacket) {
+      return { engineIOPacket, socketIOPacket }
+    }
+
+    return { engineIOPacket };
+
   } catch {
-    return { success: false, errorMessage: 'Failed to decode Socket.IO packet' };
+    return { engineIOPacket };
+  }
+}
+
+export type SocketIOPacketDescription =
+  | 'CONNECT'
+  | 'DISCONNECT'
+  | 'EVENT'
+  | 'ACK'
+  | 'CONNECT_ERROR'
+  | 'BINARY_EVENT'
+  | 'BINARY_ACK';
+
+export function getSocketIOPacketDescription(
+  type: SocketIOPacket['type'],
+): SocketIOPacketDescription {
+  if (type === SocketIOPacketType.CONNECT) {
+    return 'CONNECT';
+  } else if (type === SocketIOPacketType.DISCONNECT) {
+    return 'DISCONNECT';
+  } else if (type === SocketIOPacketType.EVENT) {
+    return 'EVENT';
+  } else if (type === SocketIOPacketType.ACK) {
+    return 'ACK';
+  } else if (type === SocketIOPacketType.CONNECT_ERROR) {
+    return 'CONNECT_ERROR';
+  } else if (type === SocketIOPacketType.BINARY_EVENT) {
+    return 'BINARY_EVENT';
+  } else {
+    return 'BINARY_ACK';
   }
 }

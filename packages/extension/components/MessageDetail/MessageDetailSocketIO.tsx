@@ -59,14 +59,17 @@ export function MessageDetailSocketIO({
         ></MessageDetailActions>
       </div>
       {selectedFormat === 'SOCKET_IO' ? (
-        <MessageDetailSocketIODisplay></MessageDetailSocketIODisplay>
+        <MessageDetailSocketIODisplay parseResult={parseResult}></MessageDetailSocketIODisplay>
       ) : (
-        <MessageDetailRawDisplay rawText="TEST"></MessageDetailRawDisplay>
+        <MessageDetailRawDisplay rawText={rawText}></MessageDetailRawDisplay>
       )}
     </>
   );
 }
 
-function MessageDetailSocketIODisplay() {
-  return <div>HELLO I AM SOCKET IO</div>;
+export type MessageDetailSocketIODisplayProps = {
+  parseResult: Exclude<IOProtocolParse, { lastSuccess: 'NONE' }>;
+};
+function MessageDetailSocketIODisplay({ parseResult }: MessageDetailSocketIODisplayProps) {
+  return <div>socket io</div>;
 }

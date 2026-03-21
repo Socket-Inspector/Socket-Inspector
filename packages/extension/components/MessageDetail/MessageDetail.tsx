@@ -101,9 +101,9 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
 type SocketIORenderInfo =
   | { renderSocketIO: false }
   | {
-    renderSocketIO: true;
-    parseResult: MessageDetailSocketIOProps['parseResult'];
-  };
+      renderSocketIO: true;
+      parseResult: MessageDetailSocketIOProps['parseResult'];
+    };
 
 function getSocketIORenderInfo(
   socketState: SocketContext['socketState'],

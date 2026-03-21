@@ -18,21 +18,21 @@ export function isEngineIOv4Url(urlString: string) {
 
 export type IOProtocolParse =
   | {
-    lastSuccess: 'NONE';
-    parseResults: [];
-  }
+      lastSuccess: 'NONE';
+      parseResults: [];
+    }
   | {
-    lastSuccess: 'ENGINE_IO';
-    parseResults: [EngineIOPacket];
-  }
+      lastSuccess: 'ENGINE_IO';
+      parseResults: [EngineIOPacket];
+    }
   | {
-    lastSuccess: 'SOCKET_IO';
-    parseResults: [EngineIOPacket, SocketIOPacket];
-  }
+      lastSuccess: 'SOCKET_IO';
+      parseResults: [EngineIOPacket, SocketIOPacket];
+    }
   | {
-    lastSuccess: 'SOCKET_IO_EVENT';
-    parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
-  };
+      lastSuccess: 'SOCKET_IO_EVENT';
+      parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
+    };
 
 export type SocketIOEvent = {
   eventName: string;
@@ -152,8 +152,17 @@ export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseRe
   };
 }
 
-export type SocketIOPacketDescription = 'CONNECT' | 'DISCONNECT' | 'EVENT' | 'ACK' | 'CONNECT_ERROR' | 'BINARY_EVENT' | 'BINARY_ACK';
-export function getSocketIOPacketDescription(type: SocketIOPacket['type']): SocketIOPacketDescription {
+export type SocketIOPacketDescription =
+  | 'CONNECT'
+  | 'DISCONNECT'
+  | 'EVENT'
+  | 'ACK'
+  | 'CONNECT_ERROR'
+  | 'BINARY_EVENT'
+  | 'BINARY_ACK';
+export function getSocketIOPacketDescription(
+  type: SocketIOPacket['type'],
+): SocketIOPacketDescription {
   if (type === SocketIOPacketType.CONNECT) {
     return 'CONNECT';
   } else if (type === SocketIOPacketType.DISCONNECT) {

@@ -4,7 +4,7 @@ import { RadioGroup, RadioGroupItem } from '../shadcn/RadioGroup';
 import { MessageDetailActions } from './MessageDetailActions';
 import { MessageDetailRawDisplay } from './MessageDetailRawDisplay';
 import { createLogger } from '@/utils/customLogger';
-import { IOProtocolParse } from '@/utils/socketIOHelpers';
+import { getSocketIOPacketDescription, IOProtocolParse } from '@/utils/socketIOHelpers';
 
 const logger = createLogger('DEVTOOLS');
 
@@ -22,9 +22,6 @@ export function MessageDetailSocketIO({
   onCopyToComposerClicked,
 }: MessageDetailSocketIOProps) {
   const [selectedFormat, setSelectedFormat] = useState<'SOCKET_IO' | 'TEXT'>('SOCKET_IO');
-
-  logger(rawText);
-  logger(parseResult);
 
   return (
     <>
@@ -67,9 +64,34 @@ export function MessageDetailSocketIO({
   );
 }
 
-export type MessageDetailSocketIODisplayProps = {
+type MessageDetailSocketIODisplayProps = {
   parseResult: Exclude<IOProtocolParse, { lastSuccess: 'NONE' }>;
 };
 function MessageDetailSocketIODisplay({ parseResult }: MessageDetailSocketIODisplayProps) {
-  return <div>socket io</div>;
+  const engineIOParse = parseResult.parseResults[0];
+  const socketIOParse = parseResult.parseResults[1];
+  const socketIOEventParse = parseResult.parseResults[2];
+
+  const engineIOTemplate = <pre>Engine IO packet type: {engineIOParse.type}</pre>;
+
+  const socketIOTemplate = socketIOParse ? (
+    <pre>Socket IO packet type: {getSocketIOPacketDescription(socketIOParse.type)}</pre>
+  ) : null;
+
+  const socketIOMessageTemplate = socketIOEventParse ? (
+    <>
+      <pre>Socket IO eventName: {socketIOEventParse.eventName}</pre>
+      <pre>Socket IO event args: {JSON.stringify(socketIOEventParse.eventArgs)}</pre>
+    </>
+  ) : null;
+
+  return (
+    <div className="m-4">
+      {engineIOTemplate}
+      <>
+        {socketIOTemplate}
+        {socketIOMessageTemplate}
+      </>
+    </div>
+  );
 }

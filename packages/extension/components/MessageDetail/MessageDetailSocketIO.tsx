@@ -6,6 +6,10 @@ import { MessageDetailRawDisplay } from './MessageDetailRawDisplay';
 import { createLogger } from '@/utils/customLogger';
 import { getSocketIOPacketDescription, IOProtocolParse } from '@/utils/socketIOHelpers';
 
+/**
+ * Component for rendering engineIO/socketIO packet fields
+ */
+
 const logger = createLogger('DEVTOOLS');
 
 export type MessageDetailSocketIOProps = {

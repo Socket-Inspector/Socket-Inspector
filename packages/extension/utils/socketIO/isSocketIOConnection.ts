@@ -1,9 +1,8 @@
 export function isSocketIOConnection(urlString: string) {
   try {
     const url = new URL(urlString);
-    return (
-      url?.searchParams?.get('EIO') === '4' && url?.searchParams?.get('transport') === 'websocket'
-    );
+    const isEngineIOV4 = url?.searchParams?.get('EIO') === '4' && url?.searchParams?.get('transport') === 'websocket'
+    return isEngineIOV4;
   } catch {
     return false;
   }

@@ -5,17 +5,6 @@ import {
   PacketType as SocketIOPacketType,
 } from 'socket.io-parser';
 
-export function isEngineIOv4Url(urlString: string) {
-  try {
-    const url = new URL(urlString);
-    return (
-      url?.searchParams?.get('EIO') === '4' && url?.searchParams?.get('transport') === 'websocket'
-    );
-  } catch {
-    return false;
-  }
-}
-
 export type IOProtocolParse =
   | {
     lastSuccess: 'NONE';

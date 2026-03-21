@@ -1,6 +1,6 @@
 import { defineContentScript } from '#imports';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
-import { isEngineIOv4Url } from '@/utils/socketIOHelpers';
+import { isSocketIOConnection } from '@/utils/socketIO/isSocketIOConnection';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   WebSocketClientConnection,
@@ -136,7 +136,7 @@ const patchSocketSync = () => {
 
     sendSocketDetailsPacket();
 
-    if (isEngineIOv4Url(socketUrl)) {
+    if (isSocketIOConnection(socketUrl)) {
       windowConnector.sendPacket({
         type: 'DetectedSocketIOPacket',
         payload: { socketId },

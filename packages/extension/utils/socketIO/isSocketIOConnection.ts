@@ -1,3 +1,8 @@
+/**
+ * TODO:
+ * consider just consuming this as a getter in the UI instead
+ * of sending packet
+ */
 export function isSocketIOConnection(urlString: string) {
   try {
     const url = new URL(urlString);

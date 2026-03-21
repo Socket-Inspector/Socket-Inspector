@@ -90,7 +90,7 @@ function MessageDetailSocketIODisplay({ parseResult }: MessageDetailSocketIODisp
     <>
       {/* <pre>Socket IO packet namespace: {socketIOParse.nsp}</pre> */}
       <Badge className="mb-2">{getSocketIOPacketDescription(socketIOParse.type)}</Badge>
-      <pre>Socket IO full parse: {JSON.stringify(socketIOParse)}</pre>
+      <pre>{JSON.stringify(socketIOParse)}</pre>
     </>
   ) : null;
 

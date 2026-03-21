@@ -5,6 +5,7 @@ import { MessageDetailActions } from './MessageDetailActions';
 import { MessageDetailRawDisplay } from './MessageDetailRawDisplay';
 import { createLogger } from '@/utils/customLogger';
 import { getSocketIOPacketDescription, IOProtocolParse } from '@/utils/socketIOHelpers';
+import { Badge } from '../shadcn/Badge';
 
 /**
  * Component for rendering engineIO/socketIO packet fields
@@ -74,31 +75,37 @@ type MessageDetailSocketIODisplayProps = {
 function MessageDetailSocketIODisplay({ parseResult }: MessageDetailSocketIODisplayProps) {
   const engineIOParse = parseResult.parseResults[0];
   const socketIOParse = parseResult.parseResults[1];
-  const socketIOEventParse = parseResult.parseResults[2];
+  // const socketIOEventParse = parseResult.parseResults[2];
 
-  const engineIOTemplate = <pre>Engine IO packet type: {engineIOParse.type}</pre>;
+  logger(socketIOParse);
+
+  const engineIOTemplate = engineIOParse ? (
+    <>
+      {/* <pre>Engine IO packet type: {engineIOParse.type}</pre> */}
+      <pre>Engine IO full parse: {JSON.stringify(engineIOParse)}</pre>
+    </>
+  ) : null;
 
   const socketIOTemplate = socketIOParse ? (
     <>
-      <pre>Socket IO packet namespace: {socketIOParse.nsp}</pre>
-      <pre>Socket IO packet type: {getSocketIOPacketDescription(socketIOParse.type)}</pre>
+      {/* <pre>Socket IO packet namespace: {socketIOParse.nsp}</pre> */}
+      <Badge className="mb-2">{getSocketIOPacketDescription(socketIOParse.type)}</Badge>
+      <pre>Socket IO full parse: {JSON.stringify(socketIOParse)}</pre>
     </>
   ) : null;
 
-  const socketIOMessageTemplate = socketIOEventParse ? (
-    <>
-      <pre>Socket IO eventName: {socketIOEventParse.eventName}</pre>
-      <pre>Socket IO event args: {JSON.stringify(socketIOEventParse.eventArgs)}</pre>
-    </>
-  ) : null;
+  // const socketIOMessageTemplate = socketIOEventParse ? (
+  //   <>
+  //     <pre>Socket IO eventName: {socketIOEventParse.eventName}</pre>
+  //     <pre>Socket IO event args: {JSON.stringify(socketIOEventParse.eventArgs)}</pre>
+  //   </>
+  // ) : null;
 
   return (
     <div className="m-4">
-      {engineIOTemplate}
-      <>
-        {socketIOTemplate}
-        {socketIOMessageTemplate}
-      </>
+      {/* {engineIOTemplate}
+      <Separator className="my-2"></Separator> */}
+      {socketIOTemplate}
     </div>
   );
 }

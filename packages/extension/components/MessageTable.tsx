@@ -19,6 +19,8 @@ import {
 import { TableActions, MessageFilterOption } from './MessageTableActions';
 import { MessageDirectionIcon } from './MessageDirectionIcon';
 import { copyToClipboard } from '@/utils/helpers';
+import { socketIOEnabled } from '@/utils/featureToggle';
+import { parseSocketIO } from '@/utils/socketIO/parseSocketIO';
 
 const TABLE_HEADER_HEIGHT = 32;
 const TABLE_BODY_ROW_HEIGHT = 25;
@@ -36,7 +38,18 @@ export function MessageTable() {
   const isPaused = selectedSocketDetails?.isPaused ?? false;
   const selectedSocketId = selectedSocketDetails?.id;
 
+  // TODO:
+  // const isSocketIOConnection = socketIOEnabled() && ...
+  const isSocketIOConnection = false;
+
   const filteredMessages = querySelectedSocketMessages(socketState)
+    .filter((message) => {
+      if (!isSocketIOConnection) {
+        return message;
+      }
+      const parsed = parseSocketIO(message.payload);
+      return parsed.success && Boolean(parsed.socketIOPacket);
+    })
     .filter((message) => message.payload.toLowerCase().includes(searchText.toLowerCase()))
     .filter(
       (message) =>

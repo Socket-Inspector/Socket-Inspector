@@ -1,6 +1,6 @@
 import { defineContentScript } from '#imports';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
-import { isSocketIOConnection } from '@/utils/socketIO/isSocketIOConnection';
+import { isSocketIO } from '@/utils/socketIO/isSocketIO';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   WebSocketClientConnection,
@@ -141,7 +141,7 @@ const patchSocketSync = () => {
      * since only url is required to detect socket IO,
      * could we just detect socketIO in the devtools?
      */
-    if (isSocketIOConnection(socketUrl)) {
+    if (isSocketIO(socketUrl)) {
       windowConnector.sendPacket({
         type: 'DetectedSocketIOPacket',
         payload: { socketId },
@@ -165,7 +165,7 @@ const patchSocketSync = () => {
       if (message.destination === 'client') {
         try {
           connection.client.send(message.payload);
-        } catch {}
+        } catch { }
 
         const clientMessagePacket: SocketMessagePacket = {
           type: 'SocketMessagePacket',
@@ -186,7 +186,7 @@ const patchSocketSync = () => {
       } else if (message.destination === 'server') {
         try {
           connection.server.send(message.payload);
-        } catch {}
+        } catch { }
 
         const serverMessagePacket: SocketMessagePacket = {
           type: 'SocketMessagePacket',
@@ -226,7 +226,7 @@ const patchSocketSync = () => {
       }
       try {
         connection.client.close(code, reason);
-      } catch {}
+      } catch { }
     }
   });
 };

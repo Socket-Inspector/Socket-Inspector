@@ -28,6 +28,12 @@ Browser extension built with WXT
 - Sends and receives data to and from the `Isolated Content Script`
 - path: `entrypoints/mainWorld.content.ts`
 
+
+## Content Script Principles
+
+- Keep Content Scripts **lightweight** (minimal logic, depdendencies, etc)
+- Content Scripts execute on the same thread as the host page, so there's high risk of security and performance issues
+
 ## React Guidelines
 
 - This project uses the **React Compiler**, which provides rendering optimizations, eliminating the need for manual useMemo, useCallback, and React.memo

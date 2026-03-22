@@ -28,3 +28,30 @@ export function getSocketIOPacketDescription(
     return 'BINARY_ACK';
   }
 }
+
+
+export type SocketIOEvent =
+  | { eventName: string; eventArgs: unknown[]; }
+  | { error: true };
+
+export function parseSocketIOEvent(socketIOPacket: SocketIOPacket): SocketIOEvent {
+  if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
+    return { error: true };
+  }
+
+  const { data } = socketIOPacket;
+
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return { error: true };
+  }
+
+  const eventName = data[0];
+
+  if (typeof eventName !== 'string') {
+    return { error: true };
+  }
+
+  const eventArgs = data.slice(1);
+
+  return { eventName, eventArgs };
+}

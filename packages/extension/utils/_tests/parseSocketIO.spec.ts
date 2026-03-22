@@ -50,5 +50,65 @@ describe('parseSocketIO', () => {
         eventArgs: ['Blowing1', 'Blowing2']
       });
     });
+    it('parses socketIO event with single arg', () => {
+      const parse = parseSocketIO('42["message","CATS"]');
+      assert(parse.success);
+      assert(parse.engineIOPacket.type === 'message');
+      assert(parse.socketIOPacket);
+      assert(getSocketIOPacketDescription(parse.socketIOPacket.type) === 'EVENT');
+      assert(parse.socketIOPacket.nsp === '/');
+
+      const eventParse = parseSocketIOEvent(parse.socketIOPacket);
+      expect(eventParse).toEqual({
+        success: true,
+        eventName: 'message',
+        eventArgs: ['CATS']
+      });
+    });
+    it('parses socketIO event with string arg containing spaces', () => {
+      const parse = parseSocketIO('42["MAIN","HELLO WORLD"]');
+      assert(parse.success);
+      assert(parse.engineIOPacket.type === 'message');
+      assert(parse.socketIOPacket);
+      assert(getSocketIOPacketDescription(parse.socketIOPacket.type) === 'EVENT');
+
+      const eventParse = parseSocketIOEvent(parse.socketIOPacket);
+      expect(eventParse).toEqual({
+        success: true,
+        eventName: 'MAIN',
+        eventArgs: ['HELLO WORLD']
+      });
+    });
+    it('parses socketIO root namespace connection without data', () => {
+      const parse = parseSocketIO('40');
+      assert(parse.success);
+      assert(parse.engineIOPacket.type === 'message');
+      assert(parse.socketIOPacket);
+      assert(getSocketIOPacketDescription(parse.socketIOPacket.type) === 'CONNECT');
+      assert(parse.socketIOPacket.nsp === '/');
+    });
+    it('parses socketIO custom namespace connection', () => {
+      const parse = parseSocketIO('40/dogs,');
+      assert(parse.success);
+      assert(parse.engineIOPacket.type === 'message');
+      assert(parse.socketIOPacket);
+      assert(getSocketIOPacketDescription(parse.socketIOPacket.type) === 'CONNECT');
+      assert(parse.socketIOPacket.nsp === '/dogs');
+    });
+    it('parses socketIO event on custom namespace', () => {
+      const parse = parseSocketIO('42/dogs,["DOG","WOOF"]');
+      assert(parse.success);
+      assert(parse.engineIOPacket.type === 'message');
+      assert(parse.socketIOPacket);
+      assert(getSocketIOPacketDescription(parse.socketIOPacket.type) === 'EVENT');
+      assert(parse.socketIOPacket.nsp === '/dogs');
+
+      const eventParse = parseSocketIOEvent(parse.socketIOPacket);
+      expect(eventParse).toEqual({
+        success: true,
+        eventName: 'DOG',
+        eventArgs: ['WOOF']
+      });
+    });
   });
 });

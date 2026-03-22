@@ -6,8 +6,6 @@ import {
 
 import { decodePacket, Packet as EngineIOPacket } from 'engine.io-parser';
 
-export type { SocketIOPacket, SocketIOPacketType, EngineIOPacket };
-
 export type SocketIOParseResult =
   | { error: true }
   | { engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket };

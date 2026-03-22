@@ -79,3 +79,36 @@ export function getSocketIOPacketDescription(
     return 'BINARY_ACK';
   }
 }
+
+// TODO: may want to change this
+// type EventDataParseResult =
+//   | { success: true; event: SocketIOEvent }
+//   | { success: false; errorMessage: string };
+
+// export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseResult {
+//   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
+//     return { success: false, errorMessage: 'Must be a Socket.IO EVENT packet' };
+//   }
+
+//   const { data } = socketIOPacket;
+
+//   if (!data || !Array.isArray(data) || data.length === 0) {
+//     return { success: false, errorMessage: 'Invalid EVENT packet data field' };
+//   }
+
+//   const eventName = data[0];
+
+//   if (typeof eventName !== 'string') {
+//     return { success: false, errorMessage: 'Event name must be a string' };
+//   }
+
+//   const eventArgs = data.slice(1);
+
+//   return {
+//     success: true,
+//     event: {
+//       eventName,
+//       eventArgs,
+//     },
+//   };
+// }

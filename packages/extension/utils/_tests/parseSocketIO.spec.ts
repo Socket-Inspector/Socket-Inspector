@@ -110,6 +110,21 @@ describe('parseSocketIO', () => {
         eventArgs: ['WOOF']
       });
     });
+    it('request-response flow', () => {
+      // client requests acknowledgement by sending id
+      const clientPacket = parseSocketIO('420["REQUEST_CARDS_SYNC"]');
+      assert(clientPacket.success);
+      assert(clientPacket.socketIOPacket);
+      assert(clientPacket.socketIOPacket.id === 0);
+      assert(getSocketIOPacketDescription(clientPacket.socketIOPacket.type) === 'EVENT');
+
+      // server responds with ACK packet
+      const serverPacket = parseSocketIO('430[{"cards":["Card A","Card B"]}]');
+      assert(serverPacket.success);
+      assert(serverPacket.socketIOPacket);
+      assert(serverPacket.socketIOPacket.id === 0);
+      assert(getSocketIOPacketDescription(serverPacket.socketIOPacket.type) === 'ACK');
+    });
   });
   describe('unhappy path', () => {
     it('when input is null', () => {

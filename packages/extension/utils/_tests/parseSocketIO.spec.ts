@@ -120,5 +120,11 @@ describe('parseSocketIO', () => {
       const parse = parseSocketIO('');
       assert(!parse.success);
     });
+    it('when input is engine IO message packet that does not decode to SocketIO', () => {
+      const parse = parseSocketIO('4not-valid-socket-io');
+      assert(parse.success);
+      assert(parse.engineIOPacket.type === 'message');
+      assert(!('socketIOPacket' in parse));
+    });
   });
 });

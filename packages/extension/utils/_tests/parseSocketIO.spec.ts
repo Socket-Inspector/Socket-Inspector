@@ -3,10 +3,6 @@ import { parseSocketIO } from '../socketIO/parseSocketIO';
 import { getSocketIOPacketDescription, parseSocketIOEvent } from '../socketIO/socketIOPacketUtils';
 
 describe('parseSocketIO', () => {
-  it('returns success: false when input cannot be decoded', () => {
-    const parse = parseSocketIO(null as unknown as string);
-    assert(!parse.success);
-  });
   describe('packets that are engineIO but not socketIO', () => {
     it('parses engineIO open packet', () => {
       const rawText = `0{"sid":"T-PVhYXxifpJJirPAAJ6","upgrades":[],"pingInterval":25000,"pingTimeout":20000,"maxPayload":1000000}`;
@@ -113,6 +109,16 @@ describe('parseSocketIO', () => {
         eventName: 'DOG',
         eventArgs: ['WOOF']
       });
+    });
+  });
+  describe('unhappy path', () => {
+    it('when input is null', () => {
+      const parse = parseSocketIO(null as unknown as string);
+      assert(!parse.success);
+    });
+    it('when input is empty strng', () => {
+      const parse = parseSocketIO('');
+      assert(!parse.success);
     });
   });
 });

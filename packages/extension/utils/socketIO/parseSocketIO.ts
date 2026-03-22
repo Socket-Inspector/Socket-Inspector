@@ -14,6 +14,10 @@ export function parseSocketIO(rawString: string): SocketIOParseResult {
     return { success: false }
   }
 
+  if (engineIOPacket.type === 'error') {
+    return { success: false };
+  }
+
   const cannotBeSocketIO = engineIOPacket.type !== 'message' || !engineIOPacket.data;
   if (cannotBeSocketIO) {
     return { success: true, engineIOPacket };

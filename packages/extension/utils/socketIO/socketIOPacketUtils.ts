@@ -29,29 +29,28 @@ export function getSocketIOPacketDescription(
   }
 }
 
-
 export type SocketIOEvent =
-  | { eventName: string; eventArgs: unknown[]; }
-  | { error: true };
+  | { success: true; eventName: string; eventArgs: unknown[]; }
+  | { success: false; };
 
 export function parseSocketIOEvent(socketIOPacket: SocketIOPacket): SocketIOEvent {
   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
-    return { error: true };
+    return { success: false };
   }
 
   const { data } = socketIOPacket;
 
   if (!data || !Array.isArray(data) || data.length === 0) {
-    return { error: true };
+    return { success: false };
   }
 
   const eventName = data[0];
 
   if (typeof eventName !== 'string') {
-    return { error: true };
+    return { success: false };
   }
 
   const eventArgs = data.slice(1);
 
-  return { eventName, eventArgs };
+  return { success: true, eventName, eventArgs };
 }

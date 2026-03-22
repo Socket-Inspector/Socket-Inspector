@@ -3,20 +3,20 @@ import { decodePacket } from 'engine.io-parser';
 import { SocketIOPacket, EngineIOPacket } from "./socketIOTypes";
 
 export type SocketIOParseResult =
-  | { engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket }
-  | { error: true };
+  | { success: true; engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket }
+  | { success: false };
 
 export function parseSocketIO(rawString: string): SocketIOParseResult {
   let engineIOPacket: EngineIOPacket;
   try {
     engineIOPacket = decodePacket(rawString);
   } catch {
-    return { error: true }
+    return { success: false }
   }
 
   const cannotBeSocketIO = engineIOPacket.type !== 'message' || !engineIOPacket.data;
   if (cannotBeSocketIO) {
-    return { engineIOPacket };
+    return { success: true, engineIOPacket };
   }
 
   let socketIOPacket: SocketIOPacket | null = null;
@@ -29,13 +29,13 @@ export function parseSocketIO(rawString: string): SocketIOParseResult {
     decoder.destroy();
 
     if (socketIOPacket) {
-      return { engineIOPacket, socketIOPacket }
+      return { success: true, engineIOPacket, socketIOPacket };
     }
 
-    return { engineIOPacket };
+    return { success: true, engineIOPacket };
 
   } catch {
-    return { engineIOPacket };
+    return { success: true, engineIOPacket };
   }
 }
 

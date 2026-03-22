@@ -17,7 +17,7 @@ import {
   querySelectedSocketDetails,
 } from '@/hooks/useSocketState/queries';
 import { TableActions, MessageFilterOption } from '../MessageTableActions';
-import { MessageDirectionIcon } from '../MessageDirectionIcon';
+import { MessageDirectionIcon } from './MessageDirectionIcon';
 import { copyToClipboard } from '@/utils/helpers';
 import { socketIOEnabled } from '@/utils/featureToggle';
 import { parseSocketIO } from '@/utils/socketIO/parseSocketIO';
@@ -40,7 +40,7 @@ export function MessageTable() {
 
   // TODO:
   // const isSocketIOConnection = socketIOEnabled() && ...
-  const isSocketIOConnection = false;
+  const isSocketIOConnection = true;
 
   const filteredMessages = querySelectedSocketMessages(socketState)
     .filter((message) => {

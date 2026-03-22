@@ -1,10 +1,10 @@
 import { Decoder } from 'socket.io-parser';
 import { decodePacket } from 'engine.io-parser';
-import { SocketIOPacket, EngineIOPacket } from "./socketIOTypes";
+import { SocketIOPacket, EngineIOPacket, SocketIOPacketType } from "./socketIOTypes";
 
 export type SocketIOParseResult =
-  | { error: true }
-  | { engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket };
+  | { engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket }
+  | { error: true };
 
 export function parseSocketIO(rawString: string): SocketIOParseResult {
   let engineIOPacket: EngineIOPacket;
@@ -45,35 +45,28 @@ export function parseSocketIO(rawString: string): SocketIOParseResult {
   }
 }
 
-// TODO: may want to change this
-// type EventDataParseResult =
-//   | { success: true; event: SocketIOEvent }
-//   | { success: false; errorMessage: string };
+export type SocketIOEvent =
+  | { eventName: string; eventArgs: unknown[]; }
+  | { error: true };
 
-// export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseResult {
-//   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
-//     return { success: false, errorMessage: 'Must be a Socket.IO EVENT packet' };
-//   }
+export function parseSocketIOEvent(socketIOPacket: SocketIOPacket): SocketIOEvent {
+  if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
+    return { error: true };
+  }
 
-//   const { data } = socketIOPacket;
+  const { data } = socketIOPacket;
 
-//   if (!data || !Array.isArray(data) || data.length === 0) {
-//     return { success: false, errorMessage: 'Invalid EVENT packet data field' };
-//   }
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return { error: true };
+  }
 
-//   const eventName = data[0];
+  const eventName = data[0];
 
-//   if (typeof eventName !== 'string') {
-//     return { success: false, errorMessage: 'Event name must be a string' };
-//   }
+  if (typeof eventName !== 'string') {
+    return { error: true };
+  }
 
-//   const eventArgs = data.slice(1);
+  const eventArgs = data.slice(1);
 
-//   return {
-//     success: true,
-//     event: {
-//       eventName,
-//       eventArgs,
-//     },
-//   };
-// }
+  return { eventName, eventArgs };
+}

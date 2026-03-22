@@ -55,8 +55,8 @@ const applySocketDetailsPacket = (
   packet: SocketDetailsPacket,
 ): SocketState => {
   const { socket } = packet.payload;
-  const existingSocket = prevState.sockets.some((s) => s.id === socket.id);
-  if (existingSocket) {
+  const isSocketInStore = prevState.sockets.some((s) => s.id === socket.id);
+  if (isSocketInStore) {
     return {
       ...prevState,
       sockets: prevState.sockets.map((s) => (s.id === socket.id ? socket : s)),

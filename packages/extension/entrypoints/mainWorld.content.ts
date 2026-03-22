@@ -136,11 +136,6 @@ const patchSocketSync = () => {
 
     sendSocketDetailsPacket();
 
-    /**
-     * TODO:
-     * since only url is required to detect socket IO,
-     * could we just detect socketIO in the devtools?
-     */
     if (isSocketIO(socketUrl)) {
       windowConnector.sendPacket({
         type: 'DetectedSocketIOPacket',

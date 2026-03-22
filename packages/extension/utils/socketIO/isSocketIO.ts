@@ -1,9 +1,4 @@
-/**
- * TODO:
- * consider just consuming this as a getter in the UI instead
- * of sending packet
- */
-export function isSocketIO(urlString: string) {
+export function isSocketIO(urlString: string): boolean {
   try {
     const url = new URL(urlString);
     const isEngineIOV4 =

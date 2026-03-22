@@ -1,6 +1,5 @@
 import { defineContentScript } from '#imports';
 import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
-import { isSocketIO } from '@/utils/socketIO/isSocketIO';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   WebSocketClientConnection,
@@ -135,13 +134,6 @@ const patchSocketSync = () => {
     });
 
     sendSocketDetailsPacket();
-
-    if (isSocketIO(socketUrl)) {
-      windowConnector.sendPacket({
-        type: 'DetectedSocketIOPacket',
-        payload: { socketId },
-      });
-    }
   });
 
   windowConnector.subscribe((packet: Packet) => {

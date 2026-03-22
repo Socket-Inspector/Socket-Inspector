@@ -28,7 +28,6 @@ Browser extension built with WXT
 - Sends and receives data to and from the `Isolated Content Script`
 - path: `entrypoints/mainWorld.content.ts`
 
-
 ## Content Script Principles
 
 - Keep Content Scripts **lightweight** (minimal logic, depdendencies, etc)

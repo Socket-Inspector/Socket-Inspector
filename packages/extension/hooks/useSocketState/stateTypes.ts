@@ -3,6 +3,7 @@ import { Packet, SocketDetails, SocketMessage } from '@/utils/sharedTypes/shared
 export type SocketState = {
   sockets: Array<SocketDetails>;
   socketMessages: Record<SocketDetails['id'], Array<SocketMessage>>;
+  // TODO: delete
   socketIOConnections: Record<SocketDetails['id'], SocketIOConnection>;
   selectedSocket?: {
     id: string;

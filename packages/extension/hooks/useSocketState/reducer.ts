@@ -66,6 +66,7 @@ const applySocketDetailsPacket = (
   }
 };
 
+// TODO: delete
 const applyDetectedSocketIOPacket = (
   prevState: SocketState,
   packet: DetectedSocketIOPacket,

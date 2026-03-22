@@ -33,6 +33,7 @@ type MessageDetailContentProps = {
 };
 function MessageDetailContent({ socketState, dispatch }: MessageDetailContentProps) {
   if (querySelectedSocketMessages(socketState).length === 0) {
+    // TODO: should this change for Socket IO?
     return (
       <MessageDetailEmptyView
         headline="No messages captured"

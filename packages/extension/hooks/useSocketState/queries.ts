@@ -1,5 +1,8 @@
 import { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 import { SocketState } from './stateTypes';
+import { MessageFilterOption } from '@/components/MessageTableActions';
+import { SocketIOPacket } from '@/utils/socketIO/socketIOTypes';
+import { SocketIOEvent, SocketIOPacketDescription } from '@/utils/socketIO/socketIOPacketUtils';
 
 export const querySelectedSocketDetails = (state: SocketState): SocketDetails | undefined => {
   if (!state.selectedSocket) {
@@ -56,3 +59,63 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
     (message) => message.id === selectedSocket.selectedMessageId,
   );
 };
+
+/** New Functions with socket IO supports */
+// export type ExtendedSocketDetails = {
+
+// };
+
+// export const isSocketIOConnectionSelected = (state: SocketState) => {
+//   return true; // TODO:
+// };
+
+// export type SocketIOMessage = {
+//   webSocketMessage: SocketMessage;
+//   socketIOPacket: SocketIOPacket;
+//   socketIOPacketDescription: SocketIOPacketDescription;
+//   socketIOEventPacketDetails?: SocketIOEvent;
+// };
+
+
+// export const querySelectedSocketIOMessages = (state: SocketState): Array<SocketIOMessage> => {
+//   const selectedSocketMessages = querySelectedSocketMessages(state);
+//   if (selectedSocketMessages.length === 0) {
+//     return [];
+//   }
+//   return [];
+// };
+
+// export type MessageTableSearch = {
+//   searchText: string;
+//   messageDirection: MessageFilterOption;
+// };
+// export const searchSelectedSocketMessages = (state: SocketState, search: MessageTableSearch) => {
+//   const { searchText, messageDirection } = search;
+//   const selectedSocketMessages = querySelectedSocketMessages(state);
+//   if (selectedSocketMessages.length === 0) {
+//     return [];
+//   }
+//   const messages = querySelectedSocketIOMessages(state);
+// };
+
+/**
+ * Socket IO needs
+ * 
+ * Message Table:
+ * - is connection socket IO?
+ * - raw SocketIOPacket string for each message
+ * - SocketIOPacketDescription for each message
+ * - SocketIOEvent details (event packet only)
+ * 
+ * Message Detail:
+ *  - is connection socket IO?
+ *  - raw SocketIOPacket string
+ *  - SocketIOPacketDescription
+ *  - SocketIOEvent details
+ *  - ACK id (for future use)
+ * 
+ *  Message Composer:
+ *   - is connection socket IO?
+ *   - prefill: raw SocketIOPacket string? Maybe the SocketIOEvent details?
+ *   - a way to convert user input to the raw SocketIOPacket string
+ */

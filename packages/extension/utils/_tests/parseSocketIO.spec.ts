@@ -1,6 +1,6 @@
 import { describe, it, expect, assert } from 'vitest';
 import { parseSocketIO } from '../socketIO/parseSocketIO';
-import { getSocketIOPacketDescription } from '../socketIO/socketIOPacketUtils';
+import { getSocketIOPacketDescription, parseSocketIOEvent } from '../socketIO/socketIOPacketUtils';
 
 describe('parseSocketIO', () => {
   describe('packets that are engineIO but not socketIO', () => {
@@ -33,6 +33,22 @@ describe('parseSocketIO', () => {
       assert(parse.socketIOPacket);
       assert(getSocketIOPacketDescription(parse.socketIOPacket?.type) === 'CONNECT');
       assert(parse.socketIOPacket.nsp === '/');
+    });
+    it('parses socketIO event with multiple args', () => {
+      const rawString = '42["STEAM","Blowing1","Blowing2"]';
+      const parse = parseSocketIO(rawString);
+      assert(parse.success);
+      assert(parse.engineIOPacket.type === 'message');
+      assert(parse.socketIOPacket);
+      assert(getSocketIOPacketDescription(parse.socketIOPacket?.type) === 'EVENT');
+      assert(parse.socketIOPacket.nsp === '/');
+
+      const eventParse = parseSocketIOEvent(parse.socketIOPacket);
+      expect(eventParse).toEqual({
+        success: true,
+        eventName: 'STEAM',
+        eventArgs: ['Blowing1', 'Blowing2']
+      });
     });
   });
 });

@@ -1,6 +1,6 @@
 import { Decoder } from 'socket.io-parser';
 import { decodePacket } from 'engine.io-parser';
-import { SocketIOPacket, EngineIOPacket } from "./socketIOTypes";
+import { SocketIOPacket, EngineIOPacket } from './socketIOTypes';
 
 export type SocketIOParseResult =
   | { success: true; engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket }
@@ -11,7 +11,7 @@ export function parseSocketIO(rawString: string): SocketIOParseResult {
   try {
     engineIOPacket = decodePacket(rawString);
   } catch {
-    return { success: false }
+    return { success: false };
   }
 
   if (engineIOPacket.type === 'error') {
@@ -37,7 +37,6 @@ export function parseSocketIO(rawString: string): SocketIOParseResult {
     }
 
     return { success: true, engineIOPacket };
-
   } catch {
     return { success: true, engineIOPacket };
   }
@@ -46,6 +45,6 @@ export function parseSocketIO(rawString: string): SocketIOParseResult {
 /**
  * TODO:
  * for BINARY_EVENT/BINARY_ACK packets with attachments,
- * the decoder won't emit 'decoded' until all binary attachments 
+ * the decoder won't emit 'decoded' until all binary attachments
  * are provided via subsequent add() calls
  */

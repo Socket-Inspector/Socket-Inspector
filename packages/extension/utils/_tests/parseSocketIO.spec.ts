@@ -47,7 +47,7 @@ describe('parseSocketIO', () => {
       expect(eventParse).toEqual({
         success: true,
         eventName: 'STEAM',
-        eventArgs: ['Blowing1', 'Blowing2']
+        eventArgs: ['Blowing1', 'Blowing2'],
       });
     });
     it('parses socketIO event with single arg', () => {
@@ -62,7 +62,7 @@ describe('parseSocketIO', () => {
       expect(eventParse).toEqual({
         success: true,
         eventName: 'message',
-        eventArgs: ['CATS']
+        eventArgs: ['CATS'],
       });
     });
     it('parses socketIO event with string arg containing spaces', () => {
@@ -76,7 +76,7 @@ describe('parseSocketIO', () => {
       expect(eventParse).toEqual({
         success: true,
         eventName: 'MAIN',
-        eventArgs: ['HELLO WORLD']
+        eventArgs: ['HELLO WORLD'],
       });
     });
     it('parses socketIO root namespace connection without data', () => {
@@ -107,7 +107,7 @@ describe('parseSocketIO', () => {
       expect(eventParse).toEqual({
         success: true,
         eventName: 'DOG',
-        eventArgs: ['WOOF']
+        eventArgs: ['WOOF'],
       });
     });
     it('request-response flow', () => {

@@ -1,4 +1,4 @@
-import { SocketIOPacket, SocketIOPacketType } from "./socketIOTypes";
+import { SocketIOPacket, SocketIOPacketType } from './socketIOTypes';
 
 export type SocketIOPacketDescription =
   | 'CONNECT'
@@ -30,8 +30,8 @@ export function getSocketIOPacketDescription(
 }
 
 export type SocketIOEvent =
-  | { success: true; eventName: string; eventArgs: unknown[]; }
-  | { success: false; };
+  | { success: true; eventName: string; eventArgs: unknown[] }
+  | { success: false };
 
 export function parseSocketIOEvent(socketIOPacket: SocketIOPacket): SocketIOEvent {
   if (socketIOPacket.type !== SocketIOPacketType.EVENT) {

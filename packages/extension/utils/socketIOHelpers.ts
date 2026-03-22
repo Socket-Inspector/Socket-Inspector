@@ -7,21 +7,21 @@ import {
 
 export type IOProtocolParse =
   | {
-      lastSuccess: 'NONE';
-      parseResults: [];
-    }
+    lastSuccess: 'NONE';
+    parseResults: [];
+  }
   | {
-      lastSuccess: 'ENGINE_IO';
-      parseResults: [EngineIOPacket];
-    }
+    lastSuccess: 'ENGINE_IO';
+    parseResults: [EngineIOPacket];
+  }
   | {
-      lastSuccess: 'SOCKET_IO';
-      parseResults: [EngineIOPacket, SocketIOPacket];
-    }
+    lastSuccess: 'SOCKET_IO';
+    parseResults: [EngineIOPacket, SocketIOPacket];
+  }
   | {
-      lastSuccess: 'SOCKET_IO_EVENT';
-      parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
-    };
+    lastSuccess: 'SOCKET_IO_EVENT';
+    parseResults: [EngineIOPacket, SocketIOPacket, SocketIOEvent];
+  };
 
 export type SocketIOEvent = {
   eventName: string;
@@ -107,38 +107,6 @@ function parseSocketIO(engineIOPacket: EngineIOPacket): SocketIOParseResult {
   } catch {
     return { success: false, errorMessage: 'Failed to decode Socket.IO packet' };
   }
-}
-
-type EventDataParseResult =
-  | { success: true; event: SocketIOEvent }
-  | { success: false; errorMessage: string };
-
-export function parseEventData(socketIOPacket: SocketIOPacket): EventDataParseResult {
-  if (socketIOPacket.type !== SocketIOPacketType.EVENT) {
-    return { success: false, errorMessage: 'Must be a Socket.IO EVENT packet' };
-  }
-
-  const { data } = socketIOPacket;
-
-  if (!data || !Array.isArray(data) || data.length === 0) {
-    return { success: false, errorMessage: 'Invalid EVENT packet data field' };
-  }
-
-  const eventName = data[0];
-
-  if (typeof eventName !== 'string') {
-    return { success: false, errorMessage: 'Event name must be a string' };
-  }
-
-  const eventArgs = data.slice(1);
-
-  return {
-    success: true,
-    event: {
-      eventName,
-      eventArgs,
-    },
-  };
 }
 
 export type SocketIOPacketDescription =

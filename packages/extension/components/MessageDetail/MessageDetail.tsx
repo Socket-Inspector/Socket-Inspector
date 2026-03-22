@@ -12,6 +12,10 @@ import { copyToClipboard } from '@/utils/helpers';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 import { parseIOMessage } from '@/utils/socketIOHelpers';
 import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
+import { parseSocketIO } from '@/utils/socketIO/parseSocketIO';
+import { createLogger } from '@/utils/customLogger';
+
+const logger = createLogger('DEVTOOLS');
 
 export function MessageDetail() {
   const { socketState, dispatch } = useSocketContext();
@@ -101,9 +105,9 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
 type SocketIORenderInfo =
   | { renderSocketIO: false }
   | {
-      renderSocketIO: true;
-      parseResult: MessageDetailSocketIOProps['parseResult'];
-    };
+    renderSocketIO: true;
+    parseResult: MessageDetailSocketIOProps['parseResult'];
+  };
 
 function getSocketIORenderInfo(
   socketState: SocketContext['socketState'],
@@ -118,6 +122,10 @@ function getSocketIORenderInfo(
   }
 
   const socketIOParseResult = parseIOMessage(selectedMessage.payload);
+  logger(socketIOParseResult);
+  const newParseResult = parseSocketIO(selectedMessage.payload);
+  logger(newParseResult);
+  logger('---------------------');
 
   if (socketIOParseResult.lastSuccess === 'NONE') {
     return {

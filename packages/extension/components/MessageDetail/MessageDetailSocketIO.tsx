@@ -77,7 +77,7 @@ function MessageDetailSocketIODisplay({ parseResult }: MessageDetailSocketIODisp
   const socketIOParse = parseResult.parseResults[1];
   // const socketIOEventParse = parseResult.parseResults[2];
 
-  logger(socketIOParse);
+  // logger(socketIOParse);
 
   const engineIOTemplate = engineIOParse ? (
     <>

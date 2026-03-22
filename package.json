@@ -22,5 +22,9 @@
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "shellcheck": "^4.1.0"
+  },
+  "dependencies": {
+    "engine.io-parser": "^5.2.3",
+    "socket.io-parser": "^4.2.5"
   }
 }

@@ -2,7 +2,6 @@ import { SocketContext, useSocketContext } from '@/hooks/useSocketState/useSocke
 import { querySelectedMessage, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';
-import { MessageDetailSocketIO } from './MessageDetailSocketIO';
 import { MessageDetailWebSocket } from './MessageDetailWebSocket';
 import { copyToClipboard } from '@/utils/helpers';
 import { processJsonPayload } from '@/utils/payloadProcessors';
@@ -48,10 +47,6 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
     );
   }
 
-  // const { isSocketIO } = querySelectedSocketIODetails(socketState);
-  // harcoding to false until feature is complete
-  const isSocketIO = false;
-
   const copyPayloadToClipboard = () => {
     copyToClipboard(selectedMessage.payload);
   };
@@ -73,18 +68,11 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
-        {isSocketIO ? (
-          <MessageDetailSocketIO
-            onCopyToClipboardClicked={copyPayloadToClipboard}
-            onCopyToComposerClicked={prefillMessageComposer}
-          ></MessageDetailSocketIO>
-        ) : (
-          <MessageDetailWebSocket
-            rawText={selectedMessage.payload}
-            onCopyToClipboardClicked={copyPayloadToClipboard}
-            onCopyToComposerClicked={prefillMessageComposer}
-          ></MessageDetailWebSocket>
-        )}
+        <MessageDetailWebSocket
+          rawText={selectedMessage.payload}
+          onCopyToClipboardClicked={copyPayloadToClipboard}
+          onCopyToComposerClicked={prefillMessageComposer}
+        ></MessageDetailWebSocket>
       </ScrollArea>
     </div>
   );

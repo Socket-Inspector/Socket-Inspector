@@ -9,7 +9,7 @@ export function isSocketIOUrl(websocketUrl: string): boolean {
   }
 }
 
-export type SocketIOPacketType =
+export type SocketIOPacketTypeDescription =
   | 'CONNECT'
   | 'DISCONNECT'
   | 'EVENT'
@@ -22,14 +22,14 @@ export type SocketIOMessage =
   | {
     namespace: string;
     serializedPacket: string;
-    packetType: Extract<SocketIOPacketType, 'EVENT'>;
+    packetType: Extract<SocketIOPacketTypeDescription, 'EVENT'>;
     eventPacketDetails: { eventName: string; eventArgs: unknown[] };
   }
   | {
     namespace: string;
     serializedPacket: string;
     // TODO: make sure binary is truly excluded
-    packetType: Exclude<SocketIOPacketType, 'EVENT' | 'BINARY_EVENT' | 'BINARY_ACK'>
+    packetType: Exclude<SocketIOPacketTypeDescription, 'EVENT' | 'BINARY_EVENT' | 'BINARY_ACK'>
   };
 
 export type SocketIOMessageParseResult =

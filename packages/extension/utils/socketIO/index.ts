@@ -11,15 +11,21 @@ export function isSocketIOUrl(websocketUrl: string): boolean {
   }
 }
 
-export type SocketIOMessage = {
-  namespace: string;
-  packetType: 'CONNECT' | 'DISCONNECT' | 'EVENT' | 'ACK' | 'CONNECT_ERROR';
-  serializedPacket: string;
-  eventPacketDetails?: {
-    eventName: string;
-    eventArgs: unknown[];
-  }
-};
+export type SocketIOMessage =
+  | {
+      namespace: string;
+      serializedPacket: string;
+      packetType: 'EVENT';
+      eventPacketDetails: {
+        eventName: string;
+        eventArgs: unknown[];
+      };
+    }
+  | {
+      namespace: string;
+      serializedPacket: string;
+      packetType: 'CONNECT' | 'DISCONNECT' | 'ACK' | 'CONNECT_ERROR';
+    };
 
 export function parseSocketIOMessage(websocketPayload: string): SocketIOMessage {
   throw 'not done';

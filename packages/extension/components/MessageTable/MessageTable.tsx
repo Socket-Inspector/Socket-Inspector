@@ -1,23 +1,23 @@
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { useEffect, useRef, useState } from 'react';
-import { ScrollArea } from './shadcn/ScrollArea';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './shadcn/Table';
+import { ScrollArea } from '../shadcn/ScrollArea';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../shadcn/Table';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
-import { Badge } from './shadcn/Badge';
+import { Badge } from '../shadcn/Badge';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from './shadcn/ContextMenu';
+} from '../shadcn/ContextMenu';
 import {
   querySelectedSocketMessages,
   querySelectedSocketDetails,
 } from '@/hooks/useSocketState/queries';
-import { TableActions, MessageFilterOption } from './MessageTableActions';
-import { MessageDirectionIcon } from './MessageDirectionIcon';
+import { TableActions, MessageFilterOption } from '../MessageTableActions';
+import { MessageDirectionIcon } from '../MessageDirectionIcon';
 import { copyToClipboard } from '@/utils/helpers';
 
 const TABLE_HEADER_HEIGHT = 32;

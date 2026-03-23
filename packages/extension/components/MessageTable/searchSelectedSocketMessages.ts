@@ -2,52 +2,49 @@ import { SocketState } from '@/hooks/useSocketState/stateTypes';
 import { MessageFilterOption } from '../MessageTableActions';
 import {
   isSocketIOConnectionSelected,
+  querySelectedSocketIOMessages,
   querySelectedSocketMessages,
 } from '@/hooks/useSocketState/queries';
-import { parseSocketIOMessage } from '@/utils/socketIO';
+import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 
 export type MessageTableSearch = {
   searchText: string;
   messageDirection: MessageFilterOption;
 };
 
-export const searchSelectedSocketMessages = (
-  socketState: SocketState,
-  search: MessageTableSearch,
-) => {
-  const socketMessages = querySelectedSocketMessages(socketState);
-
-  if (socketMessages.length === 0) {
-    return [];
-  }
-
+export function searchSelectedSocketMessages(socketState: SocketState, search: MessageTableSearch) {
   const { searchText, messageDirection } = search;
 
-  const isSocketIOConnection = isSocketIOConnectionSelected(socketState);
+  return querySelectedSocketMessages(socketState)
+    .filter((webSocketMessage) =>
+      webSocketMessage.payload.toLowerCase().includes(searchText.toLowerCase()),
+    )
+    .filter((webSocketMessage) => matchesDirectionFilter(webSocketMessage, messageDirection));
+}
 
-  if (isSocketIOConnection) {
-    return (
-      querySelectedSocketMessages(socketState)
-        .flatMap((webSocketMessage) => {
-          const socketIOParse = parseSocketIOMessage(webSocketMessage.payload);
+export function searchSelectedSocketIOMessages(
+  socketState: SocketState,
+  search: MessageTableSearch,
+) {
+  const { searchText, messageDirection } = search;
 
-          if (!socketIOParse.success) {
-            return [];
-          }
+  return (
+    querySelectedSocketIOMessages(socketState)
+      // TODO: consider searching on packet type, nsp, etc
+      .filter(({ socketIOMessage }) =>
+        socketIOMessage.serializedPacket.toLowerCase().includes(searchText.toLowerCase()),
+      )
+      .filter(({ webSocketMessage }) => matchesDirectionFilter(webSocketMessage, messageDirection))
+  );
+}
 
-          return [{ webSocketMessage, socketIOMessage: socketIOParse.message }];
-        })
-        // TODO: consider searching on packet type, nsp, etc
-        .filter(({ socketIOMessage }) =>
-          socketIOMessage.serializedPacket.toLowerCase().includes(searchText.toLowerCase()),
-        )
-        .filter(
-          ({ webSocketMessage }) =>
-            messageDirection === 'all' ||
-            (messageDirection === 'received' &&
-              webSocketMessage.endpoints.destination === 'client') ||
-            (messageDirection === 'sent' && webSocketMessage.endpoints.destination === 'server'),
-        )
-    );
-  }
-};
+function matchesDirectionFilter(
+  webSocketMessage: SocketMessage,
+  directionFilter: MessageFilterOption,
+) {
+  return (
+    directionFilter === 'all' ||
+    (directionFilter === 'received' && webSocketMessage.endpoints.destination === 'client') ||
+    (directionFilter === 'sent' && webSocketMessage.endpoints.destination === 'server')
+  );
+}

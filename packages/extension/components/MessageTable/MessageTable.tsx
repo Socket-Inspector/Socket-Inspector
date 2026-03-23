@@ -362,4 +362,3 @@ function formatTimestamp(timestampISO: string): string {
     fractionalSecondDigits: 3,
   });
 }
-

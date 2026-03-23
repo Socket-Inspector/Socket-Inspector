@@ -7,10 +7,7 @@ export type MessagePayloadPreviewProps = {
 
 export function MessagePayloadPreview({ messageId, payload }: MessagePayloadPreviewProps) {
   return (
-    <span
-      className="min-w-0 flex-1 truncate"
-      id={`msg-${messageId}-preview`}
-    >
+    <span className="min-w-0 flex-1 truncate" id={`msg-${messageId}-preview`}>
       {truncatePayload(payload)}
     </span>
   );

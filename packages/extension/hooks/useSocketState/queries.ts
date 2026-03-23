@@ -76,7 +76,6 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
 //   socketIOEventPacketDetails?: SocketIOEvent;
 // };
 
-
 // export const querySelectedSocketIOMessages = (state: SocketState): Array<SocketIOMessage> => {
 //   const selectedSocketMessages = querySelectedSocketMessages(state);
 //   if (selectedSocketMessages.length === 0) {
@@ -100,20 +99,20 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
 
 /**
  * Socket IO needs
- * 
+ *
  * Message Table:
  * - is connection socket IO?
  * - raw SocketIOPacket string for each message
  * - SocketIOPacketDescription for each message
  * - SocketIOEvent details (event packet only)
- * 
+ *
  * Message Detail:
  *  - is connection socket IO?
  *  - raw SocketIOPacket string
  *  - SocketIOPacketDescription
  *  - SocketIOEvent details
  *  - ACK id (for future use)
- * 
+ *
  *  Message Composer:
  *   - is connection socket IO?
  *   - prefill: raw SocketIOPacket string? Maybe the SocketIOEvent details?

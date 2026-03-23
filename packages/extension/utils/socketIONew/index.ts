@@ -20,17 +20,17 @@ export type SocketIOPacketTypeDescription =
 
 export type SocketIOMessage =
   | {
-    namespace: string;
-    serializedPacket: string;
-    packetType: Extract<SocketIOPacketTypeDescription, 'EVENT'>;
-    eventPacketDetails: { eventName: string; eventArgs: unknown[] };
-  }
+      namespace: string;
+      serializedPacket: string;
+      packetType: Extract<SocketIOPacketTypeDescription, 'EVENT'>;
+      eventPacketDetails: { eventName: string; eventArgs: unknown[] };
+    }
   | {
-    namespace: string;
-    serializedPacket: string;
-    // TODO: make sure binary is truly excluded
-    packetType: Exclude<SocketIOPacketTypeDescription, 'EVENT' | 'BINARY_EVENT' | 'BINARY_ACK'>
-  };
+      namespace: string;
+      serializedPacket: string;
+      // TODO: make sure binary is truly excluded
+      packetType: Exclude<SocketIOPacketTypeDescription, 'EVENT' | 'BINARY_EVENT' | 'BINARY_ACK'>;
+    };
 
 export type SocketIOMessageParseResult =
   | { success: true; message: SocketIOMessage }

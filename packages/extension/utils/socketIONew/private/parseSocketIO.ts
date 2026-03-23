@@ -52,10 +52,7 @@ export function parseSocketIO(rawString: string): SocketIOParseResult {
  * are provided via subsequent add() calls
  */
 
-
-function getSocketIOPacketDescription(
-  type: SocketIOPacket['type'],
-): SocketIOPacketTypeDescription {
+function getSocketIOPacketDescription(type: SocketIOPacket['type']): SocketIOPacketTypeDescription {
   if (type === SocketIOPacketType.CONNECT) {
     return 'CONNECT';
   } else if (type === SocketIOPacketType.DISCONNECT) {

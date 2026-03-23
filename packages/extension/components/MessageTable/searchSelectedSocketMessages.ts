@@ -1,7 +1,7 @@
-import { querySelectedSocketMessages } from "@/hooks/useSocketState/queries";
-import { MessageFilterOption } from "../MessageTableActions";
-import { SocketMessage } from "@/utils/sharedTypes/sharedTypes";
-import { SocketState } from "@/hooks/useSocketState/stateTypes";
+import { querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
+import { MessageFilterOption } from '../MessageTableActions';
+import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
+import { SocketState } from '@/hooks/useSocketState/stateTypes';
 
 export type MessageTableSearch = {
   searchText: string;
@@ -18,7 +18,10 @@ export function searchSelectedSocketMessages(socketState: SocketState, search: M
     .filter((webSocketMessage) => matchesDirectionFilter(webSocketMessage, messageDirection));
 }
 
-function matchesDirectionFilter(webSocketMessage: SocketMessage, directionFilter: MessageFilterOption) {
+function matchesDirectionFilter(
+  webSocketMessage: SocketMessage,
+  directionFilter: MessageFilterOption,
+) {
   return (
     directionFilter === 'all' ||
     (directionFilter === 'received' && webSocketMessage.endpoints.destination === 'client') ||

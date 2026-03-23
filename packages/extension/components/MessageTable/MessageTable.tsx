@@ -120,8 +120,6 @@ export function MessageTable() {
     selectMessage(filteredMessages[previousIndex].id);
   };
 
-  const getPayloadPreviewId = (messageId: SocketMessage['id']) => `msg-${messageId}-preview`;
-
   const getActiveDescendant = () => {
     if (!selectedMessageId || virtualItems.length === 0) {
       return undefined;

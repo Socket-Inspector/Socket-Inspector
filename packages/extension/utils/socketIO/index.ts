@@ -1,5 +1,3 @@
-import { SocketIOPacketDescription } from './internal/socketIOPacketUtils';
-
 export function isSocketIOUrl(websocketUrl: string): boolean {
   try {
     const url = new URL(websocketUrl);
@@ -16,10 +14,7 @@ export type SocketIOMessage =
       namespace: string;
       serializedPacket: string;
       packetType: 'EVENT';
-      eventPacketDetails: {
-        eventName: string;
-        eventArgs: unknown[];
-      };
+      eventPacketDetails: { eventName: string; eventArgs: unknown[] };
     }
   | {
       namespace: string;
@@ -27,6 +22,10 @@ export type SocketIOMessage =
       packetType: 'CONNECT' | 'DISCONNECT' | 'ACK' | 'CONNECT_ERROR';
     };
 
-export function parseSocketIOMessage(websocketPayload: string): SocketIOMessage {
+export type SocketIOMessageParseResult =
+  | { success: true; message: SocketIOMessage }
+  | { success: false };
+
+export function parseSocketIOMessage(websocketPayload: string): SocketIOMessageParseResult {
   throw 'not done';
 }

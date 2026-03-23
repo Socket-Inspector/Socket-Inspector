@@ -19,6 +19,7 @@ import {
 import { TableActions, MessageFilterOption } from '../MessageTableActions';
 import { MessageDirectionIcon } from './MessageDirectionIcon';
 import { copyToClipboard } from '@/utils/helpers';
+import { MessagePayloadPreview } from './MessagePayloadPreview';
 
 const TABLE_HEADER_HEIGHT = 32;
 const TABLE_BODY_ROW_HEIGHT = 25;
@@ -291,12 +292,7 @@ export function MessageTable() {
                               Custom
                             </Badge>
                           )}
-                          <span
-                            className="min-w-0 flex-1 truncate"
-                            id={getPayloadPreviewId(message.id)}
-                          >
-                            {payloadPreview(message.payload)}
-                          </span>
+                          <MessagePayloadPreview messageId={message.id} payload={message.payload} />
                         </TableCell>
                         <TableCell
                           role="gridcell"
@@ -357,15 +353,4 @@ function formatTimestamp(timestampISO: string): string {
     second: '2-digit',
     fractionalSecondDigits: 3,
   });
-}
-
-/**
- * This prevents enormous strings from being inserted into
- * the DOM (even if the tailwind truncate class is used,
- * the hidden part of the string will still be stored in
- * the DOM)
- */
-function payloadPreview(payload: string): string {
-  const PREVIEW_MAX = 4000;
-  return payload.length > PREVIEW_MAX ? `${payload.slice(0, PREVIEW_MAX)}…` : payload;
 }

@@ -17,7 +17,7 @@ import {
   querySelectedSocketDetails,
 } from '@/hooks/useSocketState/queries';
 import { TableActions, MessageFilterOption } from '../MessageTableActions';
-import { MessageDirectionIcon } from '../MessageDirectionIcon';
+import { MessageDirectionIcon } from './MessageDirectionIcon';
 import { copyToClipboard } from '@/utils/helpers';
 
 const TABLE_HEADER_HEIGHT = 32;

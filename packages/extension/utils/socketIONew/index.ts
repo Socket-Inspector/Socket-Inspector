@@ -22,7 +22,7 @@ export type SocketIOMessage =
   | {
     namespace: string;
     serializedPacket: string;
-    packetType: 'EVENT'
+    packetType: Extract<SocketIOPacketDescription, 'EVENT'>;
     eventPacketDetails: { eventName: string; eventArgs: unknown[] };
   }
   | {

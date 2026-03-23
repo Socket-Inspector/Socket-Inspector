@@ -31,6 +31,7 @@ export type ClearDevtoolsStatePacket = z.infer<typeof ClearDevtoolsStatePacketSc
 export type PauseSocketPacket = z.infer<typeof PauseSocketPacketSchema>;
 export type ResumeSocketPacket = z.infer<typeof ResumeSocketPacketSchema>;
 export type CloseConnectionPacket = z.infer<typeof CloseConnectionPacketSchema>;
+// TODO: remove
 export type DetectedSocketIOPacket = z.infer<typeof DetectedSocketIOPacketSchema>;
 
 /** Union of all Packet Types */

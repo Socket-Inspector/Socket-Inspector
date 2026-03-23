@@ -1,5 +1,6 @@
 import { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
-import { SocketIOConnection, SocketState } from './stateTypes';
+import { SocketState } from './stateTypes';
+import { parseSocketIOMessage, SocketIOMessage } from '@/utils/socketIONew';
 
 export const querySelectedSocketDetails = (state: SocketState): SocketDetails | undefined => {
   if (!state.selectedSocket) {
@@ -57,24 +58,29 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
   );
 };
 
-export type SocketIODetails =
-  | {
-      isSocketIOConnection: false;
+export function isSocketIOConnectionSelected(state: SocketState) {
+  // TODO: implement
+  return false;
+}
+
+export type SocketMessageWithSocketIODetails = {
+  webSocketMessage: SocketMessage;
+  socketIOMessage: SocketIOMessage;
+};
+export const querySelectedSocketIOMessages = (
+  state: SocketState,
+): Array<SocketMessageWithSocketIODetails> => {
+  const isSocketIOConnection = isSocketIOConnectionSelected(state);
+  if (!isSocketIOConnection) {
+    return [];
+  }
+  return querySelectedSocketMessages(state).flatMap((webSocketMessage) => {
+    const socketIOParse = parseSocketIOMessage(webSocketMessage.payload);
+
+    if (!socketIOParse.success) {
+      return [];
     }
-  | { isSocketIOConnection: true; socketIOConnection: SocketIOConnection };
 
-export const querySelectedSocketIODetails = (state: SocketState): SocketIODetails => {
-  const { selectedSocket } = state;
-
-  if (!selectedSocket) {
-    return { isSocketIOConnection: false };
-  }
-
-  const socketIO = state.socketIOConnections[selectedSocket.id];
-
-  if (!socketIO) {
-    return { isSocketIOConnection: false };
-  }
-
-  return { isSocketIOConnection: true, socketIOConnection: socketIO };
+    return [{ webSocketMessage, socketIOMessage: socketIOParse.message }];
+  });
 };

@@ -8,7 +8,7 @@ import {
 } from '@/components/shadcn/Resizable';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { EmptySocketSelection } from '@/components/EmptySocketSelection';
-import { MessageTable } from '@/components/MessageTable';
+import { MessageTable } from '@/components/MessageTable/MessageTable';
 import { MessageComposer } from '@/components/MessageComposer';
 import { MessageDetail } from '@/components/MessageDetail/MessageDetail';
 

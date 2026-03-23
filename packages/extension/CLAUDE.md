@@ -28,12 +28,17 @@ Browser extension built with WXT
 - Sends and receives data to and from the `Isolated Content Script`
 - path: `entrypoints/mainWorld.content.ts`
 
+## Content Script Principles
+
+- Keep Content Scripts **lightweight** (minimal logic, depdendencies, etc)
+- Content Scripts execute on the same thread as the host page, so there's high risk of security and performance issues
+
 ## React Guidelines
 
 - This project uses the **React Compiler**, which provides rendering optimizations, eliminating the need for manual useMemo, useCallback, and React.memo
 - Components should follow follow WCAG 2.1 AA digital-accessibility guidelines
 - NEVER use `forwardRef` since it is no longer needed in React 19. Pass ref as a prop instead.
-- This project uses the shadcn component library. Components are in the `components/shadcn` directory. DO NOT modify these components unless told otherwise.
+- Define a named type for component props above the component definition instead of using inline object types in the function signature
 
 ## Shadcn Components
 

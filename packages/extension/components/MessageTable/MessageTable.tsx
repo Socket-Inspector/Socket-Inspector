@@ -1,24 +1,27 @@
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { useEffect, useRef, useState } from 'react';
-import { ScrollArea } from './shadcn/ScrollArea';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './shadcn/Table';
+import { ScrollArea } from '../shadcn/ScrollArea';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../shadcn/Table';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
-import { Badge } from './shadcn/Badge';
+import { Badge } from '../shadcn/Badge';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from './shadcn/ContextMenu';
+} from '../shadcn/ContextMenu';
 import {
   querySelectedSocketMessages,
   querySelectedSocketDetails,
 } from '@/hooks/useSocketState/queries';
-import { TableActions, MessageFilterOption } from './MessageTableActions';
+import { TableActions, MessageFilterOption } from '../MessageTableActions';
 import { MessageDirectionIcon } from './MessageDirectionIcon';
+import { MessagePayloadPreview } from './MessagePayloadPreview';
 import { copyToClipboard } from '@/utils/helpers';
+import { socketIOEnabled } from '@/utils/featureToggle';
+import { parseSocketIO } from '@/utils/socketIO/parseSocketIO';
 
 const TABLE_HEADER_HEIGHT = 32;
 const TABLE_BODY_ROW_HEIGHT = 25;
@@ -36,7 +39,18 @@ export function MessageTable() {
   const isPaused = selectedSocketDetails?.isPaused ?? false;
   const selectedSocketId = selectedSocketDetails?.id;
 
+  // TODO:
+  // const isSocketIOConnection = socketIOEnabled() && ...
+  const isSocketIOConnection = true;
+
   const filteredMessages = querySelectedSocketMessages(socketState)
+    .filter((message) => {
+      if (!isSocketIOConnection) {
+        return message;
+      }
+      const parsed = parseSocketIO(message.payload);
+      return parsed.success && Boolean(parsed.socketIOPacket);
+    })
     .filter((message) => message.payload.toLowerCase().includes(searchText.toLowerCase()))
     .filter(
       (message) =>
@@ -118,8 +132,6 @@ export function MessageTable() {
     rowVirtualizer.scrollToIndex(previousIndex);
     selectMessage(filteredMessages[previousIndex].id);
   };
-
-  const getPayloadPreviewId = (messageId: SocketMessage['id']) => `msg-${messageId}-preview`;
 
   const getActiveDescendant = () => {
     if (!selectedMessageId || virtualItems.length === 0) {
@@ -243,7 +255,6 @@ export function MessageTable() {
               </TableRow>
             </TableHeader>
             <TableBody role="rowgroup">
-              {/* Top spacer */}
               {virtualItems.length > 0 && (
                 <TableRow aria-hidden role="presentation">
                   <TableCell
@@ -256,7 +267,6 @@ export function MessageTable() {
                 </TableRow>
               )}
 
-              {/* Virtual rows */}
               {virtualItems.map((virtualRow) => {
                 const message = filteredMessages[virtualRow.index];
                 return (
@@ -291,12 +301,7 @@ export function MessageTable() {
                               Custom
                             </Badge>
                           )}
-                          <span
-                            className="min-w-0 flex-1 truncate"
-                            id={getPayloadPreviewId(message.id)}
-                          >
-                            {payloadPreview(message.payload)}
-                          </span>
+                          <MessagePayloadPreview messageId={message.id} payload={message.payload} />
                         </TableCell>
                         <TableCell
                           role="gridcell"
@@ -327,7 +332,6 @@ export function MessageTable() {
                 );
               })}
 
-              {/* Bottom spacer */}
               {virtualItems.length > 0 && (
                 <TableRow aria-hidden role="presentation">
                   <TableCell
@@ -357,15 +361,4 @@ function formatTimestamp(timestampISO: string): string {
     second: '2-digit',
     fractionalSecondDigits: 3,
   });
-}
-
-/**
- * This prevents enormous strings from being inserted into
- * the DOM (even if the tailwind truncate class is used,
- * the hidden part of the string will still be stored in
- * the DOM)
- */
-function payloadPreview(payload: string): string {
-  const PREVIEW_MAX = 4000;
-  return payload.length > PREVIEW_MAX ? `${payload.slice(0, PREVIEW_MAX)}…` : payload;
 }

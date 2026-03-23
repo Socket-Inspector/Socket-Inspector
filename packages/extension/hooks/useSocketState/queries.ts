@@ -1,5 +1,6 @@
 import { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
-import { SocketIOConnection, SocketState } from './stateTypes';
+import { SocketState } from './stateTypes';
+import { parseSocketIOMessage, SocketIOMessage } from '@/utils/socketIO';
 
 export const querySelectedSocketDetails = (state: SocketState): SocketDetails | undefined => {
   if (!state.selectedSocket) {
@@ -57,24 +58,78 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
   );
 };
 
-export type SocketIODetails =
-  | {
-      isSocketIOConnection: false;
-    }
-  | { isSocketIOConnection: true; socketIOConnection: SocketIOConnection };
-
-export const querySelectedSocketIODetails = (state: SocketState): SocketIODetails => {
-  const { selectedSocket } = state;
-
-  if (!selectedSocket) {
-    return { isSocketIOConnection: false };
-  }
-
-  const socketIO = state.socketIOConnections[selectedSocket.id];
-
-  if (!socketIO) {
-    return { isSocketIOConnection: false };
-  }
-
-  return { isSocketIOConnection: true, socketIOConnection: socketIO };
+export const isSocketIOConnectionSelected = (state: SocketState): boolean => {
+  throw 'NOT IMPLEMENTED';
 };
+
+export type SocketMessageWithSocketIODetails = {
+  webSocketMessage: SocketMessage;
+  socketIOMessage: SocketIOMessage;
+};
+export const querySelectedSocketIOMessages = (
+  state: SocketState,
+): Array<SocketMessageWithSocketIODetails> => {
+  const isSocketIOConnection = isSocketIOConnectionSelected(state);
+  if (!isSocketIOConnection) {
+    return [];
+  }
+  return querySelectedSocketMessages(state).flatMap((webSocketMessage) => {
+    const socketIOParse = parseSocketIOMessage(webSocketMessage.payload);
+
+    if (!socketIOParse.success) {
+      return [];
+    }
+
+    return [{ webSocketMessage, socketIOMessage: socketIOParse.message }];
+  });
+};
+
+// export type SocketIOMessage = {
+//   webSocketMessage: SocketMessage;
+//   socketIOPacket: SocketIOPacket;
+//   socketIOPacketDescription: SocketIOPacketDescription;
+//   socketIOEventPacketDetails?: SocketIOEvent;
+// };
+
+// export const querySelectedSocketIOMessages = (state: SocketState): Array<SocketIOMessage> => {
+//   const selectedSocketMessages = querySelectedSocketMessages(state);
+//   if (selectedSocketMessages.length === 0) {
+//     return [];
+//   }
+//   return [];
+// };
+
+// export type MessageTableSearch = {
+//   searchText: string;
+//   messageDirection: MessageFilterOption;
+// };
+// export const searchSelectedSocketMessages = (state: SocketState, search: MessageTableSearch) => {
+//   const { searchText, messageDirection } = search;
+//   const selectedSocketMessages = querySelectedSocketMessages(state);
+//   if (selectedSocketMessages.length === 0) {
+//     return [];
+//   }
+//   const messages = querySelectedSocketIOMessages(state);
+// };
+
+/**
+ * Socket IO needs
+ *
+ * Message Table:
+ * - is connection socket IO?
+ * - raw SocketIOPacket string for each message
+ * - SocketIOPacketDescription for each message
+ * - SocketIOEvent details (event packet only)
+ *
+ * Message Detail:
+ *  - is connection socket IO?
+ *  - raw SocketIOPacket string
+ *  - SocketIOPacketDescription
+ *  - SocketIOEvent details
+ *  - ACK id (for future use)
+ *
+ *  Message Composer:
+ *   - is connection socket IO?
+ *   - prefill: raw SocketIOPacket string? Maybe the SocketIOEvent details?
+ *   - a way to convert user input to the raw SocketIOPacket string
+ */

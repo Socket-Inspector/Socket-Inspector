@@ -5,6 +5,10 @@ import { ScrollArea } from '../shadcn/ScrollArea';
 import { MessageDetailWebSocket } from './MessageDetailWebSocket';
 import { copyToClipboard } from '@/utils/helpers';
 import { processJsonPayload } from '@/utils/payloadProcessors';
+import { parseSocketIO } from '@/utils/socketIO/parseSocketIO';
+import { Separator } from '../shadcn/Separator';
+import { getSocketIOPacketDescription } from '@/utils/socketIO/socketIOPacketUtils';
+import { Badge } from '../shadcn/Badge';
 
 export function MessageDetail() {
   const { socketState, dispatch } = useSocketContext();
@@ -29,6 +33,7 @@ type MessageDetailContentProps = {
 };
 function MessageDetailContent({ socketState, dispatch }: MessageDetailContentProps) {
   if (querySelectedSocketMessages(socketState).length === 0) {
+    // TODO: should this change for Socket IO?
     return (
       <MessageDetailEmptyView
         headline="No messages captured"
@@ -65,14 +70,28 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
     });
   };
 
+  // TODO: remove
+  const parseResult = parseSocketIO(selectedMessage.payload);
+  const socketIODebugText =
+    parseResult.success && parseResult.socketIOPacket
+      ? JSON.stringify(parseResult.socketIOPacket, null, 2)
+      : '';
+  const socketIOPacketType =
+    parseResult.success && parseResult.socketIOPacket
+      ? getSocketIOPacketDescription(parseResult.socketIOPacket.type)
+      : '';
+
   return (
     <div className="h-full w-full">
       <ScrollArea className="h-full w-full">
+        {/* TEMPORARY: Socket.IO parse debug output */}
         <MessageDetailWebSocket
-          rawText={selectedMessage.payload}
+          rawText={socketIODebugText}
           onCopyToClipboardClicked={copyPayloadToClipboard}
           onCopyToComposerClicked={prefillMessageComposer}
         ></MessageDetailWebSocket>
+        <Separator></Separator>
+        <Badge>{socketIOPacketType}</Badge>
       </ScrollArea>
     </div>
   );

@@ -1,4 +1,7 @@
-import { querySelectedSocketIOMessages, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
+import {
+  querySelectedSocketIOMessages,
+  querySelectedSocketMessages,
+} from '@/hooks/useSocketState/queries';
 import { MessageFilterOption } from '../MessageTableActions';
 import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 import { SocketState } from '@/hooks/useSocketState/stateTypes';

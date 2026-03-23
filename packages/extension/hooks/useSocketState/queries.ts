@@ -56,3 +56,8 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
     (message) => message.id === selectedSocket.selectedMessageId,
   );
 };
+
+// TODO: implement
+export function isSocketIOConnectionSelected(state: SocketState) {
+  return false;
+}

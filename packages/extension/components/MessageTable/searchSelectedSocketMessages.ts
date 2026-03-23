@@ -1,4 +1,4 @@
-import { querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
+import { querySelectedSocketIOMessages, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
 import { MessageFilterOption } from '../MessageTableActions';
 import { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 import { SocketState } from '@/hooks/useSocketState/stateTypes';
@@ -16,6 +16,22 @@ export function searchSelectedSocketMessages(socketState: SocketState, search: M
       webSocketMessage.payload.toLowerCase().includes(searchText.toLowerCase()),
     )
     .filter((webSocketMessage) => matchesDirectionFilter(webSocketMessage, messageDirection));
+}
+
+export function searchSelectedSocketIOMessages(
+  socketState: SocketState,
+  search: MessageTableSearch,
+) {
+  const { searchText, messageDirection } = search;
+
+  return (
+    querySelectedSocketIOMessages(socketState)
+      // TODO: consider searching on packet type, nsp, etc
+      .filter(({ socketIOMessage }) =>
+        socketIOMessage.serializedPacket.toLowerCase().includes(searchText.toLowerCase()),
+      )
+      .filter(({ webSocketMessage }) => matchesDirectionFilter(webSocketMessage, messageDirection))
+  );
 }
 
 function matchesDirectionFilter(

@@ -1,5 +1,6 @@
 import { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 import { SocketState } from './stateTypes';
+import { parseSocketIOMessage, SocketIOMessage } from '@/utils/socketIONew';
 
 export const querySelectedSocketDetails = (state: SocketState): SocketDetails | undefined => {
   if (!state.selectedSocket) {
@@ -57,7 +58,29 @@ export const querySelectedMessage = (state: SocketState): SocketMessage | undefi
   );
 };
 
-// TODO: implement
 export function isSocketIOConnectionSelected(state: SocketState) {
+  // TODO: implement
   return false;
 }
+
+export type SocketMessageWithSocketIODetails = {
+  webSocketMessage: SocketMessage;
+  socketIOMessage: SocketIOMessage;
+};
+export const querySelectedSocketIOMessages = (
+  state: SocketState,
+): Array<SocketMessageWithSocketIODetails> => {
+  const isSocketIOConnection = isSocketIOConnectionSelected(state);
+  if (!isSocketIOConnection) {
+    return [];
+  }
+  return querySelectedSocketMessages(state).flatMap((webSocketMessage) => {
+    const socketIOParse = parseSocketIOMessage(webSocketMessage.payload);
+
+    if (!socketIOParse.success) {
+      return [];
+    }
+
+    return [{ webSocketMessage, socketIOMessage: socketIOParse.message }];
+  });
+};

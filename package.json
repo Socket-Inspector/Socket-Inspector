@@ -1,7 +1,6 @@
 {
   "name": "socket-inspector-workspace",
   "private": true,
-  "packageManager": "pnpm@12.10.1",
   "engines": {
     "node": ">=24.12.0 <25"
   },

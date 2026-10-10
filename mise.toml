@@ -6,4 +6,4 @@ pnpm = "12.10.1"
 
 [tasks.setup]
 description = "Prepare development environment"
-run = ["pnpm install", "pnpm --filter playwright-tests install-browsers"]
+run = ["pnpm install --frozen-lockfile", "pnpm --filter playwright-tests install-browsers"]

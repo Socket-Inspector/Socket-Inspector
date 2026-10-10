@@ -34,7 +34,8 @@ export default defineConfig({
     build: {
       rollupOptions: {
         output: {
-          // rolldown omits "use strict" from IIFE bundles (background, content scripts) unless forced
+          // Background and content scripts are bundled as classic (non-module) scripts, and Vite 8 no longer
+          // adds "use strict" to them like Vite 7 did. Force it so they keep running in strict mode.
           strict: true,
         },
       },

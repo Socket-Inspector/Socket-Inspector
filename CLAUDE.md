@@ -15,6 +15,9 @@ pnpm workspace with the following packages:
 ## Common Commands
 
 ```bash
+# prepare development environment
+mise install && mise run setup
+
 # formatter
 pnpm format
 

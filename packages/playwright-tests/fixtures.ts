@@ -12,7 +12,8 @@ export const test = base.extend<{
   // oxlint-disable-next-line no-empty-pattern
   context: async ({}, use) => {
     const context = await chromium.launchPersistentContext('', {
-      headless: false,
+      channel: 'chromium',
+      headless: !!process.env.CI,
       // devtools: true,
       args: [
         `--disable-extensions-except=${pathToExtension}`,

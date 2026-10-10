@@ -2,9 +2,6 @@
   "name": "playwright-tests",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=24.0.0"
-  },
   "scripts": {
     "install-browsers": "playwright install",
     "test": "playwright test",

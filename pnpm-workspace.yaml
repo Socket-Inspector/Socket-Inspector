@@ -1,13 +1,10 @@
 packages:
   - packages/*
 
-ignoredBuiltDependencies:
-  - '@swc/core'
-
-onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - esbuild
-  - spawn-sync
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+  spawn-sync: true
 
 overrides:
   '@monaco-editor/react>@monaco-editor/loader': 1.5.0

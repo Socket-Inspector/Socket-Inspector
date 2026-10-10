@@ -16,7 +16,7 @@ pnpm workspace with the following packages:
 
 ```bash
 # prepare development environment
-mise install && mise run setup
+mise run setup
 
 # formatter
 pnpm format

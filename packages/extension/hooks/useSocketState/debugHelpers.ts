@@ -1,6 +1,6 @@
 import { createLogger } from '@/utils/customLogger';
 import { getInitialState, reducer } from './reducer';
-import { ReducerAction, SocketState } from './stateTypes';
+import type { ReducerAction, SocketState } from './stateTypes';
 
 export type ReducerHistoryItem = {
   action?: ReducerAction;

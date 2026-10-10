@@ -1,6 +1,6 @@
-import { LogFn } from './customLogger';
+import type { LogFn } from './customLogger';
 import { createDebugPacket } from './packetFactory';
-import { Packet } from './sharedTypes/sharedTypes';
+import type { Packet } from './sharedTypes/sharedTypes';
 
 export type WindowScriptName = 'ISOLATED_WORLD' | 'MAIN_WORLD';
 

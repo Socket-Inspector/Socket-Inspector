@@ -1,4 +1,4 @@
-import { Packet, SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
+import type { Packet, SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
 
 export type SocketState = {
   sockets: Array<SocketDetails>;

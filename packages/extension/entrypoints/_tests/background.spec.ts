@@ -1,9 +1,9 @@
-import { Browser } from '#imports';
+import type { Browser } from '#imports';
 import { describe, beforeEach, vi, it, expect } from 'vitest';
 import { fakeBrowser } from 'wxt/testing';
 import background from '../background';
 import { createDebugPacket } from '@/utils/packetFactory';
-import { ClearDevtoolsStatePacket } from '@/utils/sharedTypes/sharedTypes';
+import type { ClearDevtoolsStatePacket } from '@/utils/sharedTypes/sharedTypes';
 
 /**
  * TODO:

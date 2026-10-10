@@ -1,4 +1,4 @@
-import { SocketState } from './stateTypes';
+import type { SocketState } from './stateTypes';
 
 /**
  * These mocks are not used in prod. They are used to populate

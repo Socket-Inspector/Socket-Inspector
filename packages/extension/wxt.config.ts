@@ -1,5 +1,5 @@
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig, UserManifest } from 'wxt';
+import { defineConfig, type UserManifest } from 'wxt';
 
 // @see https://wxt.dev/api/config.html
 export default defineConfig({

@@ -1,8 +1,8 @@
 import { ServiceWorkerConnector } from '@/utils/serviceWorkerMessaging';
-import { Packet } from '@/utils/sharedTypes/sharedTypes';
+import type { Packet } from '@/utils/sharedTypes/sharedTypes';
 import { getInitialState, reducer } from './reducer';
-import { SocketState, ReducerAction } from './stateTypes';
-import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+import type { SocketState, ReducerAction } from './stateTypes';
+import { createContext, type ReactNode, useContext, useEffect, useReducer } from 'react';
 
 export type SocketContext = {
   socketState: SocketState;

@@ -1,10 +1,10 @@
 import { defineContentScript } from '#imports';
-import { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
+import type { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
 import { isSocketIO } from '@/utils/socketIO/isSocketIO';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   WebSocketClientConnection,
-  WebSocketData,
+  type WebSocketData,
   WebSocketInterceptor,
   WebSocketServerConnection,
 } from '@mswjs/interceptors/WebSocket';

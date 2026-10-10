@@ -1,17 +1,12 @@
+import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
+import { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig, type UserManifest } from 'wxt';
 
 // @see https://wxt.dev/api/config.html
 export default defineConfig({
   imports: false,
   modules: ['@wxt-dev/module-react'],
-  react: {
-    vite: {
-      babel: {
-        plugins: ['babel-plugin-react-compiler'],
-      },
-    },
-  },
   manifest: ({ mode }) => {
     const config: UserManifest = {
       name: 'Socket Inspector - WebSocket Debugging Tools',
@@ -35,7 +30,15 @@ export default defineConfig({
     return config;
   },
   vite: () => ({
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), babel({ presets: [reactCompilerPreset()] })],
+    build: {
+      rollupOptions: {
+        output: {
+          // rolldown omits "use strict" from IIFE bundles (background, content scripts) unless forced
+          strict: true,
+        },
+      },
+    },
   }),
   outDir: process.env.CUSTOM_OUT_DIR || '.output',
 });

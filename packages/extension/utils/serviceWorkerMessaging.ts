@@ -1,8 +1,8 @@
-import { browser, Browser } from '#imports';
-import { LogFn } from './customLogger';
+import { browser, type Browser } from '#imports';
+import type { LogFn } from './customLogger';
 import { touchLastError } from './helpers';
 import { createDebugPacket } from './packetFactory';
-import { Packet } from './sharedTypes/sharedTypes';
+import type { Packet } from './sharedTypes/sharedTypes';
 
 export type ServiceWorkerConnectorArgs = {
   channelName: string;

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { ReducerAction, SelectSocketAction, SocketState } from '../useSocketState/stateTypes';
+import type { ReducerAction, SelectSocketAction, SocketState } from '../useSocketState/stateTypes';
 import { getInitialState, reducer } from '../useSocketState/reducer';
-import { SocketDetailsPacket, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
+import type { SocketDetailsPacket, SocketMessagePacket } from '@/utils/sharedTypes/sharedTypes';
 import { querySelectedSocketMessages } from '../useSocketState/queries';
 
 describe('reducer', () => {

@@ -1,4 +1,4 @@
-import { SocketIOPacket, SocketIOPacketType } from './socketIOTypes';
+import { type SocketIOPacket, SocketIOPacketType } from './socketIOTypes';
 
 export type SocketIOPacketDescription =
   | 'CONNECT'

@@ -1,10 +1,10 @@
-import { Browser } from '#imports';
+import type { Browser } from '#imports';
 import { describe, beforeEach, vi, it, expect } from 'vitest';
 import { ServiceWorkerConnector } from '../serviceWorkerMessaging';
 import { createLogger } from '../customLogger';
 import { fakeBrowser } from 'wxt/testing';
 import { createDebugPacket } from '../packetFactory';
-import { Packet, SocketDetailsPacket } from '../sharedTypes/sharedTypes';
+import type { Packet, SocketDetailsPacket } from '../sharedTypes/sharedTypes';
 
 describe('ServiceWorkerConnector', () => {
   beforeEach(() => {

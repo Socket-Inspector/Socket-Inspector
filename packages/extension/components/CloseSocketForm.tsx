@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { CloseCode, CloseCodeSelect } from './CloseCodeSelect';
+import { type CloseCode, CloseCodeSelect } from './CloseCodeSelect';
 import { Button } from './shadcn/Button';
 import { CloseReasonInput } from './CloseReasonInput';
 import { FieldGroup } from './shadcn/Field';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
+import type { CloseConnectionPacket } from '@/utils/sharedTypes/sharedTypes';
 
 type CloseSocketFormState = {
   code: CloseCode;

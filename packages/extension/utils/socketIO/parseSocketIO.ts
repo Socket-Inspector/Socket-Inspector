@@ -1,6 +1,6 @@
 import { Decoder } from 'socket.io-parser';
 import { decodePacket } from 'engine.io-parser';
-import { SocketIOPacket, EngineIOPacket } from './socketIOTypes';
+import type { SocketIOPacket, EngineIOPacket } from './socketIOTypes';
 
 export type SocketIOParseResult =
   | { success: true; engineIOPacket: EngineIOPacket; socketIOPacket?: SocketIOPacket }

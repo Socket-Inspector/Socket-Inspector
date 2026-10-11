@@ -1,17 +1,17 @@
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { type FormEvent, useEffect, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { processJsonPayload, processTextPayload } from '@/utils/payloadProcessors';
 import { cn } from '@/utils/cn';
 import { querySelectedSocketDetails } from '@/hooks/useSocketState/queries';
-import { monaco } from '@/entrypoints/devtools-panel/monaco-small';
+import type { monaco } from '@/entrypoints/devtools-panel/monaco-small';
 import { Braces } from 'lucide-react';
 import { useDevtoolsTheme } from '@/hooks/useDevtoolsTheme';
 import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';
 import { Button } from './shadcn/Button';
 import { Label } from './shadcn/Label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
-import { MessageComposerFormData } from '@/hooks/useSocketState/stateTypes';
+import type { MessageComposerFormData } from '@/hooks/useSocketState/stateTypes';
 
 const getInitialFormValues = (): MessageComposerFormData => ({
   destination: 'client',

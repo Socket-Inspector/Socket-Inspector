@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from './shadcn/Sidebar';
-import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
+import type { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
 import { X } from 'lucide-react';

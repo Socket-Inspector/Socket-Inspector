@@ -1,5 +1,5 @@
-import { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
-import { SocketIOConnection, SocketState } from './stateTypes';
+import type { SocketDetails, SocketMessage } from '@/utils/sharedTypes/sharedTypes';
+import type { SocketIOConnection, SocketState } from './stateTypes';
 
 export const querySelectedSocketDetails = (state: SocketState): SocketDetails | undefined => {
   if (!state.selectedSocket) {

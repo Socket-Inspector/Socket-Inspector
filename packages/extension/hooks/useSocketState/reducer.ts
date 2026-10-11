@@ -1,9 +1,9 @@
-import {
+import type {
   DetectedSocketIOPacket,
   SocketDetailsPacket,
   SocketMessagePacket,
 } from '@/utils/sharedTypes/sharedTypes';
-import {
+import type {
   ReducerAction,
   SelectSocketAction,
   SelectSocketMessageAction,

@@ -1,6 +1,6 @@
-import { browser, Browser, defineBackground } from '#imports';
+import { browser, type Browser, defineBackground } from '#imports';
 import { touchLastError } from '@/utils/helpers';
-import { Packet } from '@/utils/sharedTypes/sharedTypes';
+import type { Packet } from '@/utils/sharedTypes/sharedTypes';
 import { isPacket } from '@/utils/sharedTypes/validators';
 
 export default defineBackground(() => {

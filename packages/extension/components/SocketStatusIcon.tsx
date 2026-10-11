@@ -1,4 +1,4 @@
-import { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
+import type { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { Ban, Circle, Loader2 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './shadcn/Tooltip';
 

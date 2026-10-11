@@ -1,17 +1,12 @@
+import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig, UserManifest } from 'wxt';
+import { reactCompilerPreset } from '@vitejs/plugin-react';
+import { defineConfig, type UserManifest } from 'wxt';
 
 // @see https://wxt.dev/api/config.html
 export default defineConfig({
   imports: false,
   modules: ['@wxt-dev/module-react'],
-  react: {
-    vite: {
-      babel: {
-        plugins: ['babel-plugin-react-compiler'],
-      },
-    },
-  },
   manifest: ({ mode }) => {
     const config: UserManifest = {
       name: 'Socket Inspector - WebSocket Debugging Tools',
@@ -35,7 +30,25 @@ export default defineConfig({
     return config;
   },
   vite: () => ({
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), babel({ presets: [reactCompilerPreset()] })],
+    build: {
+      rolldownOptions: {
+        output: {
+          // Background and content scripts are bundled as classic (non-module) scripts, and Vite 8 no longer
+          // adds "use strict" to them like Vite 7 did. Force it so they keep running in strict mode.
+          strict: true,
+        },
+      },
+    },
+    worker: {
+      rolldownOptions: {
+        output: {
+          // Web workers (Monaco's editor and JSON workers) are built separately from `build`, so they need the same fix.
+          // as the background and content scripts above
+          strict: true,
+        },
+      },
+    },
   }),
   outDir: process.env.CUSTOM_OUT_DIR || '.output',
 });

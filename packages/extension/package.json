@@ -34,7 +34,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
     "@radix-ui/react-tooltip": "^1.2.7",
-    "@tailwindcss/vite": "^4.1.10",
+    "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-virtual": "3.13.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -44,20 +44,24 @@
     "react-dom": "19.2.0",
     "react-resizable-panels": "^3.0.3",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.10",
+    "tailwindcss": "^4.3.3",
     "tw-animate-css": "^1.3.4",
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@rolldown/plugin-babel": "^0.2.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@wxt-dev/module-react": "^1.1.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@wxt-dev/module-react": "^1.2.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "oxlint": "^1.47.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18",
-    "wxt": "^0.20.17"
+    "vite": "^8.3.4",
+    "vitest": "^4.1.11",
+    "wxt": "^0.20.27"
   }
 }

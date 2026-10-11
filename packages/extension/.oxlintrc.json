@@ -1,13 +1,15 @@
 {
   // consider "jsx-a11y" plugin and the new type-aware features
-  "plugins": ["react", "promise", "react-perf"],
+  "plugins": ["react", "promise", "react-perf", "typescript"],
   // https://oxc.rs/docs/guide/usage/linter/config.html#enabling-groups-of-rules-categories
   "categories": {
     "correctness": "error"
   },
   "rules": {
     "no-var": "error",
-    "react/rules-of-hooks": "error"
+    "react/rules-of-hooks": "error",
+    "typescript/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
+    "typescript/no-import-type-side-effects": "error"
   },
   "ignorePatterns": ["playwright/test-app/**", "components/shadcn", "hooks/useIsMobile.ts"],
   "overrides": [

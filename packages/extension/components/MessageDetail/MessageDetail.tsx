@@ -1,4 +1,4 @@
-import { SocketContext, useSocketContext } from '@/hooks/useSocketState/useSocketState';
+import { type SocketContext, useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { querySelectedMessage, querySelectedSocketMessages } from '@/hooks/useSocketState/queries';
 import { MessageDetailEmptyView } from './MessageDetailEmptyView';
 import { ScrollArea } from '../shadcn/ScrollArea';

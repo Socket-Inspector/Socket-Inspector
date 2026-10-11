@@ -1,4 +1,4 @@
-import { ServiceWorkerConnector } from '@/utils/serviceWorkerMessaging';
+import type { ServiceWorkerConnector } from '@/utils/serviceWorkerMessaging';
 import type { Packet } from '@/utils/sharedTypes/sharedTypes';
 import { getInitialState, reducer } from './reducer';
 import type { SocketState, ReducerAction } from './stateTypes';

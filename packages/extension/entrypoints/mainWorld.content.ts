@@ -3,10 +3,10 @@ import type { Packet, SocketDetails, SocketMessagePacket } from '@/utils/sharedT
 import { isSocketIO } from '@/utils/socketIO/isSocketIO';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
-  WebSocketClientConnection,
+  type WebSocketClientConnection,
   type WebSocketData,
   WebSocketInterceptor,
-  WebSocketServerConnection,
+  type WebSocketServerConnection,
 } from '@mswjs/interceptors/WebSocket';
 
 type SocketConnection = {

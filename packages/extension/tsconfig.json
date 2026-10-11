@@ -2,7 +2,8 @@
   "extends": "./.wxt/tsconfig.json",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true
   },
   "exclude": ["playwright/test-app"]
 }

@@ -4,7 +4,7 @@ import Editor from '@monaco-editor/react';
 import { processJsonPayload, processTextPayload } from '@/utils/payloadProcessors';
 import { cn } from '@/utils/cn';
 import { querySelectedSocketDetails } from '@/hooks/useSocketState/queries';
-import { monaco } from '@/entrypoints/devtools-panel/monaco-small';
+import type { monaco } from '@/entrypoints/devtools-panel/monaco-small';
 import { Braces } from 'lucide-react';
 import { useDevtoolsTheme } from '@/hooks/useDevtoolsTheme';
 import { RadioGroup, RadioGroupItem } from './shadcn/RadioGroup';

@@ -14,6 +14,12 @@ write_separator() {
 }
 
 # Pipeline functions
+shell_linter() {
+    write_log "Running the shell linter..."
+    mise run lint:shell
+    write_log "Shell linting successful ✅"
+}
+
 formatter() {
     write_log "Running the formatter..."
     prettier --check --log-level warn .
@@ -77,6 +83,9 @@ print_build_success() {
 }
 
 # Pipeline
+
+shell_linter
+write_separator
 
 formatter
 write_separator

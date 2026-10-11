@@ -32,10 +32,19 @@ export default defineConfig({
   vite: () => ({
     plugins: [tailwindcss(), babel({ presets: [reactCompilerPreset()] })],
     build: {
-      rollupOptions: {
+      rolldownOptions: {
         output: {
           // Background and content scripts are bundled as classic (non-module) scripts, and Vite 8 no longer
           // adds "use strict" to them like Vite 7 did. Force it so they keep running in strict mode.
+          strict: true,
+        },
+      },
+    },
+    worker: {
+      rolldownOptions: {
+        output: {
+          // Web workers (Monaco's editor and JSON workers) are built separately from `build`, so they need the same fix.
+          // as the background and content scripts above
           strict: true,
         },
       },

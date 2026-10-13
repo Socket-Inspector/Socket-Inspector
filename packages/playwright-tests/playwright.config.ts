@@ -30,7 +30,6 @@ export default defineConfig({
   maxFailures: 1,
 
   webServer: [
-    // main test app
     {
       cwd: '../test-app-ui',
       command: 'pnpm serve:playwright',
@@ -47,7 +46,6 @@ export default defineConfig({
       // stdout: 'pipe',
       stderr: 'pipe',
     },
-    // test app tiny
     {
       cwd: '../test-app-tiny',
       command: 'pnpm serve:test-app-tiny:playwright',

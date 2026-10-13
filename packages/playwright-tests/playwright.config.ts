@@ -4,7 +4,6 @@ export default defineConfig({
   testDir: 'tests',
   testMatch: '*.test.ts',
 
-  // Fail the build on CI if you accidentally left test.only in the source code.
   forbidOnly: !!process.env.CI,
 
   retries: 0,
@@ -13,7 +12,6 @@ export default defineConfig({
 
   fullyParallel: false,
 
-  // Reporter to use
   reporter: 'html',
 
   use: {
@@ -22,7 +20,6 @@ export default defineConfig({
 
   timeout: 10000,
 
-  // Configure projects for major browsers.
   projects: [
     {
       name: 'chromium',
@@ -32,9 +29,7 @@ export default defineConfig({
 
   maxFailures: 1,
 
-  // TODO: HTML report locking the process on failure
   webServer: [
-    // main test app
     {
       cwd: '../test-app-ui',
       command: 'pnpm serve:playwright',
@@ -51,7 +46,6 @@ export default defineConfig({
       // stdout: 'pipe',
       stderr: 'pipe',
     },
-    // test app tiny
     {
       cwd: '../test-app-tiny',
       command: 'pnpm serve:test-app-tiny:playwright',

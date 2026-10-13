@@ -1,4 +1,4 @@
-import { test as base, chromium, type BrowserContext, type Worker } from '@playwright/test';
+import { test as base, chromium, type BrowserContext } from '@playwright/test';
 import path from 'path';
 
 const pathToExtension = path.resolve('../extension/.mock_output/chrome-mv3');
@@ -6,7 +6,6 @@ const pathToExtension = path.resolve('../extension/.mock_output/chrome-mv3');
 export const test = base.extend<{
   context: BrowserContext;
   extensionId: string;
-  serviceWorker: Worker;
   devtoolsPanelUrl: string;
 }>({
   // oxlint-disable-next-line no-empty-pattern
@@ -31,11 +30,6 @@ export const test = base.extend<{
     }
     const extensionId = background.url().split('/')[2];
     await use(extensionId);
-  },
-  serviceWorker: async ({ context }, use) => {
-    let [sw] = context.serviceWorkers();
-    if (!sw) sw = await context.waitForEvent('serviceworker');
-    await use(sw);
   },
   devtoolsPanelUrl: async ({ extensionId }, use) => {
     const url = `chrome-extension://${extensionId}/devtools-panel.html`;

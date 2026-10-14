@@ -1,5 +1,5 @@
 import './index.css';
-import type { ClientMessage, ServerMessage } from './clientMessageTypes';
+import type { ClientMessage, ServerMessage } from './types';
 
 const SERVER_PORT = import.meta.env.VITE_BUN_SERVER_PORT ?? '6844';
 const SOCKET_URL = `ws://localhost:${SERVER_PORT}`;

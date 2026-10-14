@@ -174,50 +174,7 @@ importers:
         version: 8.3.4(@types/node@24.10.4)(esbuild@0.27.2)(jiti@2.7.0)
 
   packages/test-app-ui:
-    dependencies:
-      '@radix-ui/react-separator':
-        specifier: ^1.1.7
-        version: 1.1.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@radix-ui/react-slot':
-        specifier: ^1.2.3
-        version: 1.2.4(@types/react@19.2.7)(react@19.2.0)
-      '@tailwindcss/vite':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@8.3.4(@types/node@24.10.4)(esbuild@0.27.2)(jiti@2.7.0))
-      class-variance-authority:
-        specifier: ^0.7.1
-        version: 0.7.1
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      lucide-react:
-        specifier: ^0.525.0
-        version: 0.525.0(react@19.2.0)
-      react:
-        specifier: ^19.1.0
-        version: 19.2.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.2.0(react@19.2.0)
-      tailwind-merge:
-        specifier: ^3.3.1
-        version: 3.4.0
-      tailwindcss:
-        specifier: ^4.3.3
-        version: 4.3.3
-      tw-animate-css:
-        specifier: ^1.3.5
-        version: 1.4.0
     devDependencies:
-      '@types/react':
-        specifier: ^19.1.2
-        version: 19.2.7
-      '@types/react-dom':
-        specifier: ^19.1.2
-        version: 19.2.3(@types/react@19.2.7)
-      '@vitejs/plugin-react':
-        specifier: ^6.1.2
-        version: 6.1.2(@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7)(@babel/runtime@7.28.4)(rolldown@1.2.13)(vite@8.3.4(@types/node@24.10.4)(esbuild@0.27.2)(jiti@2.7.0)))(babel-plugin-react-compiler@1.0.0)(vite@8.3.4(@types/node@24.10.4)(esbuild@0.27.2)(jiti@2.7.0))
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
@@ -2537,11 +2494,6 @@ packages:
 
   lucide-react@0.515.0:
     resolution: {integrity: sha512-Sy7bY0MeicRm2pzrnoHm2h6C1iVoeHyBU2fjdQDsXGP51fhkhau1/ZV/dzrcxEmAKsxYb6bGaIsMnGHuQ5s0dw==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  lucide-react@0.525.0:
-    resolution: {integrity: sha512-Tm1txJ2OkymCGkvwoHt33Y2JpN5xucVq1slHcgE6Lk0WjDfjgKWor5CdVER8U6DvcfMwh4M8XxmpTiyzfmfDYQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -5250,10 +5202,6 @@ snapshots:
       yallist: 3.1.1
 
   lucide-react@0.515.0(react@19.2.0):
-    dependencies:
-      react: 19.2.0
-
-  lucide-react@0.525.0(react@19.2.0):
     dependencies:
       react: 19.2.0
 

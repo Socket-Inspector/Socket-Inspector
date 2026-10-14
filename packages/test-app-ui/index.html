@@ -3,9 +3,59 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket Inspector Test App</title>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main>
+      <h1>Socket Inspector Test App</h1>
+      <section>
+        <h2>Connection</h2>
+        <p>
+          Ready State:
+          <span id="ready-state" data-testid="ready-state-display" class="badge"></span>
+        </p>
+        <p id="close-info" hidden>
+          Close Code:
+          <span id="close-code" data-testid="close-code-display" class="badge danger"></span>
+          <span id="close-reason-group" hidden>
+            | Close Reason:
+            <span id="close-reason" data-testid="close-reason-display" class="badge danger"></span>
+          </span>
+        </p>
+        <div class="row">
+          <button id="client-disconnect" disabled>Trigger Client Disconnect</button>
+          <button id="server-disconnect" disabled>Trigger Server Disconnect</button>
+          <button id="reconnect" disabled>Reconnect to server</button>
+        </div>
+      </section>
+      <hr />
+      <section>
+        <h2>Echo</h2>
+        <div class="row">
+          <input
+            id="echo-input"
+            data-testid="echo-input"
+            type="text"
+            placeholder="Enter message for server to echo"
+          />
+          <button id="send-echo" disabled>Send Echo Message</button>
+        </div>
+        <p>
+          Most recent echo response:
+          <span id="echo-response" data-testid="echo-response-display" class="badge" hidden></span>
+        </p>
+      </section>
+      <hr />
+      <section>
+        <h2>Handshake Error</h2>
+        <button id="handshake-error">Trigger Handshake Error</button>
+      </section>
+      <hr />
+      <section>
+        <h2>Message Stream</h2>
+        <button id="message-stream">Start Message Stream</button>
+      </section>
+    </main>
+    <script type="module" src="/main.ts"></script>
   </body>
 </html>

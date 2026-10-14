@@ -7,8 +7,6 @@ import type {
   ServerClosureRequest,
   StopMessageStreamRequest,
 } from './clientMessageTypes';
-import { Button } from './button';
-import { Separator } from './separator';
 
 const SERVER_PORT = import.meta.env.VITE_BUN_SERVER_PORT ?? '6844';
 const SOCKET_URL = `ws://localhost:${SERVER_PORT}`;
@@ -26,54 +24,45 @@ export default function App() {
       .find((m) => m.type === 'EchoResponse')?.payload.message ?? null;
 
   if (!readyState) {
-    return <main className="p-5"></main>;
+    return <main></main>;
   }
 
   return (
-    <main className="p-5">
+    <main>
+      <h1>Socket Inspector Test App</h1>
       <section>
-        <p className="mb-2">
-          Ready State:{' '}
-          <span
-            data-testid="ready-state-display"
-            className="ml-2 rounded bg-blue-100 px-2 py-1 font-mono font-normal text-blue-800"
-          >
+        <h2>Connection</h2>
+        <p>
+          Ready State:
+          <span data-testid="ready-state-display" data-state={readyState} className="badge">
             {readyState ?? ''}
           </span>
         </p>
         {readyState === 'CLOSED' && closeInfo && (
-          <p className="mb-2">
-            Close Code:{' '}
-            <span
-              data-testid="close-code-display"
-              className="ml-2 rounded bg-red-100 px-2 py-1 font-mono font-normal text-red-800"
-            >
+          <p>
+            Close Code:
+            <span data-testid="close-code-display" className="badge danger">
               {closeInfo.code}
             </span>
             {closeInfo.reason && (
               <>
                 {' '}
-                | Close Reason:{' '}
-                <span
-                  data-testid="close-reason-display"
-                  className="ml-2 rounded bg-red-100 px-2 py-1 font-mono font-normal text-red-800"
-                >
+                | Close Reason:
+                <span data-testid="close-reason-display" className="badge danger">
                   {closeInfo.reason}
                 </span>
               </>
             )}
           </p>
         )}
-        <div className="flex flex-row gap-x-2">
-          <Button
-            className="cursor-pointer"
+        <div className="row">
+          <button
             disabled={readyState === 'CLOSED' || readyState === 'CLOSING'}
             onClick={() => closeSocket()}
           >
             Trigger Client Disconnect
-          </Button>
-          <Button
-            className="cursor-pointer"
+          </button>
+          <button
             disabled={readyState === 'CLOSED' || readyState === 'CLOSING'}
             onClick={() => {
               const message: ServerClosureRequest = {
@@ -84,29 +73,24 @@ export default function App() {
             }}
           >
             Trigger Server Disconnect
-          </Button>
-          <Button
-            className="cursor-pointer"
-            disabled={readyState !== 'CLOSED'}
-            onClick={() => reconnectSocket()}
-          >
+          </button>
+          <button disabled={readyState !== 'CLOSED'} onClick={() => reconnectSocket()}>
             Reconnect to server
-          </Button>
+          </button>
         </div>
       </section>
-      <Separator className="my-4"></Separator>
-      <section className="mb-4 flex w-md flex-col gap-y-2">
-        <div className="flex flex-row gap-x-2">
+      <hr />
+      <section>
+        <h2>Echo</h2>
+        <div className="row">
           <input
             data-testid="echo-input"
-            className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm"
             type="text"
             value={echoInputText}
             onChange={(e) => setEchoInputText(e.target.value)}
             placeholder="Enter message for server to echo"
           ></input>
-          <Button
-            className="cursor-pointer"
+          <button
             disabled={readyState !== 'OPEN'}
             onClick={() => {
               const message: EchoRequest = {
@@ -119,32 +103,29 @@ export default function App() {
             }}
           >
             Send Echo Message
-          </Button>
+          </button>
         </div>
         <p>
           Most recent echo response:
           {latestEchoResponse !== null && (
-            <span
-              data-testid="echo-response-display"
-              className="ml-2 rounded bg-blue-100 px-2 py-1 font-mono text-blue-800"
-            >
+            <span data-testid="echo-response-display" className="badge">
               {latestEchoResponse}
             </span>
           )}
         </p>
       </section>
-      <Separator className="my-4"></Separator>
+      <hr />
       <section>
-        <Button
-          className="cursor-pointer"
+        <h2>Handshake Error</h2>
+        <button
           onClick={() => {
             new WebSocket(`${SOCKET_URL}?triggerHandshakeError=true`);
           }}
         >
           Trigger Handshake Error
-        </Button>
+        </button>
       </section>
-      <Separator className="my-4"></Separator>
+      <hr />
       <MessageStreamComponent sendMessage={sendMessage}></MessageStreamComponent>
     </main>
   );
@@ -159,8 +140,8 @@ function MessageStreamComponent({ sendMessage }: MessageStreamComponentProps) {
 
   return (
     <section>
-      <Button
-        className="cursor-pointer"
+      <h2>Message Stream</h2>
+      <button
         onClick={() => {
           if (isStreaming) {
             const message: StopMessageStreamRequest = {
@@ -180,7 +161,7 @@ function MessageStreamComponent({ sendMessage }: MessageStreamComponentProps) {
         }}
       >
         {isStreaming ? 'Stop Message Stream' : 'Start Message Stream'}
-      </Button>
+      </button>
     </section>
   );
 }

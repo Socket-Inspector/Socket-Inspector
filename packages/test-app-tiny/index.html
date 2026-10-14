@@ -10,17 +10,9 @@
     <script>
       const SERVER_PORT = '5890';
       const SOCKET_URL = `ws://localhost:${SERVER_PORT}`;
-      const DEFER_CONNECT = false;
 
-      if (DEFER_CONNECT) {
-        setTimeout(() => {
-          console.log('TEST_APP_TINY: constructing the socket');
-          const socket = new WebSocket(SOCKET_URL);
-        }, 200);
-      } else {
-        console.log('TEST_APP_TINY: constructing the socket');
-        const socket = new WebSocket(SOCKET_URL);
-      }
+      console.log('TEST_APP_TINY: constructing the socket');
+      new WebSocket(SOCKET_URL);
     </script>
   </body>
 </html>

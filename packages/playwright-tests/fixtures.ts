@@ -1,7 +1,7 @@
 import { test as base, chromium, type BrowserContext } from '@playwright/test';
 import path from 'path';
 
-const pathToExtension = path.resolve('../extension/.mock_output/chrome-mv3');
+const packedExtensionPath = path.resolve('../extension/.mock_output/chrome-mv3');
 
 export const test = base.extend<{
   context: BrowserContext;
@@ -9,14 +9,14 @@ export const test = base.extend<{
   devtoolsPanelUrl: string;
 }>({
   // oxlint-disable-next-line no-empty-pattern
-  context: async ({}, use) => {
+  context: async ({ }, use) => {
     const context = await chromium.launchPersistentContext('', {
       channel: 'chromium',
       headless: !!process.env.CI,
       // devtools: true,
       args: [
-        `--disable-extensions-except=${pathToExtension}`,
-        `--load-extension=${pathToExtension}`,
+        `--disable-extensions-except=${packedExtensionPath}`,
+        `--load-extension=${packedExtensionPath}`,
       ],
     });
     await use(context);
@@ -31,9 +31,10 @@ export const test = base.extend<{
     const extensionId = background.url().split('/')[2];
     await use(extensionId);
   },
-  devtoolsPanelUrl: async ({ extensionId }, use) => {
+  devtoolsPanelUrl: async ({ context, extensionId }, use) => {
     const url = `chrome-extension://${extensionId}/devtools-panel.html`;
     await use(url);
   },
 });
+
 export const expect = test.expect;

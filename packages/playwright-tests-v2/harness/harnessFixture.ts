@@ -11,6 +11,7 @@ export async function harnessFixture(
   use: (harness: Harness) => Promise<void>,
 ): Promise<void> {
   const errors: Error[] = [];
+
   const storeError = (error: Error) => {
     errors.push(error);
   };

@@ -57,11 +57,8 @@ function createWebsocketRegistry() {
   const socketPromiseMap = new Map<string, PromiseWithResolvers<WebSocket>>();
 
   const promiseAt = (path: string) => {
-    let socketPromise = socketPromiseMap.get(path);
-    if (!socketPromise) {
-      socketPromise = Promise.withResolvers<WebSocket>();
-      socketPromiseMap.set(path, socketPromise);
-    }
+    const socketPromise = socketPromiseMap.get(path) ?? Promise.withResolvers<WebSocket>();
+    socketPromiseMap.set(path, socketPromise);
     return socketPromise;
   };
 

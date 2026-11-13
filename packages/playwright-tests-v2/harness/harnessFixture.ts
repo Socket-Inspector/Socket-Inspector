@@ -12,11 +12,11 @@ export async function harnessFixture(
 ): Promise<void> {
   const errors: Error[] = [];
 
-  const storeError = (error: Error) => {
-    errors.push(error);
-  };
-
-  const server = await startServer({ onError: storeError });
+  const server = await startServer({
+    onError: (error) => {
+      errors.push(error);
+    },
+  });
 
   try {
     const harness = {
@@ -24,7 +24,9 @@ export async function harnessFixture(
         return await openHostPage({
           context,
           server,
-          onError: storeError,
+          onError: (error) => {
+            errors.push(error);
+          },
         });
       },
     };

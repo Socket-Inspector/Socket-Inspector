@@ -48,7 +48,7 @@ export async function openHostPage({
   async function adopt(socket: JSHandle<WebSocket>): Promise<Connection> {
     const url = await socket.evaluate((websocket) => websocket.url);
     const label = `client end of ${new URL(url).pathname}`;
-    const clientEnd = createWebsocketEndpoint({
+    const clientEndpoint = createWebsocketEndpoint({
       label,
       transport: {
         send: async (text) => {
@@ -63,7 +63,7 @@ export async function openHostPage({
       },
       onError,
     });
-    urlToClientRecorder.set(url, clientEnd.recorder);
+    urlToClientRecorder.set(url, clientEndpoint.recorder);
 
     const [serverEnd] = await Promise.all([
       server.waitForWebsocketEndpoint(url),
@@ -93,7 +93,7 @@ export async function openHostPage({
       }),
     ]);
 
-    return { url, client: clientEnd.endpoint, server: serverEnd };
+    return { url, client: clientEndpoint.endpoint, server: serverEnd };
   }
 
   function onClientEvent(url: string, event: ClientEvent) {

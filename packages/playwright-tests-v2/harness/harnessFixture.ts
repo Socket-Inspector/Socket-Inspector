@@ -31,17 +31,16 @@ export async function harnessFixture(
       },
     };
     await use(harness);
-    const error = getCombinedErrors(errors);
-    if (error) {
-      throw error;
+    if (errors.length > 0) {
+      throw getCombinedErrors(errors);
     }
   } finally {
     await server.stop();
   }
 }
 
-function getCombinedErrors(errors: Error[]): Error | undefined {
-  if (errors.length <= 1) {
+function getCombinedErrors(errors: Error[]): Error {
+  if (errors.length === 1) {
     return errors[0];
   }
   const details = errors.map((error, i) => `  ${i + 1}. ${error.message}`).join('\n');

@@ -27,11 +27,11 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
   });
 
   const websocketServer = new WebSocketServer({ server: httpServer });
-  const sockets = createWebsocketRegistry();
+  const socketRegistry = createWebsocketRegistry();
 
   websocketServer.on('connection', (websocket, request) => {
     const path = request.url ?? '/';
-    sockets.register(path, websocket);
+    socketRegistry.register(path, websocket);
   });
 
   websocketServer.on('error', (error) => onError(error));
@@ -43,7 +43,7 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
     newSocketUrl: () => `ws://${host}:${port}/${randomUUID()}`,
     async waitForWebsocketEndpoint(url: string) {
       const { pathname } = new URL(url);
-      const websocket = await sockets.waitFor(pathname);
+      const websocket = await socketRegistry.waitFor(pathname);
       return createServerEndpoint(websocket, pathname, onError);
     },
     async stop() {

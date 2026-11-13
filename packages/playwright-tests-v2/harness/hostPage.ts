@@ -68,8 +68,10 @@ export async function openHostPage({
       server.waitForWebsocketEndpoint(url),
       socket.evaluate(async (websocket) => {
         return await new Promise<void>((resolve, reject) => {
-          const report = (event: ClientEvent) =>
-            (globalThis as unknown as PageGlobals).__clientEvent(websocket.url, event);
+          const report = (event: ClientEvent) => {
+            const pageGlobals = globalThis as unknown as PageGlobals;
+            return pageGlobals.__clientEvent(websocket.url, event);
+          };
           websocket.addEventListener('message', (event) =>
             report({ type: 'message', text: typeof event.data === 'string' ? event.data : null }),
           );

@@ -44,7 +44,7 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
     async waitForWebsocketEndpoint(url: string) {
       const { pathname } = new URL(url);
       const websocket = await socketRegistry.waitFor(pathname);
-      return createServerEndpoint(websocket, pathname, onError);
+      return createServerEndpoint({ websocket, path: pathname, onError });
     },
     async stop() {
       await closeWebsocketServer(websocketServer);
@@ -100,13 +100,19 @@ async function closeHttpServer(httpServer: HttpServer): Promise<void> {
   });
 }
 
-function createServerEndpoint(
-  websocket: WebSocket,
-  path: string,
-  onError: (error: Error) => void,
-): WebsocketEndpoint {
+type CreateServerEndpointArgs = {
+  websocket: WebSocket;
+  path: string;
+  onError: (error: Error) => void;
+};
+
+function createServerEndpoint({
+  websocket,
+  path,
+  onError,
+}: CreateServerEndpointArgs): WebsocketEndpoint {
   const label = `server end of ${path}`;
-  const { endpoint, recorder } = createWebsocketEndpoint({
+  const serverEndpoint = createWebsocketEndpoint({
     label,
     transport: {
       async send(text: string) {
@@ -125,13 +131,13 @@ function createServerEndpoint(
       onError(new Error(`${label} received a binary message; only text is supported`));
       return;
     }
-    recorder.recordReceivedMessage(data.toString());
+    serverEndpoint.recorder.recordReceivedMessage(data.toString());
   });
   websocket.on('close', (code, reason) =>
-    recorder.recordReceivedClose({ code, reason: reason.toString() }),
+    serverEndpoint.recorder.recordReceivedClose({ code, reason: reason.toString() }),
   );
   websocket.on('error', (error) => onError(error));
-  return endpoint;
+  return serverEndpoint.endpoint;
 }
 
 function hostPageHtml(): string {

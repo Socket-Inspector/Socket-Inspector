@@ -31,11 +31,11 @@ export async function openHostPage({
   onError,
 }: OpenHostPageArgs): Promise<HostPage> {
   const urlToClientRecorder = new Map<string, EndpointRecorder>();
-  let current!: Connection;
-
   const page = await context.newPage();
+
   page.on('pageerror', (error) => onError(error));
 
+  let current!: Connection;
   async function load(navigate: () => Promise<unknown>) {
     await navigate();
     const socket = await page.evaluateHandle(

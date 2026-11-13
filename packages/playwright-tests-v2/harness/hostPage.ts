@@ -35,16 +35,6 @@ export async function openHostPage({
 
   page.on('pageerror', (error) => onError(error));
 
-  let current!: WebsocketConnection;
-
-  async function load(navigate: () => Promise<unknown>) {
-    await navigate();
-    const socket = await page.evaluateHandle(
-      () => (globalThis as unknown as PageGlobals).initialSocket,
-    );
-    current = await adopt(socket);
-  }
-
   async function adopt(socket: JSHandle<WebSocket>): Promise<WebsocketConnection> {
     const url = await socket.evaluate((websocket) => websocket.url);
     const label = `client end of ${new URL(url).pathname}`;
@@ -112,7 +102,11 @@ export async function openHostPage({
   }
 
   await page.exposeFunction('__clientEvent', onClientEvent);
-  await load(async () => await page.goto(server.origin));
+  await page.goto(server.origin);
+  const initialSocket = await page.evaluateHandle(
+    () => (globalThis as unknown as PageGlobals).initialSocket,
+  );
+  let current = await adopt(initialSocket);
 
   return {
     get connection() {
@@ -123,7 +117,11 @@ export async function openHostPage({
       return await adopt(socket);
     },
     async reload() {
-      await load(async () => await page.reload());
+      await page.reload();
+      const socket = await page.evaluateHandle(
+        () => (globalThis as unknown as PageGlobals).initialSocket,
+      );
+      current = await adopt(socket);
     },
   };
 }

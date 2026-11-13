@@ -54,20 +54,20 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
 }
 
 function createWebsocketRegistry() {
-  const socketPromiseMap = new Map<string, PromiseWithResolvers<WebSocket>>();
-
-  const promiseAt = (path: string) => {
-    const socketPromise = socketPromiseMap.get(path) ?? Promise.withResolvers<WebSocket>();
-    socketPromiseMap.set(path, socketPromise);
-    return socketPromise;
-  };
+  const socketPromises: Record<string, PromiseWithResolvers<WebSocket>> = {};
 
   return {
     register(path: string, websocket: WebSocket) {
-      promiseAt(path).resolve(websocket);
+      if (!(path in socketPromises)) {
+        socketPromises[path] = Promise.withResolvers<WebSocket>();
+      }
+      socketPromises[path].resolve(websocket);
     },
     async waitFor(path: string) {
-      return promiseAt(path).promise;
+      if (!(path in socketPromises)) {
+        socketPromises[path] = Promise.withResolvers<WebSocket>();
+      }
+      return socketPromises[path].promise;
     },
   };
 }

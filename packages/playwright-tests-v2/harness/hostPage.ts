@@ -68,17 +68,18 @@ export async function openHostPage({
       server.waitForWebsocketEndpoint(url),
       socket.evaluate(async (websocket) => {
         return await new Promise<void>((resolve, reject) => {
-          const report = (event: ClientEvent) => {
+          const reportEvent = (event: ClientEvent) => {
             const pageGlobals = globalThis as unknown as PageGlobals;
             return pageGlobals.__clientEvent(websocket.url, event);
           };
+
           websocket.addEventListener('message', (event) =>
-            report({ type: 'message', text: typeof event.data === 'string' ? event.data : null }),
+            reportEvent({ type: 'message', text: typeof event.data === 'string' ? event.data : null }),
           );
           websocket.addEventListener('close', (event) =>
-            report({ type: 'close', code: event.code, reason: event.reason }),
+            reportEvent({ type: 'close', code: event.code, reason: event.reason }),
           );
-          websocket.addEventListener('error', () => report({ type: 'error' }));
+          websocket.addEventListener('error', () => reportEvent({ type: 'error' }));
 
           if (websocket.readyState === WebSocket.OPEN) {
             resolve();

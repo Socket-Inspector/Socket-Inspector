@@ -19,7 +19,7 @@ export async function harnessFixture(
   });
 
   try {
-    const harness = {
+    await use({
       openHostPage: async () => {
         return await openHostPage({
           context,
@@ -29,8 +29,7 @@ export async function harnessFixture(
           },
         });
       },
-    };
-    await use(harness);
+    });
     if (errors.length > 0) {
       throw getCombinedErrors(errors);
     }

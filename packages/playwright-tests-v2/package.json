@@ -1,0 +1,22 @@
+{
+  "name": "playwright-tests-v2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install-browsers": "playwright install --no-shell chromium",
+    "test": "playwright test --pass-with-no-tests",
+    "test:ui": "playwright test --ui",
+    "test:ci": "CI=true playwright test --pass-with-no-tests",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.0.0",
+    "@types/ws": "^8.18.2",
+    "oxlint": "^1.47.0",
+    "typescript": "^7.0.2",
+    "ws": "^8.22.1"
+  }
+}

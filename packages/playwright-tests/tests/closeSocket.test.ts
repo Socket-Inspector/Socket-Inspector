@@ -5,11 +5,7 @@ import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { HostPageModel } from '../page-models/hostPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
-test('it can select an open socket from the sidebar', async ({
-  page,
-  context,
-  devtoolsPanelUrl,
-}) => {
+test('it can close an open socket', async ({ page, context, devtoolsPanelUrl }) => {
   const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
   const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketModel = new CloseSocketPopupModel(page, devtoolsPanelUrl);

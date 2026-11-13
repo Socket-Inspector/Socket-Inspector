@@ -1,0 +1,42 @@
+import { test as base, chromium, type BrowserContext } from '@playwright/test';
+import path from 'path';
+import { harnessFixture, type Harness } from './harness/harnessFixture';
+
+const pathToExtension = path.resolve('../extension/.mock_output/chrome-mv3');
+
+export const test = base.extend<{
+  context: BrowserContext;
+  extensionId: string;
+  devtoolsPanelUrl: string;
+  harness: Harness;
+}>({
+  // oxlint-disable-next-line no-empty-pattern
+  context: async ({ }, use) => {
+    const context = await chromium.launchPersistentContext('', {
+      channel: 'chromium',
+      headless: !!process.env.CI,
+      args: [
+        `--disable-extensions-except=${pathToExtension}`,
+        `--load-extension=${pathToExtension}`,
+      ],
+    });
+    await use(context);
+    await context.close();
+  },
+  extensionId: async ({ context }, use) => {
+    let background: { url(): string };
+    [background] = context.serviceWorkers();
+    if (!background) {
+      background = await context.waitForEvent('serviceworker');
+    }
+    const extensionId = background.url().split('/')[2];
+    await use(extensionId);
+  },
+  devtoolsPanelUrl: async ({ extensionId }, use) => {
+    const url = `chrome-extension://${extensionId}/devtools-panel.html`;
+    await use(url);
+  },
+  harness: harnessFixture,
+});
+
+export const expect = test.expect;

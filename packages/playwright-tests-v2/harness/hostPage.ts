@@ -65,7 +65,7 @@ export async function openHostPage({
     urlToClientRecorder.set(url, recorder);
 
     const [serverEnd] = await Promise.all([
-      server.waitForServerEnd(url),
+      server.waitForServerWebsocketEndpoint(url),
       socket.evaluate(async (websocket) => {
         return await new Promise<void>((resolve, reject) => {
           const report = (event: ClientEvent) =>

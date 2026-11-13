@@ -14,12 +14,12 @@ export type OpenHostPageArgs = {
 };
 
 export type HostPage = {
-  readonly connection: Connection;
-  connect(): Promise<Connection>;
+  readonly connection: WebsocketConnection;
+  connect(): Promise<WebsocketConnection>;
   reload(): Promise<void>;
 };
 
-export type Connection = {
+export type WebsocketConnection = {
   readonly url: string;
   readonly client: WebsocketEndpoint;
   readonly server: WebsocketEndpoint;
@@ -35,7 +35,7 @@ export async function openHostPage({
 
   page.on('pageerror', (error) => onError(error));
 
-  let current!: Connection;
+  let current!: WebsocketConnection;
 
   async function load(navigate: () => Promise<unknown>) {
     await navigate();
@@ -45,7 +45,7 @@ export async function openHostPage({
     current = await adopt(socket);
   }
 
-  async function adopt(socket: JSHandle<WebSocket>): Promise<Connection> {
+  async function adopt(socket: JSHandle<WebSocket>): Promise<WebsocketConnection> {
     const url = await socket.evaluate((websocket) => websocket.url);
     const label = `client end of ${new URL(url).pathname}`;
     const clientEndpoint = createWebsocketEndpoint({

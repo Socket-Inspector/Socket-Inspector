@@ -36,6 +36,7 @@ export async function openHostPage({
   page.on('pageerror', (error) => onError(error));
 
   let current!: Connection;
+
   async function load(navigate: () => Promise<unknown>) {
     await navigate();
     const socket = await page.evaluateHandle(

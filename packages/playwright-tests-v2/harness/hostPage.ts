@@ -63,11 +63,11 @@ export async function openHostPage({
           await clientSocketHandle.evaluate((clientSocket, text) => clientSocket.send(text), text);
         },
         close: async (options) => {
-          const closeWebsocket = (clientSocket: WebSocket, options: CloseOptions) => {
+          const sendCloseFrame = (clientSocket: WebSocket, options: CloseOptions) => {
             const { code, reason } = options;
             return clientSocket.close(code, reason);
           };
-          await clientSocketHandle.evaluate(closeWebsocket, options);
+          await clientSocketHandle.evaluate(sendCloseFrame, options);
         },
       },
       onError,

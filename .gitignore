@@ -32,3 +32,4 @@ playwright-report
 playwright-report/
 test-results
 test-results/
+packages/playwright-tests-v2/output

@@ -11,6 +11,7 @@ pnpm workspace with the following packages:
 - `packages/test-app-tiny` - another host page for testing
 - `packages/test-app-server` - websocket server consumed by `test-app-ui` and `test-app-tiny`
 - `packages/playwright-tests` - e2e tests
+- `packages/playwright-tests-v2` - new e2e test suite, will eventually replace `playwright-tests` (not part of the release pipeline)
 
 ## Common Commands
 
@@ -33,7 +34,14 @@ pnpm test:unit
 # e2e tests
 pnpm prepare:e2e # build mock extension first
 pnpm e2e # run tests
+pnpm e2e:v2 # run v2 tests
 
 # full validation suite
 pnpm prepare:release
 ```
+
+## Coding Guidlines
+
+Prefer TypeScript's `type` keyword, rather than `interface`.
+Don't write `switch` statements. Use if, else-if, else instead.
+Functions that return a promise should be declared `async`.

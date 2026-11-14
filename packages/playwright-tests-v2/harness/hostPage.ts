@@ -125,7 +125,7 @@ export async function openHostPage({
     async connect() {
       const clientSocketHandle = await page.evaluateHandle(
         (url) => new WebSocket(url),
-        server.newSocketUrl(),
+        server.generateUniqueHandshakeUrl(),
       );
       return await createConnection(clientSocketHandle);
     },

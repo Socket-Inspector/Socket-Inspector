@@ -54,9 +54,10 @@ export async function openHostPage({
 
   const adopt = async (clientSocketHandle: JSHandle<WebSocket>): Promise<WebsocketConnection> => {
     const url = await clientSocketHandle.evaluate((clientSocket) => clientSocket.url);
-    const label = `client end of ${new URL(url).pathname}`;
+
+    const clientLabel = `client end of ${new URL(url).pathname}`;
     const clientEndpoint = createWebsocketEndpoint({
-      label,
+      label: clientLabel,
       transport: {
         send: async (text) => {
           await clientSocketHandle.evaluate((clientSocket, text) => clientSocket.send(text), text);

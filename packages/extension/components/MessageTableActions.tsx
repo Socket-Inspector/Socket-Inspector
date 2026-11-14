@@ -34,7 +34,9 @@ export function TableActions({
               variant="ghost"
               size="icon"
               className="text-muted-foreground h-6 w-6"
-              onClick={() => onPauseToggle()}
+              onClick={() => {
+                onPauseToggle();
+              }}
               aria-label={isPaused ? 'Allow non-custom messages' : 'Block non-custom messages'}
             >
               {isPaused ? <Play className="h-4 w-4"></Play> : <Pause className="h-4 w-4"></Pause>}
@@ -53,7 +55,9 @@ export function TableActions({
               variant="ghost"
               size="icon"
               className="text-muted-foreground h-6 w-6"
-              onClick={() => onClear()}
+              onClick={() => {
+                onClear();
+              }}
               aria-label="Clear messages from table"
             >
               <Ban className="h-4 w-4"></Ban>
@@ -63,7 +67,12 @@ export function TableActions({
         </Tooltip>
       </TooltipProvider>
 
-      <Select value={filterValue} onValueChange={(v) => onFilterChange(v as MessageFilterOption)}>
+      <Select
+        value={filterValue}
+        onValueChange={(v) => {
+          onFilterChange(v as MessageFilterOption);
+        }}
+      >
         <SelectTrigger className="w-26 text-xs" size="sm" aria-label="Filter messages">
           <SelectValue placeholder="All" />
         </SelectTrigger>
@@ -94,7 +103,9 @@ export function TableActions({
           type="search"
           className="h-7 pr-2 pl-7 text-xs leading-none placeholder:text-xs"
           value={searchText}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e) => {
+            onSearchChange(e.target.value);
+          }}
           placeholder="Search Messages"
         ></Input>
       </div>

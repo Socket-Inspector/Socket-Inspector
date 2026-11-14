@@ -34,7 +34,9 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
     socketRegistry.register(path, websocket);
   });
 
-  websocketServer.on('error', (error) => onError(error));
+  websocketServer.on('error', (error) => {
+    onError(error);
+  });
 
   const { host, port } = await openServer(httpServer);
 
@@ -90,13 +92,23 @@ async function closeWebsocketServer(websocketServer: WebSocketServer): Promise<v
   for (const client of websocketServer.clients) {
     client.terminate();
   }
-  return new Promise<void>((resolve) => websocketServer.close(() => resolve()));
+  return new Promise<void>((resolve) => {
+    websocketServer.close(() => {
+      resolve();
+    });
+  });
 }
 
 async function closeHttpServer(httpServer: HttpServer): Promise<void> {
   httpServer.closeAllConnections();
   return new Promise<void>((resolve, reject) => {
-    httpServer.close((error) => (error ? reject(error) : resolve()));
+    httpServer.close((error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
@@ -117,7 +129,13 @@ function createServerEndpoint({
     transport: {
       async send(text: string) {
         return new Promise<void>((resolve, reject) => {
-          websocket.send(text, (error) => (error ? reject(error) : resolve()));
+          websocket.send(text, (error) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
+          });
         });
       },
       async close({ code, reason }: CloseOptions) {
@@ -134,10 +152,12 @@ function createServerEndpoint({
     // ws always delivers text frames as a single Buffer, regardless of binaryType
     serverEndpoint.recorder.recordIncomingMessage((data as Buffer).toString());
   });
-  websocket.on('close', (code, reason) =>
-    serverEndpoint.recorder.recordIncomingCloseFrame({ code, reason: reason.toString() }),
-  );
-  websocket.on('error', (error) => onError(error));
+  websocket.on('close', (code, reason) => {
+    serverEndpoint.recorder.recordIncomingCloseFrame({ code, reason: reason.toString() });
+  });
+  websocket.on('error', (error) => {
+    onError(error);
+  });
   return serverEndpoint.endpoint;
 }
 

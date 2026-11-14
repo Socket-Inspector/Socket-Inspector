@@ -32,7 +32,9 @@ export async function openHostPage({
 }: HostPageDependencies): Promise<HostPage> {
   const page = await context.newPage();
 
-  page.on('pageerror', (error) => onError(error));
+  page.on('pageerror', (error) => {
+    onError(error);
+  });
 
   const urlToClientRecorder = new Map<string, EndpointRecorder>();
   await page.exposeFunction('__clientEvent', (url: string, event: ClientEvent) => {
@@ -62,12 +64,13 @@ export async function openHostPage({
       label: clientLabel,
       transport: {
         send: async (text) => {
-          await clientSocketHandle.evaluate((clientSocket, text) => clientSocket.send(text), text);
+          await clientSocketHandle.evaluate((clientSocket, message) => {
+            clientSocket.send(message);
+          }, text);
         },
         close: async (options) => {
-          const sendCloseFrame = (clientSocket: WebSocket, options: CloseOptions) => {
-            const { code, reason } = options;
-            return clientSocket.close(code, reason);
+          const sendCloseFrame = (clientSocket: WebSocket, { code, reason }: CloseOptions) => {
+            clientSocket.close(code, reason);
           };
           await clientSocketHandle.evaluate(sendCloseFrame, options);
         },
@@ -80,7 +83,7 @@ export async function openHostPage({
     const [serverEndpoint] = await Promise.all([
       server.waitForClientConnection(url),
       clientSocketHandle.evaluate(async (clientSocket) => {
-        return await new Promise<void>((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           const reportEvent = (event: ClientEvent) => {
             (globalThis as unknown as PageGlobals).__clientEvent(clientSocket.url, event);
           };

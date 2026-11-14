@@ -11,8 +11,8 @@ export type CreateWebsocketEndpointArgs = {
 export type WebsocketEndpoint = {
   send(text: string): Promise<void>;
   close(options?: CloseOptions): Promise<void>;
-  expectMessages(list: string[]): Promise<void>;
-  expectMessagesToStay(list: string[]): Promise<void>;
+  expectMessages(expectedMessages: string[]): Promise<void>;
+  expectMessagesToStay(expectedMessages: string[]): Promise<void>;
   expectClosed(expected?: CloseOptions): Promise<void>;
 };
 
@@ -33,7 +33,7 @@ export function createWebsocketEndpoint({
   transport,
   onError,
 }: CreateWebsocketEndpointArgs): { endpoint: WebsocketEndpoint; recorder: EndpointRecorder } {
-  const messages: string[] = [];
+  const receivedMessages: string[] = [];
   let receivedClose: ReceivedClose | undefined;
   let closeRequested = false;
 
@@ -54,15 +54,15 @@ export function createWebsocketEndpoint({
       closeRequested = true;
       await transport.close(options);
     },
-    async expectMessages(list: string[]) {
+    async expectMessages(expectedMessages: string[]) {
       await expect
-        .poll(() => [...messages], { message: `messages received by ${label}` })
-        .toEqual(list);
+        .poll(() => [...receivedMessages], { message: `messages received by ${label}` })
+        .toEqual(expectedMessages);
     },
-    async expectMessagesToStay(list: string[]) {
+    async expectMessagesToStay(expectedMessages: string[]) {
       const deadline = Date.now() + 500;
       while (true) {
-        expect([...messages], `messages received by ${label}`).toEqual(list);
+        expect([...receivedMessages], `messages received by ${label}`).toEqual(expectedMessages);
         const remaining = deadline - Date.now();
         if (remaining <= 0) {
           return;
@@ -83,7 +83,7 @@ export function createWebsocketEndpoint({
         onError(new Error(`${label} received message ${JSON.stringify(text)} after it closed`));
         return;
       }
-      messages.push(text);
+      receivedMessages.push(text);
     },
     recordReceivedClose(close: ReceivedClose) {
       if (receivedClose) {

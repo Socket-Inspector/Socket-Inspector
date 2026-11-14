@@ -15,7 +15,8 @@ export default defineConfig({
     'react/incompatible-library': 'off',
     'typescript/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
     'typescript/no-import-type-side-effects': 'error',
-    'typescript/no-confusing-void-expression': 'warn',
+    'typescript/no-confusing-void-expression': 'error',
+    'typescript/promise-function-async': 'error',
   },
   ignorePatterns: ['playwright/test-app/**', 'components/shadcn', 'hooks/useIsMobile.ts'],
   overrides: [

@@ -14,6 +14,8 @@ export default defineConfig({
     'typescript/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
     'typescript/no-import-type-side-effects': 'error',
     'typescript/no-confusing-void-expression': 'error',
+    'typescript/no-misused-promises': 'error',
+    'typescript/promise-function-async': 'error',
   },
   ignorePatterns: ['output/**'],
 });

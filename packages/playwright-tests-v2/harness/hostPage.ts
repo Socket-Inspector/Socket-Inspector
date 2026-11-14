@@ -106,11 +106,11 @@ export async function openHostPage({
     return { url, client: clientEndpoint.endpoint, server: serverEndpoint };
   };
 
-  const initialSocket = await page.evaluateHandle(
+  const initialClientSocketHandle = await page.evaluateHandle(
     () => (globalThis as unknown as PageGlobals).initialSocket,
   );
 
-  let current = await adopt(initialSocket);
+  let current = await adopt(initialClientSocketHandle);
 
   return {
     get connection() {

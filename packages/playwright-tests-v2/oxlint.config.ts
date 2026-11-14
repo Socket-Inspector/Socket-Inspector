@@ -1,14 +1,17 @@
-import { defineConfig } from "oxlint";
+import { defineConfig } from 'oxlint';
 
 export default defineConfig({
-  plugins: ["promise", "typescript"],
+  options: {
+    typeAware: true,
+  },
+  plugins: ['promise', 'typescript'],
   categories: {
-    correctness: "error",
+    correctness: 'error',
   },
   rules: {
-    "no-var": "error",
-    "typescript/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
-    "typescript/no-import-type-side-effects": "error",
+    'no-var': 'error',
+    'typescript/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
+    'typescript/no-import-type-side-effects': 'error',
   },
-  ignorePatterns: ["output/**"],
+  ignorePatterns: ['output/**'],
 });

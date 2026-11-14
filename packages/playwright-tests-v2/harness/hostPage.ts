@@ -30,11 +30,11 @@ export async function openHostPage({
   server,
   onError,
 }: HostPageDependencies): Promise<HostPage> {
-  const urlToClientRecorder = new Map<string, EndpointRecorder>();
   const page = await context.newPage();
 
   page.on('pageerror', (error) => onError(error));
 
+  const urlToClientRecorder = new Map<string, EndpointRecorder>();
   await page.exposeFunction('__clientEvent', (url: string, event: ClientEvent) => {
     const recorder = urlToClientRecorder.get(url)!;
     if (event.type === 'message') {

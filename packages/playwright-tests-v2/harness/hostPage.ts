@@ -42,10 +42,10 @@ export async function openHostPage({
     const clientRecorder = urlToClientRecorder.get(url)!;
     if (event.type === 'text') {
       clientRecorder.recordIncomingMessage(event.text);
-    } else if (event.type === 'binary') {
-      onError(new Error(`client end of ${url} received a binary message`));
     } else if (event.type === 'close') {
       clientRecorder.recordIncomingCloseFrame(event);
+    } else if (event.type === 'binary') {
+      onError(new Error(`client end of ${url} received a binary message`));
     } else {
       onError(new Error(`client end of ${url} fired an error event`));
     }

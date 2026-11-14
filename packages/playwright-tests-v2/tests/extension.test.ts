@@ -25,12 +25,14 @@ test("if page has websockets, but none are selected, then 'Select a WebSocket' t
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
   await expect(sidebar.locators.sidebarHeader).toBeVisible();
   await expect(sidebar.locators.selectWebsocketText).toBeVisible();
-  await expect(sidebar.locateSocketLink({ url, status: 'Connected' })).toBeVisible();
+  await expect(
+    sidebar.locateSocketLink({ url: connection.url, status: 'Connected' }),
+  ).toBeVisible();
 });
 
 test('table can capture messages from host page', async ({ page, harness, devtoolsPanelUrl }) => {
@@ -39,15 +41,15 @@ test('table can capture messages from host page', async ({ page, harness, devtoo
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
-  await client.send('ping');
-  await server.expectMessages(['ping']);
-  await server.send('pong');
-  await client.expectMessages(['pong']);
+  await connection.client.send('ping');
+  await connection.server.expectMessages(['ping']);
+  await connection.server.send('pong');
+  await connection.client.expectMessages(['pong']);
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
   await devtoolsPanel.assertTableMessages([
     { text: 'ping', direction: 'outgoing' },
@@ -62,15 +64,15 @@ test('clearing the table messages', async ({ page, harness, devtoolsPanelUrl }) 
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
-  await client.send('ping');
-  await server.expectMessages(['ping']);
-  await server.send('pong');
-  await client.expectMessages(['pong']);
+  await connection.client.send('ping');
+  await connection.server.expectMessages(['ping']);
+  await connection.server.send('pong');
+  await connection.client.expectMessages(['pong']);
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
   await devtoolsPanel.assertTableMessages([
     { text: 'ping', direction: 'outgoing' },
@@ -88,15 +90,15 @@ test('using the direction dropdown', async ({ page, harness, devtoolsPanelUrl })
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
-  await client.send('ping');
-  await server.expectMessages(['ping']);
-  await server.send('pong');
-  await client.expectMessages(['pong']);
+  await connection.client.send('ping');
+  await connection.server.expectMessages(['ping']);
+  await connection.server.send('pong');
+  await connection.client.expectMessages(['pong']);
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
   await devtoolsPanel.assertTableMessages([
     { text: 'ping', direction: 'outgoing' },
@@ -122,15 +124,15 @@ test('using the searchbox', async ({ page, harness, devtoolsPanelUrl }) => {
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
-  await client.send('ping');
-  await server.expectMessages(['ping']);
-  await server.send('pong');
-  await client.expectMessages(['pong']);
+  await connection.client.send('ping');
+  await connection.server.expectMessages(['ping']);
+  await connection.server.send('pong');
+  await connection.client.expectMessages(['pong']);
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
   await devtoolsPanel.assertTableMessages([
     { text: 'ping', direction: 'outgoing' },

@@ -8,10 +8,10 @@ test('it can send a message to the server', async ({ page, harness, devtoolsPane
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
   await devtoolsPanel.assertTableMessages([]);
 
   const toServer = JSON.stringify({ from: 'composer', to: 'server' });
@@ -20,12 +20,12 @@ test('it can send a message to the server', async ({ page, harness, devtoolsPane
   await devtoolsPanel.enterComposerPayload(toServer);
   await devtoolsPanel.submitComposerMessage();
 
-  await server.expectMessages([toServer]);
-  await client.expectMessagesToStay([]);
+  await connection.server.expectMessages([toServer]);
+  await connection.client.expectMessagesToStay([]);
   await devtoolsPanel.assertTableMessages([{ text: toServer, direction: 'outgoing' }]);
 
-  await server.send('pong');
-  await client.expectMessages(['pong']);
+  await connection.server.send('pong');
+  await connection.client.expectMessages(['pong']);
   await devtoolsPanel.assertTableMessages([
     { text: toServer, direction: 'outgoing' },
     { text: 'pong', direction: 'incoming' },
@@ -38,10 +38,10 @@ test('it can send a message to the client', async ({ page, harness, devtoolsPane
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
   await devtoolsPanel.assertTableMessages([]);
 
   const toClient = JSON.stringify({ from: 'composer', to: 'client' });
@@ -50,8 +50,8 @@ test('it can send a message to the client', async ({ page, harness, devtoolsPane
   await devtoolsPanel.enterComposerPayload(toClient);
   await devtoolsPanel.submitComposerMessage();
 
-  await client.expectMessages([toClient]);
-  await server.expectMessagesToStay([]);
+  await connection.client.expectMessages([toClient]);
+  await connection.server.expectMessagesToStay([]);
   await devtoolsPanel.assertTableMessages([{ text: toClient, direction: 'incoming' }]);
 });
 
@@ -61,10 +61,10 @@ test('it shows an error if payload is empty', async ({ page, harness, devtoolsPa
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
   await devtoolsPanel.assertNoComposerErrors();
 
   await devtoolsPanel.selectComposerDestination('Server');
@@ -90,10 +90,10 @@ test('correcting an empty payload error allows the message to be sent', async ({
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
   await devtoolsPanel.selectComposerDestination('Client');
   await devtoolsPanel.selectComposerPayloadType('JSON');
@@ -106,7 +106,7 @@ test('correcting an empty payload error allows the message to be sent', async ({
   await devtoolsPanel.submitComposerMessage();
   await devtoolsPanel.assertNoComposerErrors();
 
-  await client.expectMessages([toClient]);
+  await connection.client.expectMessages([toClient]);
   await devtoolsPanel.assertTableMessages([{ text: toClient, direction: 'incoming' }]);
 });
 
@@ -120,15 +120,15 @@ test('it can still send a message when the websocket is paused', async ({
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
-  await client.send('baseline ping');
-  await server.expectMessages(['baseline ping']);
-  await server.send('baseline pong');
-  await client.expectMessages(['baseline pong']);
+  await connection.client.send('baseline ping');
+  await connection.server.expectMessages(['baseline ping']);
+  await connection.server.send('baseline pong');
+  await connection.client.expectMessages(['baseline pong']);
 
   await devtoolsPanel.clearTableMessages();
   await devtoolsPanel.assertTableMessages([]);
@@ -140,11 +140,11 @@ test('it can still send a message when the websocket is paused', async ({
   await devtoolsPanel.enterComposerPayload(toServer);
   await devtoolsPanel.submitComposerMessage();
 
-  await server.expectMessages(['baseline ping', toServer]);
+  await connection.server.expectMessages(['baseline ping', toServer]);
   await devtoolsPanel.assertTableMessages([{ text: toServer, direction: 'outgoing' }]);
 
-  await server.send('blocked pong');
-  await client.expectMessagesToStay(['baseline pong']);
+  await connection.server.send('blocked pong');
+  await connection.client.expectMessagesToStay(['baseline pong']);
 
   const toClient = JSON.stringify({ from: 'composer', to: 'client' });
   await devtoolsPanel.selectComposerDestination('Client');
@@ -152,7 +152,7 @@ test('it can still send a message when the websocket is paused', async ({
   await devtoolsPanel.enterComposerPayload(toClient);
   await devtoolsPanel.submitComposerMessage();
 
-  await client.expectMessages(['baseline pong', toClient]);
+  await connection.client.expectMessages(['baseline pong', toClient]);
   await devtoolsPanel.assertTableMessages([
     { text: toServer, direction: 'outgoing' },
     { text: toClient, direction: 'incoming' },
@@ -165,10 +165,10 @@ test('it shows an error when sending invalid json', async ({ page, harness, devt
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
   await devtoolsPanel.assertNoComposerErrors();
 
   await devtoolsPanel.selectComposerDestination('Server');
@@ -178,7 +178,7 @@ test('it shows an error when sending invalid json', async ({ page, harness, devt
 
   await devtoolsPanel.assertComposerError('Payload must be valid JSON');
   await devtoolsPanel.assertTableMessages([]);
-  await server.expectMessagesToStay([]);
+  await connection.server.expectMessagesToStay([]);
 });
 
 test('it shows an error when sending a message on a closed socket', async ({
@@ -191,13 +191,13 @@ test('it shows an error when sending a message on a closed socket', async ({
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
-  await client.close();
-  await server.expectClosed();
+  await connection.client.close();
+  await connection.server.expectClosed();
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Disconnected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
   await devtoolsPanel.assertNoComposerErrors();
 
   await devtoolsPanel.selectComposerDestination('Server');
@@ -207,5 +207,5 @@ test('it shows an error when sending a message on a closed socket', async ({
 
   await devtoolsPanel.assertComposerError('Cannot send a message on a closed socket');
   await devtoolsPanel.assertTableMessages([]);
-  await server.expectMessagesToStay([]);
+  await connection.server.expectMessagesToStay([]);
 });

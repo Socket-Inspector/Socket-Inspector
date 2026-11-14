@@ -11,17 +11,17 @@ test('it can close an open socket', async ({ page, harness, devtoolsPanelUrl }) 
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.assertSidebarSockets([{ url, status: 'Connected' }]);
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
 
   await sidebar.clickSocketCloseButton();
   await assertVisible(closeSocketPopup.locators.header);
-  await sidebar.assertSidebarSockets([{ url, status: 'Connected' }]);
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
   await closeSocketPopup.locators.submitButton.click();
 
-  await client.expectClosed();
-  await server.expectClosed();
-  await sidebar.assertSidebarSockets([{ url, status: 'Disconnected' }]);
+  await connection.client.expectClosed();
+  await connection.server.expectClosed();
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
 });

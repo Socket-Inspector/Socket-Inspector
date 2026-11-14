@@ -13,12 +13,12 @@ test('it can select an open socket from the sidebar', async ({
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { url } = hostPage.connection;
+  const connection = hostPage.connection;
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Connected' });
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
-  await sidebar.assertSidebarSockets([{ url, status: 'Connected' }]);
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
   await devtoolsPanel.assertTableMessages([]);
   await assertVisible(devtoolsPanel.locators.noMessagesCapturedText);
 });
@@ -33,14 +33,14 @@ test('it can select a socket closed by the client from the sidebar', async ({
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
-  await client.close();
-  await server.expectClosed();
+  await connection.client.close();
+  await connection.server.expectClosed();
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Disconnected' });
-  await sidebar.assertSidebarSockets([{ url, status: 'Disconnected' }]);
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
 });
 
 test('it can select a socket closed by the server from the sidebar', async ({
@@ -53,14 +53,14 @@ test('it can select a socket closed by the server from the sidebar', async ({
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const { client, server, url } = hostPage.connection;
+  const connection = hostPage.connection;
 
-  await server.close({ code: 4000, reason: 'server shutting down' });
-  await client.expectClosed({ code: 4000, reason: 'server shutting down' });
+  await connection.server.close({ code: 4000, reason: 'server shutting down' });
+  await connection.client.expectClosed({ code: 4000, reason: 'server shutting down' });
 
   await devtoolsPanel.bringToFront();
-  await sidebar.clickSocketLink({ url, status: 'Disconnected' });
-  await sidebar.assertSidebarSockets([{ url, status: 'Disconnected' }]);
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
 });
 
 test('closing a socket from the client and opening a new one', async ({

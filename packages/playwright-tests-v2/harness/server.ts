@@ -131,10 +131,10 @@ function createServerEndpoint({
       onError(new Error(`${label} received a binary message; only text is supported`));
       return;
     }
-    serverEndpoint.recorder.recordReceivedMessage(data.toString());
+    serverEndpoint.recorder.recordIncomingMessage(data.toString());
   });
   websocket.on('close', (code, reason) =>
-    serverEndpoint.recorder.recordReceivedCloseFrame({ code, reason: reason.toString() }),
+    serverEndpoint.recorder.recordIncomingCloseFrame({ code, reason: reason.toString() }),
   );
   websocket.on('error', (error) => onError(error));
   return serverEndpoint.endpoint;

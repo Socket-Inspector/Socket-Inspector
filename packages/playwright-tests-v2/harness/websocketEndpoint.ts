@@ -15,8 +15,8 @@ export type WebsocketEndpoint = {
 };
 
 export type EndpointRecorder = {
-  recordReceivedMessage(text: string): void;
-  recordReceivedCloseFrame(closeFrame: CloseFrame): void;
+  recordIncomingMessage(text: string): void;
+  recordIncomingCloseFrame(closeFrame: CloseFrame): void;
 };
 
 export type Transport = {
@@ -82,14 +82,14 @@ export function createWebsocketEndpoint({
   };
 
   const recorder: EndpointRecorder = {
-    recordReceivedMessage(text: string) {
+    recordIncomingMessage(text: string) {
       if (incomingData.closeFrame) {
         onError(new Error(`${label} received message ${JSON.stringify(text)} after it closed`));
         return;
       }
       incomingData.messages.push(text);
     },
-    recordReceivedCloseFrame(closeFrame: CloseFrame) {
+    recordIncomingCloseFrame(closeFrame: CloseFrame) {
       if (incomingData.closeFrame) {
         onError(
           new Error(

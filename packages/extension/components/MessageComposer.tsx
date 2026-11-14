@@ -28,14 +28,13 @@ export function MessageComposer() {
   const selectedSocketId = socketState.selectedSocket?.id;
   const composerPrefill = socketState.selectedSocket?.composerPrefill;
 
-  // clear form errors when user switches sockets
   const [previousSelectedSocketId, setPreviousSelectedSocketId] = useState(selectedSocketId);
   if (selectedSocketId !== previousSelectedSocketId) {
+    // clear form errors when user switches sockets
     setPreviousSelectedSocketId(selectedSocketId);
     setFormError(null);
   }
 
-  // copy prefill into the form
   const [appliedPrefill, setAppliedPrefill] = useState<MessageComposerFormData>();
   if (composerPrefill && composerPrefill !== appliedPrefill) {
     setAppliedPrefill(composerPrefill);
@@ -43,7 +42,6 @@ export function MessageComposer() {
     setFormError(null);
   }
 
-  // the prefill is consumed, so clear it
   useEffect(() => {
     if (composerPrefill) {
       dispatch({ type: 'CLEAR_MESSAGE_COMPOSER_PREFILL' });

@@ -110,11 +110,11 @@ export async function openHostPage({
     () => (globalThis as unknown as PageGlobals).initialSocket,
   );
 
-  let current = await adopt(initialClientSocketHandle);
+  let currentConnection = await adopt(initialClientSocketHandle);
 
   return {
     get connection() {
-      return current;
+      return currentConnection;
     },
     async connect() {
       const clientSocketHandle = await page.evaluateHandle(
@@ -128,7 +128,7 @@ export async function openHostPage({
       const clientSocketHandle = await page.evaluateHandle(
         () => (globalThis as unknown as PageGlobals).initialSocket,
       );
-      current = await adopt(clientSocketHandle);
+      currentConnection = await adopt(clientSocketHandle);
     },
   };
 }

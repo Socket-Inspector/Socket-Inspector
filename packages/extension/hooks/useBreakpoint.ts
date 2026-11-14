@@ -17,7 +17,9 @@ export function useBreakpoint(): Breakpoint {
   const getCurrent = React.useCallback((): Breakpoint => {
     const w = typeof window === 'undefined' ? 0 : window.innerWidth;
     for (const [name, px] of Object.entries(BREAKPOINT_MAP).reverse()) {
-      if (w >= px) return name as Breakpoint;
+      if (w >= px) {
+        return name as Breakpoint;
+      }
     }
     return 'mobile';
   }, []);

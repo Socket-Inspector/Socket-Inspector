@@ -18,6 +18,7 @@ export default defineConfig({
     'typescript/promise-function-async': 'error',
     'no-promise-executor-return': 'error',
     'no-nested-ternary': 'error',
+    'curly': ['error', 'all'],
   },
   ignorePatterns: ['output/**'],
 });

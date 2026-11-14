@@ -20,7 +20,8 @@ export default defineConfig({
     'no-promise-executor-return': 'error',
     'no-nested-ternary': 'error',
     'curly': ['error', 'all'],
-    "typescript/consistent-type-definitions": ['error', 'type'],
+    'typescript/consistent-type-definitions': ['error', 'type'],
+    'import/no-default-export': 'error',
   },
   ignorePatterns: ['playwright/test-app/**', 'components/shadcn', 'hooks/useIsMobile.ts'],
   overrides: [

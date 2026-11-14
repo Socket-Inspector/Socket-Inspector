@@ -15,7 +15,7 @@ export type StartServerArgs = {
 export type Server = {
   readonly origin: string;
   newSocketUrl(): string;
-  waitForWebsocketEndpoint(url: string): Promise<WebsocketEndpoint>;
+  waitForClientConnection(url: string): Promise<WebsocketEndpoint>;
   stop(): Promise<void>;
 };
 
@@ -41,7 +41,7 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
   return {
     origin: `http://${host}:${port}`,
     newSocketUrl: () => `ws://${host}:${port}/${randomUUID()}`,
-    async waitForWebsocketEndpoint(url: string) {
+    async waitForClientConnection(url: string) {
       const { pathname } = new URL(url);
       const websocket = await socketRegistry.waitFor(pathname);
       return createServerEndpoint({ websocket, path: pathname, onError });

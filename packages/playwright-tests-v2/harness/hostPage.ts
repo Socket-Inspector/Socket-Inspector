@@ -35,46 +35,47 @@ export async function openHostPage({
 
   page.on('pageerror', (error) => onError(error));
 
-  async function adopt(socket: JSHandle<WebSocket>): Promise<WebsocketConnection> {
-    const url = await socket.evaluate((websocket) => websocket.url);
+  async function adopt(clientSocketHandle: JSHandle<WebSocket>): Promise<WebsocketConnection> {
+    const url = await clientSocketHandle.evaluate((clientSocket) => clientSocket.url);
     const label = `client end of ${new URL(url).pathname}`;
     const clientEndpoint = createWebsocketEndpoint({
       label,
       transport: {
         send: async (text) => {
-          await socket.evaluate((websocket, text) => websocket.send(text), text);
+          await clientSocketHandle.evaluate((clientSocket, text) => clientSocket.send(text), text);
         },
         close: async (options) => {
-          const closeWebsocket = (websocket: WebSocket, { code, reason }: CloseOptions) => {
-            return websocket.close(code, reason);
+          const closeWebsocket = (clientSocket: WebSocket, { code, reason }: CloseOptions) => {
+            return clientSocket.close(code, reason);
           };
-          await socket.evaluate(closeWebsocket, options);
+          await clientSocketHandle.evaluate(closeWebsocket, options);
         },
       },
       onError,
     });
+
     urlToClientRecorder.set(url, clientEndpoint.recorder);
 
     const [serverEndpoint] = await Promise.all([
       server.waitForWebsocketEndpoint(url),
-      socket.evaluate(async (websocket) => {
+      clientSocketHandle.evaluate(async (clientSocket) => {
         return await new Promise<void>((resolve, reject) => {
           const reportEvent = (event: ClientEvent) => {
-            return (globalThis as unknown as PageGlobals).__clientEvent(websocket.url, event);
+            return (globalThis as unknown as PageGlobals).__clientEvent(clientSocket.url, event);
           };
-          websocket.addEventListener('message', (event) =>
+          clientSocket.addEventListener('message', (event) =>
             reportEvent({ type: 'message', text: typeof event.data === 'string' ? event.data : null }),
           );
-          websocket.addEventListener('close', (event) =>
+          clientSocket.addEventListener('close', (event) =>
             reportEvent({ type: 'close', code: event.code, reason: event.reason }),
           );
-          websocket.addEventListener('error', () => reportEvent({ type: 'error' }));
-          if (websocket.readyState === WebSocket.OPEN) {
+          clientSocket.addEventListener('error', () => reportEvent({ type: 'error' }));
+          if (clientSocket.readyState === WebSocket.OPEN) {
             resolve();
           }
-          websocket.addEventListener('open', () => resolve());
-          websocket.addEventListener('close', () =>
-            reject(new Error(`socket at ${websocket.url} closed before it opened`)),
+          clientSocket.addEventListener('open', () => resolve());
+          clientSocket.addEventListener('close', () =>
+            reject(new Error(`socket at ${clientSocket.url} closed before it opened`)),
           );
         });
       }),

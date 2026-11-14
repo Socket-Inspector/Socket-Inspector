@@ -19,6 +19,7 @@ export default defineConfig({
     'no-promise-executor-return': 'error',
     'no-nested-ternary': 'error',
     'curly': ['error', 'all'],
+    "typescript/consistent-type-definitions": ['error', 'type'],
   },
   ignorePatterns: ['output/**'],
 });

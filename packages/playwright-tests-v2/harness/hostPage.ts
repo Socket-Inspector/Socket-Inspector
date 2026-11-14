@@ -36,15 +36,15 @@ export async function openHostPage({
 
   const urlToClientRecorder = new Map<string, EndpointRecorder>();
   await page.exposeFunction('__clientEvent', (url: string, event: ClientEvent) => {
-    const recorder = urlToClientRecorder.get(url)!;
+    const clientRecorder = urlToClientRecorder.get(url)!;
     if (event.type === 'message') {
       if (event.text === null) {
         onError(new Error(`client end of ${url} received a binary message`));
       } else {
-        recorder.recordIncomingMessage(event.text);
+        clientRecorder.recordIncomingMessage(event.text);
       }
     } else if (event.type === 'close') {
-      recorder.recordIncomingCloseFrame(event);
+      clientRecorder.recordIncomingCloseFrame(event);
     } else {
       onError(new Error(`client end of ${url} fired an error event`));
     }

@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-export type CreateWebsocketEndpointArgs = {
+export type WebSocketEndpointDependencies = {
   label: string;
   transport: Transport;
   onError: (error: Error) => void;
@@ -32,7 +32,7 @@ export function createWebsocketEndpoint({
   label,
   transport,
   onError,
-}: CreateWebsocketEndpointArgs): { endpoint: WebsocketEndpoint; recorder: EndpointRecorder } {
+}: WebSocketEndpointDependencies): { endpoint: WebsocketEndpoint; recorder: EndpointRecorder } {
   const incomingData: IncomingData = {
     messages: [],
     closeFrame: undefined,

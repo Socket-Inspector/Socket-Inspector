@@ -18,6 +18,7 @@ export default defineConfig({
     'typescript/no-confusing-void-expression': 'error',
     'typescript/promise-function-async': 'error',
     'no-promise-executor-return': 'error',
+    'no-nested-ternary': 'error',
   },
   ignorePatterns: ['playwright/test-app/**', 'components/shadcn', 'hooks/useIsMobile.ts'],
   overrides: [

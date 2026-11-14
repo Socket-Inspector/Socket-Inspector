@@ -17,6 +17,7 @@ export default defineConfig({
     'typescript/no-misused-promises': 'error',
     'typescript/promise-function-async': 'error',
     'no-promise-executor-return': 'error',
+    'no-nested-ternary': 'error',
   },
   ignorePatterns: ['output/**'],
 });

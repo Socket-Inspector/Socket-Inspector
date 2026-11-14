@@ -2,7 +2,6 @@ import { defineConfig } from "oxlint";
 
 export default defineConfig({
   plugins: ["promise", "typescript"],
-  // https://oxc.rs/docs/guide/usage/linter/config.html#enabling-groups-of-rules-categories
   categories: {
     correctness: "error",
   },

@@ -7,7 +7,7 @@ import {
   type WebsocketEndpoint,
 } from './websocketEndpoint';
 
-export type OpenHostPageArgs = {
+export type HostPageDependencies = {
   context: BrowserContext;
   server: Server;
   onError: (error: Error) => void;
@@ -29,7 +29,7 @@ export async function openHostPage({
   context,
   server,
   onError,
-}: OpenHostPageArgs): Promise<HostPage> {
+}: HostPageDependencies): Promise<HostPage> {
   const urlToClientRecorder = new Map<string, EndpointRecorder>();
   const page = await context.newPage();
 

@@ -40,7 +40,6 @@ export function createWebsocketEndpoint({
 
   let closeRequested = false;
 
-  // TODO: why are there 2 'channels' for exposing errors? i.e. throwing and calling onError
   const assertOpen = () => {
     if (closeRequested || incomingData.closeFrame) {
       throw new Error(`${label} is closed`);

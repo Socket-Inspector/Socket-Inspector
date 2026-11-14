@@ -62,11 +62,13 @@ export async function openHostPage({
       label: clientLabel,
       transport: {
         send: async (text) => {
-          await clientSocketHandle.evaluate((clientSocket, text) => clientSocket.send(text), text);
+          await clientSocketHandle.evaluate(
+            (clientSocket, message) => clientSocket.send(message),
+            text,
+          );
         },
         close: async (options) => {
-          const sendCloseFrame = (clientSocket: WebSocket, options: CloseOptions) => {
-            const { code, reason } = options;
+          const sendCloseFrame = (clientSocket: WebSocket, { code, reason }: CloseOptions) => {
             return clientSocket.close(code, reason);
           };
           await clientSocketHandle.evaluate(sendCloseFrame, options);

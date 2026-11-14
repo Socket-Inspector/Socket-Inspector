@@ -113,15 +113,15 @@ export async function openHostPage({
       return current;
     },
     async connect() {
-      const socket = await page.evaluateHandle((url) => new WebSocket(url), server.newSocketUrl());
-      return await adopt(socket);
+      const clientSocketHandle = await page.evaluateHandle((url) => new WebSocket(url), server.newSocketUrl());
+      return await adopt(clientSocketHandle);
     },
     async reload() {
       await page.reload();
-      const socket = await page.evaluateHandle(
+      const clientSocketHandle = await page.evaluateHandle(
         () => (globalThis as unknown as PageGlobals).initialSocket,
       );
-      current = await adopt(socket);
+      current = await adopt(clientSocketHandle);
     },
   };
 }

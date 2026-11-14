@@ -25,9 +25,13 @@ export function useBreakpoint(): Breakpoint {
   const [bp, setBp] = React.useState<Breakpoint>(getCurrent);
 
   React.useEffect(() => {
-    const onResize = () => setBp(getCurrent());
+    const onResize = () => {
+      setBp(getCurrent());
+    };
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
   }, [getCurrent]);
 
   return bp;

@@ -1,5 +1,5 @@
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
-import { type FormEvent, useEffect, useRef, useState } from 'react';
+import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { processJsonPayload, processTextPayload } from '@/utils/payloadProcessors';
 import { cn } from '@/utils/cn';
@@ -25,27 +25,38 @@ export function MessageComposer() {
   const [formValues, setFormValues] = useState<MessageComposerFormData>(getInitialFormValues());
   const [formError, setFormError] = useState<string | null>(null);
 
+  const selectedSocketId = socketState.selectedSocket?.id;
+  const [previousSelectedSocketId, setPreviousSelectedSocketId] = useState(selectedSocketId);
+  if (selectedSocketId !== previousSelectedSocketId) {
+    // clear form errors when user switches sockets
+    setPreviousSelectedSocketId(selectedSocketId);
+    setFormError(null);
+  }
+
+  const composerPrefill = socketState.selectedSocket?.composerPrefill;
+  const [appliedPrefill, setAppliedPrefill] = useState<MessageComposerFormData>();
+  if (composerPrefill && composerPrefill !== appliedPrefill) {
+    setAppliedPrefill(composerPrefill);
+    setFormValues(composerPrefill);
+    setFormError(null);
+  }
+  useEffect(() => {
+    if (composerPrefill) {
+      dispatch({ type: 'CLEAR_MESSAGE_COMPOSER_PREFILL' });
+    }
+  }, [composerPrefill, dispatch]);
+
+  const isFormatButtonDisabled = formValues.payloadType === 'raw';
   // using a ref here to avoid closure issues in the <Editor> onMount fn
-  const formatButtonDisabled = useRef(formValues.payloadType === 'raw');
-  formatButtonDisabled.current = formValues.payloadType === 'raw';
+  const isFormatButtonDisabledRef = useRef(isFormatButtonDisabled);
+  useLayoutEffect(() => {
+    isFormatButtonDisabledRef.current = isFormatButtonDisabled;
+  }, [isFormatButtonDisabled]);
 
   const payloadTypeRadioGroup = useRef<HTMLDivElement>(null);
   const formatButton = useRef<HTMLButtonElement>(null);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const submitButton = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    // clear form errors when user switches sockets
-    setFormError(null);
-  }, [socketState.selectedSocket?.id]);
-
-  useEffect(() => {
-    if (socketState.selectedSocket?.composerPrefill) {
-      setFormValues(socketState.selectedSocket.composerPrefill);
-      dispatch({ type: 'CLEAR_MESSAGE_COMPOSER_PREFILL' });
-      setFormError(null);
-    }
-  }, [socketState.selectedSocket?.composerPrefill, dispatch]);
 
   if (!socketState.selectedSocket) {
     return null;
@@ -180,10 +191,10 @@ export function MessageComposer() {
       >
         <FormatButton
           formatButtonRef={formatButton}
-          disabled={formatButtonDisabled.current}
-          tooltipText={formatButtonDisabled.current ? 'Cannot format raw text' : 'Format JSON'}
+          disabled={isFormatButtonDisabled}
+          tooltipText={isFormatButtonDisabled ? 'Cannot format raw text' : 'Format JSON'}
           onClick={() => {
-            editorRef.current?.getAction('editor.action.formatDocument')?.run();
+            void editorRef.current?.getAction('editor.action.formatDocument')?.run();
           }}
         ></FormatButton>
         <Editor
@@ -206,7 +217,7 @@ export function MessageComposer() {
               submitButton.current?.focus();
             });
             editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Escape, () => {
-              if (formatButtonDisabled.current) {
+              if (isFormatButtonDisabledRef.current) {
                 payloadTypeRadioGroup.current?.focus();
               } else {
                 formatButton.current?.focus();

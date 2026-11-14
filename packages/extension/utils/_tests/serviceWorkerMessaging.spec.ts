@@ -113,8 +113,8 @@ describe('ServiceWorkerConnector', () => {
       });
 
       // Verify event listeners were cleaned up on the original port
-      expect(originalMockPort.port.onMessage.removeListener).toHaveBeenCalled();
-      expect(originalMockPort.port.onDisconnect.removeListener).toHaveBeenCalled();
+      expect(originalMockPort.onMessage.removeListener).toHaveBeenCalled();
+      expect(originalMockPort.onDisconnect.removeListener).toHaveBeenCalled();
 
       // Messages can still be received after reconnecting
       const receivedAfterReconnect = createDebugPacket('AFTER_RECONNECT');
@@ -329,7 +329,7 @@ function getMockPort() {
     postMessage: vi.fn(),
   } as unknown as Browser.runtime.Port;
 
-  return { port, triggerMessage, triggerDisconnect };
+  return { port, onMessage, onDisconnect, triggerMessage, triggerDisconnect };
 }
 
 function createOnMessageMock() {

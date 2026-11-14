@@ -48,7 +48,7 @@ function MessageDetailContent({ socketState, dispatch }: MessageDetailContentPro
   }
 
   const copyPayloadToClipboard = () => {
-    copyToClipboard(selectedMessage.payload);
+    void copyToClipboard(selectedMessage.payload);
   };
 
   const prefillMessageComposer = () => {

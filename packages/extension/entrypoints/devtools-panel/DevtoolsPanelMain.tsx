@@ -23,7 +23,7 @@ const serviceWorkerConnector = new ServiceWorkerConnector({
 
 loader.config({ monaco });
 
-loader.init().then(() => {
+void loader.init().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     // <React.StrictMode>
     <DevtoolsThemeProvider>

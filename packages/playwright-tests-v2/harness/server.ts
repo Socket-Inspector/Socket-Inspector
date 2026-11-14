@@ -131,7 +131,8 @@ function createServerEndpoint({
       onError(new Error(`${label} received a binary message; only text is supported`));
       return;
     }
-    serverEndpoint.recorder.recordIncomingMessage(data.toString());
+    // ws always delivers text frames as a single Buffer, regardless of binaryType
+    serverEndpoint.recorder.recordIncomingMessage((data as Buffer).toString());
   });
   websocket.on('close', (code, reason) =>
     serverEndpoint.recorder.recordIncomingCloseFrame({ code, reason: reason.toString() }),

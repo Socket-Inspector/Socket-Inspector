@@ -38,7 +38,6 @@ export function SocketStatusIcon({ socketStatus }: SocketStatusIconProps) {
       </TooltipIcon>
     );
   }
-
   return null;
 }
 
@@ -46,6 +45,7 @@ type TooltipIconProps = {
   children: React.ReactNode;
   tooltipText: string;
 };
+
 function TooltipIcon({ children, tooltipText }: TooltipIconProps) {
   return (
     <Tooltip delayDuration={500}>

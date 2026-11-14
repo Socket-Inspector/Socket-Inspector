@@ -40,12 +40,10 @@ export async function openHostPage({
 
   await page.exposeFunction('__clientEvent', (url: string, event: ClientEvent) => {
     const clientRecorder = urlToClientRecorder.get(url)!;
-    if (event.type === 'message') {
-      if (event.text === null) {
-        onError(new Error(`client end of ${url} received a binary message`));
-      } else {
-        clientRecorder.recordIncomingMessage(event.text);
-      }
+    if (event.type === 'text') {
+      clientRecorder.recordIncomingMessage(event.text);
+    } else if (event.type === 'binary') {
+      onError(new Error(`client end of ${url} received a binary message`));
     } else if (event.type === 'close') {
       clientRecorder.recordIncomingCloseFrame(event);
     } else {
@@ -89,10 +87,11 @@ export async function openHostPage({
             (globalThis as unknown as PageGlobals).__clientEvent(clientSocket.url, event);
           };
           clientSocket.addEventListener('message', (event) => {
-            reportEvent({
-              type: 'message',
-              text: typeof event.data === 'string' ? event.data : null,
-            });
+            reportEvent(
+              typeof event.data === 'string'
+                ? { type: 'text', text: event.data }
+                : { type: 'binary' },
+            );
           });
           clientSocket.addEventListener('close', (event) => {
             reportEvent({ type: 'close', code: event.code, reason: event.reason });
@@ -144,7 +143,8 @@ export async function openHostPage({
 }
 
 type ClientEvent =
-  | { type: 'message'; text: string | null }
+  | { type: 'text'; text: string }
+  | { type: 'binary' }
   | { type: 'close'; code: number; reason: string }
   | { type: 'error' };
 

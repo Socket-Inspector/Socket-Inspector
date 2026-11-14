@@ -1,7 +1,5 @@
 import { expect } from '@playwright/test';
 
-export type CloseOptions = { code?: number; reason?: string };
-
 export type CreateWebsocketEndpointArgs = {
   label: string;
   transport: Transport;
@@ -21,12 +19,14 @@ export type EndpointRecorder = {
   recordReceivedCloseFrame(closeFrame: CloseFrame): void;
 };
 
-export type CloseFrame = { code: number; reason: string };
-
 export type Transport = {
   send(text: string): Promise<void>;
   close(options: CloseOptions): Promise<void>;
 };
+
+export type CloseFrame = { code: number; reason: string };
+
+export type CloseOptions = { code?: number; reason?: string };
 
 export function createWebsocketEndpoint({
   label,

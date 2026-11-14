@@ -35,6 +35,23 @@ export async function openHostPage({
 
   page.on('pageerror', (error) => onError(error));
 
+  await page.exposeFunction('__clientEvent', (url: string, event: ClientEvent) => {
+    const recorder = urlToClientRecorder.get(url)!;
+    if (event.type === 'message') {
+      if (event.text === null) {
+        onError(new Error(`client end of ${url} received a binary message`));
+      } else {
+        recorder.recordReceivedMessage(event.text);
+      }
+    } else if (event.type === 'close') {
+      recorder.recordReceivedClose(event);
+    } else {
+      onError(new Error(`client end of ${url} fired an error event`));
+    }
+  });
+
+  await page.goto(server.origin);
+
   const adopt = async (clientSocketHandle: JSHandle<WebSocket>): Promise<WebsocketConnection> => {
     const url = await clientSocketHandle.evaluate((clientSocket) => clientSocket.url);
     const label = `client end of ${new URL(url).pathname}`;
@@ -84,26 +101,10 @@ export async function openHostPage({
     return { url, client: clientEndpoint.endpoint, server: serverEndpoint };
   };
 
-  const onClientEvent = (url: string, event: ClientEvent) => {
-    const recorder = urlToClientRecorder.get(url)!;
-    if (event.type === 'message') {
-      if (event.text === null) {
-        onError(new Error(`client end of ${url} received a binary message`));
-      } else {
-        recorder.recordReceivedMessage(event.text);
-      }
-    } else if (event.type === 'close') {
-      recorder.recordReceivedClose(event);
-    } else {
-      onError(new Error(`client end of ${url} fired an error event`));
-    }
-  };
-
-  await page.exposeFunction('__clientEvent', onClientEvent);
-  await page.goto(server.origin);
   const initialSocket = await page.evaluateHandle(
     () => (globalThis as unknown as PageGlobals).initialSocket,
   );
+
   let current = await adopt(initialSocket);
 
   return {

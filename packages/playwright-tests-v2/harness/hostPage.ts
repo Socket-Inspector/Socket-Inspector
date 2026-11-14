@@ -35,7 +35,7 @@ export async function openHostPage({
 
   page.on('pageerror', (error) => onError(error));
 
-  async function adopt(clientSocketHandle: JSHandle<WebSocket>): Promise<WebsocketConnection> {
+  const adopt = async (clientSocketHandle: JSHandle<WebSocket>): Promise<WebsocketConnection> => {
     const url = await clientSocketHandle.evaluate((clientSocket) => clientSocket.url);
     const label = `client end of ${new URL(url).pathname}`;
     const clientEndpoint = createWebsocketEndpoint({
@@ -82,9 +82,9 @@ export async function openHostPage({
     ]);
 
     return { url, client: clientEndpoint.endpoint, server: serverEndpoint };
-  }
+  };
 
-  function onClientEvent(url: string, event: ClientEvent) {
+  const onClientEvent = (url: string, event: ClientEvent) => {
     const recorder = urlToClientRecorder.get(url)!;
     if (event.type === 'message') {
       if (event.text === null) {
@@ -97,7 +97,7 @@ export async function openHostPage({
     } else {
       onError(new Error(`client end of ${url} fired an error event`));
     }
-  }
+  };
 
   await page.exposeFunction('__clientEvent', onClientEvent);
   await page.goto(server.origin);

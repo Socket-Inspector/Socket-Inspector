@@ -21,6 +21,7 @@ export default defineConfig({
     'curly': ['error', 'all'],
     'typescript/consistent-type-definitions': ['error', 'type'],
     'import/no-default-export': 'error',
+    'array-callback-return': 'error',
   },
   ignorePatterns: ['output/**'],
 });

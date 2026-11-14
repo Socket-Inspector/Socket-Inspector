@@ -22,6 +22,7 @@ export default defineConfig({
     'curly': ['error', 'all'],
     'typescript/consistent-type-definitions': ['error', 'type'],
     'import/no-default-export': 'error',
+    'array-callback-return': 'error',
   },
   ignorePatterns: ['playwright/test-app/**', 'components/shadcn', 'hooks/useIsMobile.ts'],
   overrides: [

@@ -22,6 +22,7 @@ export default defineConfig({
     'typescript/consistent-type-definitions': ['error', 'type'],
     'import/no-default-export': 'error',
     'array-callback-return': 'error',
+    'no-return-assign': 'error',
   },
   ignorePatterns: ['output/**'],
 });

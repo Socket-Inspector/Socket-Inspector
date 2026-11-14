@@ -37,7 +37,7 @@ export async function openHostPage({
   });
 
   const urlToClientRecorder = new Map<string, EndpointRecorder>();
-  
+
   await page.exposeFunction('__clientEvent', (url: string, event: ClientEvent) => {
     const clientRecorder = urlToClientRecorder.get(url)!;
     if (event.type === 'message') {

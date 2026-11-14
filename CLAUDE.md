@@ -41,4 +41,5 @@ pnpm prepare:release
 ```
 
 ## Coding Guidlines
+
 Don't write `switch` statements. Use if, else-if, else instead.

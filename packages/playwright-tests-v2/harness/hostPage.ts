@@ -60,8 +60,7 @@ export async function openHostPage({
       socket.evaluate(async (websocket) => {
         return await new Promise<void>((resolve, reject) => {
           const reportEvent = (event: ClientEvent) => {
-            const pageGlobals = globalThis as unknown as PageGlobals;
-            return pageGlobals.__clientEvent(websocket.url, event);
+            return (globalThis as unknown as PageGlobals).__clientEvent(websocket.url, event);
           };
 
           websocket.addEventListener('message', (event) =>

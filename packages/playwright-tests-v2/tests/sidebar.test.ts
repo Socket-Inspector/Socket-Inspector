@@ -73,8 +73,8 @@ test('closing a socket from the client and opening a new one', async ({
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
-  const initialConnection = hostPage.connection;
 
+  const initialConnection = hostPage.connection;
   await initialConnection.client.send('old_ping');
   await initialConnection.server.expectMessages(['old_ping']);
   await initialConnection.server.send('old_pong');

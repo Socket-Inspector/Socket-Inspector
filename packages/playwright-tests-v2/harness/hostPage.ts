@@ -55,14 +55,13 @@ export async function openHostPage({
     });
     urlToClientRecorder.set(url, clientEndpoint.recorder);
 
-    const [serverEnd] = await Promise.all([
+    const [serverEndpoint] = await Promise.all([
       server.waitForWebsocketEndpoint(url),
       socket.evaluate(async (websocket) => {
         return await new Promise<void>((resolve, reject) => {
           const reportEvent = (event: ClientEvent) => {
             return (globalThis as unknown as PageGlobals).__clientEvent(websocket.url, event);
           };
-
           websocket.addEventListener('message', (event) =>
             reportEvent({ type: 'message', text: typeof event.data === 'string' ? event.data : null }),
           );
@@ -70,7 +69,6 @@ export async function openHostPage({
             reportEvent({ type: 'close', code: event.code, reason: event.reason }),
           );
           websocket.addEventListener('error', () => reportEvent({ type: 'error' }));
-
           if (websocket.readyState === WebSocket.OPEN) {
             resolve();
           }
@@ -82,7 +80,7 @@ export async function openHostPage({
       }),
     ]);
 
-    return { url, client: clientEndpoint.endpoint, server: serverEnd };
+    return { url, client: clientEndpoint.endpoint, server: serverEndpoint };
   }
 
   function onClientEvent(url: string, event: ClientEvent) {

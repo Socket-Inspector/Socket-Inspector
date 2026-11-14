@@ -40,7 +40,7 @@ export function CloseCodeSelect({ value, onChange, disabled }: CloseCodeSelectPr
       <FieldLabel>Close Code</FieldLabel>
       <Select
         value={value}
-        onValueChange={(value) => onChange(value as CloseCode)}
+        onValueChange={(newValue) => onChange(newValue as CloseCode)}
         disabled={disabled}
       >
         <SelectTrigger>

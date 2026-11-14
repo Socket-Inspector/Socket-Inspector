@@ -4,12 +4,13 @@ export default defineConfig({
   options: {
     typeAware: true,
   },
-  plugins: ['react', 'promise', 'react-perf', 'typescript'],
+  plugins: ['oxc', 'react', 'promise', 'react-perf', 'typescript'],
   categories: {
     correctness: 'error',
   },
   rules: {
     'no-var': 'error',
+    'no-shadow': 'error',
     'react/rules-of-hooks': 'error',
     'react/incompatible-library': 'off',
     'typescript/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],

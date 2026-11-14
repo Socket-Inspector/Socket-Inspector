@@ -33,7 +33,7 @@ export function createWebsocketEndpoint({
   transport,
   onError,
 }: CreateWebsocketEndpointArgs): { endpoint: WebsocketEndpoint; recorder: EndpointRecorder } {
-  const receivedData: ReceivedData = {
+  const incomingData: IncomingData = {
     messages: [],
     closeFrame: undefined,
   };
@@ -42,7 +42,7 @@ export function createWebsocketEndpoint({
 
   // TODO: why are there 2 'channels' for exposing errors? i.e. throwing and calling onError
   const assertOpen = () => {
-    if (closeRequested || receivedData.closeFrame) {
+    if (closeRequested || incomingData.closeFrame) {
       throw new Error(`${label} is closed`);
     }
   };
@@ -59,13 +59,13 @@ export function createWebsocketEndpoint({
     },
     async expectMessages(expectedMessages: string[]) {
       await expect
-        .poll(() => [...receivedData.messages], { message: `messages received by ${label}` })
+        .poll(() => [...incomingData.messages], { message: `messages received by ${label}` })
         .toEqual(expectedMessages);
     },
     async expectMessagesToStay(expectedMessages: string[]) {
       const deadline = Date.now() + 500;
       while (true) {
-        expect([...receivedData.messages], `messages received by ${label}`).toEqual(
+        expect([...incomingData.messages], `messages received by ${label}`).toEqual(
           expectedMessages,
         );
         const remaining = deadline - Date.now();
@@ -77,21 +77,21 @@ export function createWebsocketEndpoint({
     },
     async expectClosed(expected: CloseOptions = {}) {
       await expect
-        .poll(() => receivedData.closeFrame, { message: `close received by ${label}` })
+        .poll(() => incomingData.closeFrame, { message: `close received by ${label}` })
         .toMatchObject(expected);
     },
   };
 
   const recorder: EndpointRecorder = {
     recordReceivedMessage(text: string) {
-      if (receivedData.closeFrame) {
+      if (incomingData.closeFrame) {
         onError(new Error(`${label} received message ${JSON.stringify(text)} after it closed`));
         return;
       }
-      receivedData.messages.push(text);
+      incomingData.messages.push(text);
     },
     recordReceivedCloseFrame(closeFrame: CloseFrame) {
-      if (receivedData.closeFrame) {
+      if (incomingData.closeFrame) {
         onError(
           new Error(
             `${label} received a second close (code ${closeFrame.code}, reason ${JSON.stringify(closeFrame.reason)})`,
@@ -99,14 +99,14 @@ export function createWebsocketEndpoint({
         );
         return;
       }
-      receivedData.closeFrame = { code: closeFrame.code, reason: closeFrame.reason };
+      incomingData.closeFrame = { code: closeFrame.code, reason: closeFrame.reason };
     },
   };
 
   return { endpoint, recorder };
 }
 
-type ReceivedData = { messages: string[]; closeFrame: CloseFrame | undefined };
+type IncomingData = { messages: string[]; closeFrame: CloseFrame | undefined };
 
 async function sleep(ms: number): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));

@@ -4,7 +4,7 @@ export default defineConfig({
   options: {
     typeAware: true,
   },
-  plugins: ['oxc', 'promise', 'typescript'],
+  plugins: ['oxc', 'unicorn', 'promise', 'typescript'],
   categories: {
     correctness: 'error',
   },

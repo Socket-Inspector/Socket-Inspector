@@ -194,7 +194,7 @@ export function MessageComposer() {
           disabled={isFormatButtonDisabled}
           tooltipText={isFormatButtonDisabled ? 'Cannot format raw text' : 'Format JSON'}
           onClick={() => {
-            editorRef.current?.getAction('editor.action.formatDocument')?.run();
+            void editorRef.current?.getAction('editor.action.formatDocument')?.run();
           }}
         ></FormatButton>
         <Editor

@@ -125,7 +125,7 @@ export class ServiceWorkerConnector {
       this.isReconnectScheduled = true;
 
       // Schedule reconnect on a microtask to avoid tight synchronous loops
-      Promise.resolve().then(() => {
+      void Promise.resolve().then(() => {
         this.isReconnectScheduled = false;
         this.internalConnect();
       });

@@ -310,7 +310,7 @@ export function MessageTable() {
                     <ContextMenuContent>
                       <ContextMenuItem
                         onSelect={() => {
-                          copyToClipboard(message.payload);
+                          void copyToClipboard(message.payload);
                         }}
                       >
                         Copy to Clipboard

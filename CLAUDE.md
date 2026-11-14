@@ -44,4 +44,3 @@ pnpm prepare:release
 
 Prefer TypeScript's `type` keyword, rather than `interface`.
 Don't write `switch` statements. Use if, else-if, else instead.
-Functions that return a promise should be declared `async`.

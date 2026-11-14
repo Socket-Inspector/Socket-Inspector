@@ -35,7 +35,7 @@ export function createWebsocketEndpoint({
 }: CreateWebsocketEndpointArgs): { endpoint: WebsocketEndpoint; recorder: EndpointRecorder } {
   const receivedData: ReceivedData = {
     messages: [],
-    closeFrame: undefined
+    closeFrame: undefined,
   };
 
   let closeRequested = false;

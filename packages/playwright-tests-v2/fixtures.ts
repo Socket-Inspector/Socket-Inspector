@@ -11,7 +11,7 @@ export const test = base.extend<{
   harness: Harness;
 }>({
   // oxlint-disable-next-line no-empty-pattern
-  context: async ({ }, use) => {
+  context: async ({}, use) => {
     const context = await chromium.launchPersistentContext('', {
       channel: 'chromium',
       headless: !!process.env.CI,

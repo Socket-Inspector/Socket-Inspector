@@ -82,25 +82,29 @@ export async function openHostPage({
       clientSocketHandle.evaluate(async (clientSocket) => {
         return await new Promise<void>((resolve, reject) => {
           const reportEvent = (event: ClientEvent) => {
-            return (globalThis as unknown as PageGlobals).__clientEvent(clientSocket.url, event);
+            (globalThis as unknown as PageGlobals).__clientEvent(clientSocket.url, event);
           };
-          clientSocket.addEventListener('message', (event) =>
+          clientSocket.addEventListener('message', (event) => {
             reportEvent({
               type: 'message',
               text: typeof event.data === 'string' ? event.data : null,
-            }),
-          );
-          clientSocket.addEventListener('close', (event) =>
-            reportEvent({ type: 'close', code: event.code, reason: event.reason }),
-          );
-          clientSocket.addEventListener('error', () => reportEvent({ type: 'error' }));
+            });
+          });
+          clientSocket.addEventListener('close', (event) => {
+            reportEvent({ type: 'close', code: event.code, reason: event.reason });
+          });
+          clientSocket.addEventListener('error', () => {
+            reportEvent({ type: 'error' });
+          });
           if (clientSocket.readyState === WebSocket.OPEN) {
             resolve();
           }
-          clientSocket.addEventListener('open', () => resolve());
-          clientSocket.addEventListener('close', () =>
-            reject(new Error(`socket at ${clientSocket.url} closed before it opened`)),
-          );
+          clientSocket.addEventListener('open', () => {
+            resolve();
+          });
+          clientSocket.addEventListener('close', () => {
+            reject(new Error(`socket at ${clientSocket.url} closed before it opened`));
+          });
         });
       }),
     ]);

@@ -8,6 +8,7 @@ export default defineConfig({
   rules: {
     'no-var': 'error',
     'react/rules-of-hooks': 'error',
+    'react/incompatible-library': 'off',
     'typescript/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
     'typescript/no-import-type-side-effects': 'error',
   },

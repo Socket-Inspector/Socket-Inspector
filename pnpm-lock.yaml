@@ -139,6 +139,9 @@ importers:
       oxlint:
         specifier: ^1.93.0
         version: 1.93.0(oxlint-tsgolint@7.0.2007)
+      oxlint-tsgolint:
+        specifier: ^7.0.2007
+        version: 7.0.2007
       typescript:
         specifier: ^7.0.2
         version: 7.0.2

@@ -53,5 +53,7 @@ export const copyToClipboard = async (text: string): Promise<void> => {
 };
 
 export const sleep = async (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 };

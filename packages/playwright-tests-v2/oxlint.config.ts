@@ -16,6 +16,7 @@ export default defineConfig({
     'typescript/no-confusing-void-expression': 'error',
     'typescript/no-misused-promises': 'error',
     'typescript/promise-function-async': 'error',
+    'no-promise-executor-return': 'error',
   },
   ignorePatterns: ['output/**'],
 });

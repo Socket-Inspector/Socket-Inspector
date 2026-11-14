@@ -17,6 +17,7 @@ export default defineConfig({
     'typescript/no-import-type-side-effects': 'error',
     'typescript/no-confusing-void-expression': 'error',
     'typescript/promise-function-async': 'error',
+    'no-promise-executor-return': 'error',
   },
   ignorePatterns: ['playwright/test-app/**', 'components/shadcn', 'hooks/useIsMobile.ts'],
   overrides: [

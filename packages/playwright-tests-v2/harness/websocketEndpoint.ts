@@ -18,10 +18,10 @@ export type WebsocketEndpoint = {
 
 export type EndpointRecorder = {
   recordReceivedMessage(text: string): void;
-  recordReceivedClose(close: ReceivedClose): void;
+  recordReceivedCloseFrame(closeFrame: CloseFrame): void;
 };
 
-export type ReceivedClose = { code: number; reason: string };
+export type CloseFrame = { code: number; reason: string };
 
 export type Transport = {
   send(text: string): Promise<void>;
@@ -34,12 +34,12 @@ export function createWebsocketEndpoint({
   onError,
 }: CreateWebsocketEndpointArgs): { endpoint: WebsocketEndpoint; recorder: EndpointRecorder } {
   const receivedMessages: string[] = [];
-  let receivedClose: ReceivedClose | undefined;
+  let receivedCloseFrame: CloseFrame | undefined;
   let closeRequested = false;
 
   // TODO: why are there 2 'channels' for exposing errors? i.e. throwing and calling onError
   const assertOpen = () => {
-    if (closeRequested || receivedClose) {
+    if (closeRequested || receivedCloseFrame) {
       throw new Error(`${label} is closed`);
     }
   };
@@ -72,29 +72,29 @@ export function createWebsocketEndpoint({
     },
     async expectClosed(expected: CloseOptions = {}) {
       await expect
-        .poll(() => receivedClose, { message: `close received by ${label}` })
+        .poll(() => receivedCloseFrame, { message: `close received by ${label}` })
         .toMatchObject(expected);
     },
   };
 
   const recorder: EndpointRecorder = {
     recordReceivedMessage(text: string) {
-      if (receivedClose) {
+      if (receivedCloseFrame) {
         onError(new Error(`${label} received message ${JSON.stringify(text)} after it closed`));
         return;
       }
       receivedMessages.push(text);
     },
-    recordReceivedClose(close: ReceivedClose) {
-      if (receivedClose) {
+    recordReceivedCloseFrame(closeFrame: CloseFrame) {
+      if (receivedCloseFrame) {
         onError(
           new Error(
-            `${label} received a second close (code ${close.code}, reason ${JSON.stringify(close.reason)})`,
+            `${label} received a second close (code ${closeFrame.code}, reason ${JSON.stringify(closeFrame.reason)})`,
           ),
         );
         return;
       }
-      receivedClose = { code: close.code, reason: close.reason };
+      receivedCloseFrame = { code: closeFrame.code, reason: closeFrame.reason };
     },
   };
 

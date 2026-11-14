@@ -44,7 +44,7 @@ export async function openHostPage({
         recorder.recordReceivedMessage(event.text);
       }
     } else if (event.type === 'close') {
-      recorder.recordReceivedClose(event);
+      recorder.recordReceivedCloseFrame(event);
     } else {
       onError(new Error(`client end of ${url} fired an error event`));
     }
@@ -83,7 +83,10 @@ export async function openHostPage({
             return (globalThis as unknown as PageGlobals).__clientEvent(clientSocket.url, event);
           };
           clientSocket.addEventListener('message', (event) =>
-            reportEvent({ type: 'message', text: typeof event.data === 'string' ? event.data : null }),
+            reportEvent({
+              type: 'message',
+              text: typeof event.data === 'string' ? event.data : null,
+            }),
           );
           clientSocket.addEventListener('close', (event) =>
             reportEvent({ type: 'close', code: event.code, reason: event.reason }),
@@ -114,7 +117,10 @@ export async function openHostPage({
       return current;
     },
     async connect() {
-      const clientSocketHandle = await page.evaluateHandle((url) => new WebSocket(url), server.newSocketUrl());
+      const clientSocketHandle = await page.evaluateHandle(
+        (url) => new WebSocket(url),
+        server.newSocketUrl(),
+      );
       return await adopt(clientSocketHandle);
     },
     async reload() {

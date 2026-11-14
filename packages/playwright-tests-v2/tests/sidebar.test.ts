@@ -81,6 +81,7 @@ test('closing a socket from the client and opening a new one', async ({
   await initialConnection.client.expectMessages(['old_pong']);
 
   await devtoolsPanel.bringToFront();
+
   await sidebar.clickSocketLink({ url: initialConnection.url, status: 'Connected' });
   await devtoolsPanel.assertTableMessages([
     { text: 'old_ping', direction: 'outgoing' },

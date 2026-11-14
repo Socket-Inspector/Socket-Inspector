@@ -26,8 +26,6 @@ export function MessageComposer() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const selectedSocketId = socketState.selectedSocket?.id;
-  const composerPrefill = socketState.selectedSocket?.composerPrefill;
-
   const [previousSelectedSocketId, setPreviousSelectedSocketId] = useState(selectedSocketId);
   if (selectedSocketId !== previousSelectedSocketId) {
     // clear form errors when user switches sockets
@@ -35,13 +33,13 @@ export function MessageComposer() {
     setFormError(null);
   }
 
+  const composerPrefill = socketState.selectedSocket?.composerPrefill;
   const [appliedPrefill, setAppliedPrefill] = useState<MessageComposerFormData>();
   if (composerPrefill && composerPrefill !== appliedPrefill) {
     setAppliedPrefill(composerPrefill);
     setFormValues(composerPrefill);
     setFormError(null);
   }
-
   useEffect(() => {
     if (composerPrefill) {
       dispatch({ type: 'CLEAR_MESSAGE_COMPOSER_PREFILL' });
@@ -49,7 +47,6 @@ export function MessageComposer() {
   }, [composerPrefill, dispatch]);
 
   const isFormatButtonDisabled = formValues.payloadType === 'raw';
-
   // using a ref here to avoid closure issues in the <Editor> onMount fn
   const isFormatButtonDisabledRef = useRef(isFormatButtonDisabled);
   useLayoutEffect(() => {

@@ -23,6 +23,7 @@ export default defineConfig({
     'import/no-default-export': 'error',
     'array-callback-return': 'error',
     'no-return-assign': 'error',
+    'import/no-cycle': 'error',
   },
   ignorePatterns: ['output/**'],
 });

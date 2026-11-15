@@ -38,7 +38,7 @@ export async function openHostPage({
 
   const urlToClientRecorder = new Map<string, EndpointRecorder>();
 
-  await page.exposeFunction('__clientEvent', (url: string, event: ClientEvent) => {
+  await page.exposeFunction('__recordClientSocketEvent', (url: string, event: ClientEvent) => {
     const clientRecorder = urlToClientRecorder.get(url)!;
     if (event.type === 'text') {
       clientRecorder.recordIncomingMessage(event.text);
@@ -84,7 +84,10 @@ export async function openHostPage({
       clientSocketHandle.evaluate(async (clientSocket) => {
         await new Promise<void>((resolve, reject) => {
           const reportEvent = (event: ClientEvent) => {
-            (globalThis as unknown as PageGlobals).__clientEvent(clientSocket.url, event);
+            (globalThis as unknown as PageGlobals).__recordClientSocketEvent(
+              clientSocket.url,
+              event,
+            );
           };
           clientSocket.addEventListener('message', (event) => {
             reportEvent(
@@ -150,5 +153,5 @@ type ClientEvent =
 
 type PageGlobals = {
   initialSocket: WebSocket;
-  __clientEvent(url: string, event: ClientEvent): void;
+  __recordClientSocketEvent(url: string, event: ClientEvent): void;
 };

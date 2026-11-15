@@ -83,24 +83,24 @@ export async function openHostPage({
       server.waitForClientConnection(url),
       clientSocketHandle.evaluate(async (clientSocket) => {
         await new Promise<void>((resolve, reject) => {
-          const reportEvent = (event: ClientEvent) => {
+          const recordClientSocketEvent = (event: ClientEvent) => {
             (globalThis as unknown as PageGlobals).__recordClientSocketEvent(
               clientSocket.url,
               event,
             );
           };
           clientSocket.addEventListener('message', (event) => {
-            reportEvent(
+            recordClientSocketEvent(
               typeof event.data === 'string'
                 ? { type: 'text', text: event.data }
                 : { type: 'binary' },
             );
           });
           clientSocket.addEventListener('close', (event) => {
-            reportEvent({ type: 'close', code: event.code, reason: event.reason });
+            recordClientSocketEvent({ type: 'close', code: event.code, reason: event.reason });
           });
           clientSocket.addEventListener('error', () => {
-            reportEvent({ type: 'error' });
+            recordClientSocketEvent({ type: 'error' });
           });
           if (clientSocket.readyState === WebSocket.OPEN) {
             resolve();

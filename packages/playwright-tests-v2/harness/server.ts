@@ -25,10 +25,10 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
       .writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' })
       .end(hostPageHtml());
   });
-
-  const pathToWebsocket = new Map<string, WebSocket>();
+  
   const websocketServer = new WebSocketServer({ server: httpServer });
-
+  
+  const pathToWebsocket = new Map<string, WebSocket>();
   websocketServer.on('connection', (websocket, request) => {
     const path = request.url ?? '/';
     pathToWebsocket.set(path, websocket);

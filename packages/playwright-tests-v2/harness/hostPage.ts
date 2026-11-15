@@ -61,11 +61,16 @@ export async function openHostPage({
     const { pathname, search } = new URL(url);
     const path = `${pathname}${search}`;
 
+    const clientHandle = createClientWebsocketHandle(
+      clientSocketJsHandle, 
+      (listeners) => {
+        urlToClientListeners.set(url, listeners);
+      }
+    );
+
     const clientEndpoint = createWebsocketEndpoint({
       label: `client end of ${path}`,
-      handle: createClientWebsocketHandle(clientSocketJsHandle, (listeners) => {
-        urlToClientListeners.set(url, listeners);
-      }),
+      handle: clientHandle,
       onError,
     });
 

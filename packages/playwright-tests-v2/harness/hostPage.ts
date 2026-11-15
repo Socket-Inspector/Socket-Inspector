@@ -62,17 +62,17 @@ export async function openHostPage({
     const path = `${pathname}${search}`;
 
     const clientHandle: WebsocketHandle = {
-      async send(text) {
+      async send(text: string) {
         await clientSocketJsHandle.evaluate((clientSocket, message) => {
           clientSocket.send(message);
         }, text);
       },
-      async close(options) {
+      async close(options: CloseOptions) {
         await clientSocketJsHandle.evaluate((clientSocket, { code, reason }: CloseOptions) => {
           clientSocket.close(code, reason);
         }, options);
       },
-      subscribe(listeners) {
+      subscribe(listeners: WebsocketHandleListeners) {
         urlToClientListeners.set(url, listeners);
       },
     };

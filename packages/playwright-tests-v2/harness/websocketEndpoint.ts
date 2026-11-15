@@ -7,10 +7,15 @@ export type CreateWebsocketEndpointArgs = {
 };
 
 export type WebsocketEndpoint = {
+  /** Sends a message to the other end. Throws if this end is closed. */
   send(text: string): Promise<void>;
+  /** Send a close frame from this end. Throws if this end is already closed. */
   close(options?: CloseOptions): Promise<void>;
+  /** Wait until all received messages equal `expectedMessages`*/
   expectMessages(expectedMessages: string[]): Promise<void>;
+  /** Wait until all received messages equal `expectedMessages` and don't change for 300ms*/
   expectMessagesToStay(expectedMessages: string[]): Promise<void>;
+  /** Wait until this end receives a matching close frame (or any close frame if no args passed). */
   expectClosed(expected?: CloseOptions): Promise<void>;
 };
 

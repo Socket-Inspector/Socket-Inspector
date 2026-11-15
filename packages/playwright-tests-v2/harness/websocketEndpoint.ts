@@ -17,7 +17,6 @@ export type WebsocketEndpoint = {
 export type WebsocketHandle = {
   send(text: string): Promise<void>;
   close(options: CloseOptions): Promise<void>;
-  // called exactly once, by createWebsocketEndpoint
   subscribe(listeners: WebsocketHandleListeners): void;
 };
 

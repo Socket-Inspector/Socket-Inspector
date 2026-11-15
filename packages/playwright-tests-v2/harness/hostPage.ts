@@ -61,12 +61,21 @@ export async function openHostPage({
     const { pathname, search } = new URL(url);
     const path = `${pathname}${search}`;
 
-    const clientHandle = createClientWebsocketHandle(
-      clientSocketJsHandle, 
-      (listeners) => {
+    const clientHandle: WebsocketHandle = {
+      async send(text) {
+        await clientSocketJsHandle.evaluate((clientSocket, message) => {
+          clientSocket.send(message);
+        }, text);
+      },
+      async close(options) {
+        await clientSocketJsHandle.evaluate((clientSocket, { code, reason }: CloseOptions) => {
+          clientSocket.close(code, reason);
+        }, options);
+      },
+      subscribe(listeners) {
         urlToClientListeners.set(url, listeners);
-      }
-    );
+      },
+    };
 
     const clientEndpoint = createWebsocketEndpoint({
       label: `client end of ${path}`,
@@ -137,25 +146,6 @@ export async function openHostPage({
       );
       currentConnection = await createConnection(clientSocketJsHandle);
     },
-  };
-}
-
-function createClientWebsocketHandle(
-  clientSocketJsHandle: JSHandle<WebSocket>,
-  registerListeners: (listeners: WebsocketHandleListeners) => void,
-): WebsocketHandle {
-  return {
-    async send(text) {
-      await clientSocketJsHandle.evaluate((clientSocket, message) => {
-        clientSocket.send(message);
-      }, text);
-    },
-    async close(options) {
-      await clientSocketJsHandle.evaluate((clientSocket, { code, reason }: CloseOptions) => {
-        clientSocket.close(code, reason);
-      }, options);
-    },
-    subscribe: registerListeners,
   };
 }
 

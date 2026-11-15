@@ -8,7 +8,7 @@ import {
   type WebsocketHandleListeners,
 } from './websocketEndpoint';
 
-export type HostPageDependencies = {
+export type HostPageArgs = {
   context: BrowserContext;
   server: Server;
   onError: (error: Error) => void;
@@ -30,7 +30,7 @@ export async function openHostPage({
   context,
   server,
   onError,
-}: HostPageDependencies): Promise<HostPage> {
+}: HostPageArgs): Promise<HostPage> {
   const page = await context.newPage();
 
   page.on('pageerror', (error) => {

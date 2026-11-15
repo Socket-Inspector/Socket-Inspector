@@ -84,7 +84,7 @@ export function createWebsocketEndpoint({
         .toEqual(expectedMessages);
     },
     async expectMessagesToStay(expectedMessages: string[]) {
-      const deadline = Date.now() + 500;
+      const deadline = Date.now() + 300;
       while (true) {
         expect([...incomingData.messages], `messages received by ${label}`).toEqual(
           expectedMessages,

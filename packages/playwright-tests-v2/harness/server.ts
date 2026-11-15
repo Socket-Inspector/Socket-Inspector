@@ -15,7 +15,7 @@ export type StartServerArgs = {
 export type Server = {
   readonly origin: string;
   generateUniqueHandshakeUrl(): string;
-  waitForClientConnection(url: string): Promise<WebsocketEndpoint>;
+  getClientConnection(url: string): WebsocketEndpoint;
   stop(): Promise<void>;
 };
 
@@ -27,11 +27,11 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
   });
 
   const websocketServer = new WebSocketServer({ server: httpServer });
-  const socketRegistry = createWebsocketRegistry();
+  const pathToWebsocket = new Map<string, WebSocket>();
 
   websocketServer.on('connection', (websocket, request) => {
     const path = request.url ?? '/';
-    socketRegistry.register(path, websocket);
+    pathToWebsocket.set(path, websocket);
   });
 
   websocketServer.on('error', (error) => {
@@ -43,33 +43,18 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
   return {
     origin: `http://${host}:${port}`,
     generateUniqueHandshakeUrl: () => `ws://${host}:${port}/${randomUUID()}`,
-    async waitForClientConnection(url: string) {
-      const { pathname } = new URL(url);
-      const websocket = await socketRegistry.waitFor(pathname);
-      return createServerEndpoint({ websocket, path: pathname, onError });
+    getClientConnection(url: string) {
+      const { pathname, search } = new URL(url);
+      const path = `${pathname}${search}`;
+      const websocket = pathToWebsocket.get(path);
+      if (!websocket) {
+        throw new Error(`server has no connection for ${path}`);
+      }
+      return createServerEndpoint({ websocket, path, onError });
     },
     async stop() {
       await closeWebsocketServer(websocketServer);
       await closeHttpServer(httpServer);
-    },
-  };
-}
-
-function createWebsocketRegistry() {
-  const socketPromises: Record<string, PromiseWithResolvers<WebSocket>> = {};
-
-  return {
-    register(path: string, websocket: WebSocket) {
-      if (!(path in socketPromises)) {
-        socketPromises[path] = Promise.withResolvers<WebSocket>();
-      }
-      socketPromises[path].resolve(websocket);
-    },
-    async waitFor(path: string) {
-      if (!(path in socketPromises)) {
-        socketPromises[path] = Promise.withResolvers<WebSocket>();
-      }
-      return socketPromises[path].promise;
     },
   };
 }

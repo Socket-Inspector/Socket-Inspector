@@ -109,7 +109,7 @@ export async function openHostPage({
       });
     });
 
-    const serverEndpoint = await server.waitForClientConnection(url);
+    const serverEndpoint = server.getClientConnection(url);
 
     return { url, client: clientEndpoint.endpoint, server: serverEndpoint };
   };

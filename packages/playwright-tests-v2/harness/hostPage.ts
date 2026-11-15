@@ -58,7 +58,7 @@ export async function openHostPage({
   ): Promise<WebsocketConnection> => {
     const url = await clientSocketHandle.evaluate((clientSocket) => clientSocket.url);
     const clientLabel = `client end of ${new URL(url).pathname}`;
-    
+
     const clientEndpoint = createWebsocketEndpoint({
       label: clientLabel,
       transport: {
@@ -79,41 +79,37 @@ export async function openHostPage({
 
     urlToClientRecorder.set(url, clientEndpoint.recorder);
 
-    const [serverEndpoint] = await Promise.all([
-      server.waitForClientConnection(url),
-      clientSocketHandle.evaluate(async (clientSocket) => {
-        await new Promise<void>((resolve, reject) => {
-          const recordClientSocketEvent = (event: ClientEvent) => {
-            (globalThis as unknown as PageGlobals).__recordClientSocketEvent(
-              clientSocket.url,
-              event,
-            );
-          };
-          clientSocket.addEventListener('message', (event) => {
-            recordClientSocketEvent(
-              typeof event.data === 'string'
-                ? { type: 'text', text: event.data }
-                : { type: 'binary' },
-            );
-          });
-          clientSocket.addEventListener('close', (event) => {
-            recordClientSocketEvent({ type: 'close', code: event.code, reason: event.reason });
-          });
-          clientSocket.addEventListener('error', () => {
-            recordClientSocketEvent({ type: 'error' });
-          });
-          if (clientSocket.readyState === WebSocket.OPEN) {
-            resolve();
-          }
-          clientSocket.addEventListener('open', () => {
-            resolve();
-          });
-          clientSocket.addEventListener('close', () => {
-            reject(new Error(`socket at ${clientSocket.url} closed before it opened`));
-          });
+    await clientSocketHandle.evaluate(async (clientSocket) => {
+      await new Promise<void>((resolve, reject) => {
+        const recordClientSocketEvent = (event: ClientEvent) => {
+          (globalThis as unknown as PageGlobals).__recordClientSocketEvent(clientSocket.url, event);
+        };
+        clientSocket.addEventListener('message', (event) => {
+          recordClientSocketEvent(
+            typeof event.data === 'string'
+              ? { type: 'text', text: event.data }
+              : { type: 'binary' },
+          );
         });
-      }),
-    ]);
+        clientSocket.addEventListener('close', (event) => {
+          recordClientSocketEvent({ type: 'close', code: event.code, reason: event.reason });
+        });
+        clientSocket.addEventListener('error', () => {
+          recordClientSocketEvent({ type: 'error' });
+        });
+        if (clientSocket.readyState === WebSocket.OPEN) {
+          resolve();
+        }
+        clientSocket.addEventListener('open', () => {
+          resolve();
+        });
+        clientSocket.addEventListener('close', () => {
+          reject(new Error(`socket at ${clientSocket.url} closed before it opened`));
+        });
+      });
+    });
+
+    const serverEndpoint = await server.waitForClientConnection(url);
 
     return { url, client: clientEndpoint.endpoint, server: serverEndpoint };
   };

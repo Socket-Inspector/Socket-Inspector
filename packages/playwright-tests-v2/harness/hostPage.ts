@@ -3,8 +3,9 @@ import type { Server } from './server';
 import {
   type CloseOptions,
   createWebsocketEndpoint,
-  type EndpointRecorder,
   type WebsocketEndpoint,
+  type WebsocketHandle,
+  type WebsocketHandleListeners,
 } from './websocketEndpoint';
 
 export type HostPageDependencies = {
@@ -36,14 +37,14 @@ export async function openHostPage({
     onError(error);
   });
 
-  const urlToClientRecorder = new Map<string, EndpointRecorder>();
+  const urlToClientListeners = new Map<string, WebsocketHandleListeners>();
 
-  await page.exposeFunction('__recordClientSocketEvent', (url: string, event: ClientEvent) => {
-    const clientRecorder = urlToClientRecorder.get(url)!;
+  await page.exposeFunction('__onClientSocketEvent', (url: string, event: ClientEvent) => {
+    const listeners = urlToClientListeners.get(url)!;
     if (event.type === 'text') {
-      clientRecorder.recordIncomingMessage(event.text);
+      listeners.onMessage(event.text);
     } else if (event.type === 'close') {
-      clientRecorder.recordIncomingCloseFrame(event);
+      listeners.onClose({ code: event.code, reason: event.reason });
     } else if (event.type === 'binary') {
       onError(new Error(`client end of ${url} received a binary message`));
     } else {
@@ -54,48 +55,37 @@ export async function openHostPage({
   await page.goto(server.origin);
 
   const createConnection = async (
-    clientSocketHandle: JSHandle<WebSocket>,
+    clientSocketJsHandle: JSHandle<WebSocket>,
   ): Promise<WebsocketConnection> => {
-    const url = await clientSocketHandle.evaluate((clientSocket) => clientSocket.url);
-    const clientLabel = `client end of ${new URL(url).pathname}`;
+    const url = await clientSocketJsHandle.evaluate((clientSocket) => clientSocket.url);
+    const { pathname, search } = new URL(url);
+    const path = `${pathname}${search}`;
 
     const clientEndpoint = createWebsocketEndpoint({
-      label: clientLabel,
-      transport: {
-        send: async (text) => {
-          await clientSocketHandle.evaluate((clientSocket, message) => {
-            clientSocket.send(message);
-          }, text);
-        },
-        close: async (options) => {
-          const sendCloseFrame = (clientSocket: WebSocket, { code, reason }: CloseOptions) => {
-            clientSocket.close(code, reason);
-          };
-          await clientSocketHandle.evaluate(sendCloseFrame, options);
-        },
-      },
+      label: `client end of ${path}`,
+      handle: createClientWebsocketHandle(clientSocketJsHandle, (listeners) => {
+        urlToClientListeners.set(url, listeners);
+      }),
       onError,
     });
 
-    urlToClientRecorder.set(url, clientEndpoint.recorder);
-
-    await clientSocketHandle.evaluate(async (clientSocket) => {
+    await clientSocketJsHandle.evaluate(async (clientSocket) => {
       await new Promise<void>((resolve, reject) => {
-        const recordClientSocketEvent = (event: ClientEvent) => {
-          (globalThis as unknown as PageGlobals).__recordClientSocketEvent(clientSocket.url, event);
+        const onClientSocketEvent = (event: ClientEvent) => {
+          (globalThis as unknown as PageGlobals).__onClientSocketEvent(clientSocket.url, event);
         };
         clientSocket.addEventListener('message', (event) => {
-          recordClientSocketEvent(
+          onClientSocketEvent(
             typeof event.data === 'string'
               ? { type: 'text', text: event.data }
               : { type: 'binary' },
           );
         });
         clientSocket.addEventListener('close', (event) => {
-          recordClientSocketEvent({ type: 'close', code: event.code, reason: event.reason });
+          onClientSocketEvent({ type: 'close', code: event.code, reason: event.reason });
         });
         clientSocket.addEventListener('error', () => {
-          recordClientSocketEvent({ type: 'error' });
+          onClientSocketEvent({ type: 'error' });
         });
         if (clientSocket.readyState === WebSocket.OPEN) {
           resolve();
@@ -109,35 +99,58 @@ export async function openHostPage({
       });
     });
 
-    const serverEndpoint = server.getClientConnection(url);
+    const serverEndpoint = createWebsocketEndpoint({
+      label: `server end of ${path}`,
+      handle: server.getWebsocketHandle(url),
+      onError,
+    });
 
-    return { url, client: clientEndpoint.endpoint, server: serverEndpoint };
+    return { url, client: clientEndpoint, server: serverEndpoint };
   };
 
-  const initialClientSocketHandle = await page.evaluateHandle(
+  const initialClientSocketJsHandle = await page.evaluateHandle(
     () => (globalThis as unknown as PageGlobals).initialSocket,
   );
 
-  let currentConnection = await createConnection(initialClientSocketHandle);
+  let currentConnection = await createConnection(initialClientSocketJsHandle);
 
   return {
     get connection() {
       return currentConnection;
     },
     async connect() {
-      const clientSocketHandle = await page.evaluateHandle(
+      const clientSocketJsHandle = await page.evaluateHandle(
         (url) => new WebSocket(url),
         server.generateUniqueHandshakeUrl(),
       );
-      return await createConnection(clientSocketHandle);
+      return await createConnection(clientSocketJsHandle);
     },
     async reload() {
       await page.reload();
-      const clientSocketHandle = await page.evaluateHandle(
+      const clientSocketJsHandle = await page.evaluateHandle(
         () => (globalThis as unknown as PageGlobals).initialSocket,
       );
-      currentConnection = await createConnection(clientSocketHandle);
+      currentConnection = await createConnection(clientSocketJsHandle);
     },
+  };
+}
+
+function createClientWebsocketHandle(
+  clientSocketJsHandle: JSHandle<WebSocket>,
+  registerListeners: (listeners: WebsocketHandleListeners) => void,
+): WebsocketHandle {
+  return {
+    async send(text) {
+      await clientSocketJsHandle.evaluate((clientSocket, message) => {
+        clientSocket.send(message);
+      }, text);
+    },
+    async close(options) {
+      await clientSocketJsHandle.evaluate((clientSocket, { code, reason }: CloseOptions) => {
+        clientSocket.close(code, reason);
+      }, options);
+    },
+    subscribe: registerListeners,
   };
 }
 
@@ -149,5 +162,5 @@ type ClientEvent =
 
 type PageGlobals = {
   initialSocket: WebSocket;
-  __recordClientSocketEvent(url: string, event: ClientEvent): void;
+  __onClientSocketEvent(url: string, event: ClientEvent): void;
 };

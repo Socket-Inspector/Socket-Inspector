@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 
-export type WebSocketEndpointDependencies = {
+export type CreateWebsocketEndpointArgs = {
   label: string;
-  transport: Transport;
+  handle: WebsocketHandle;
   onError: (error: Error) => void;
 };
 
@@ -14,14 +14,16 @@ export type WebsocketEndpoint = {
   expectClosed(expected?: CloseOptions): Promise<void>;
 };
 
-export type EndpointRecorder = {
-  recordIncomingMessage(text: string): void;
-  recordIncomingCloseFrame(closeFrame: CloseFrame): void;
-};
-
-export type Transport = {
+export type WebsocketHandle = {
   send(text: string): Promise<void>;
   close(options: CloseOptions): Promise<void>;
+  // called exactly once, by createWebsocketEndpoint
+  subscribe(listeners: WebsocketHandleListeners): void;
+};
+
+export type WebsocketHandleListeners = {
+  onMessage: (text: string) => void;
+  onClose: (closeFrame: CloseFrame) => void;
 };
 
 export type CloseFrame = { code: number; reason: string };
@@ -30,9 +32,9 @@ export type CloseOptions = { code?: number; reason?: string };
 
 export function createWebsocketEndpoint({
   label,
-  transport,
+  handle,
   onError,
-}: WebSocketEndpointDependencies): { endpoint: WebsocketEndpoint; recorder: EndpointRecorder } {
+}: CreateWebsocketEndpointArgs): WebsocketEndpoint {
   const incomingData: IncomingData = {
     messages: [],
     closeFrame: undefined,
@@ -40,21 +42,42 @@ export function createWebsocketEndpoint({
 
   let closeRequested = false;
 
+  handle.subscribe({
+    onMessage(text: string) {
+      if (incomingData.closeFrame) {
+        onError(new Error(`${label} received message ${JSON.stringify(text)} after it closed`));
+        return;
+      }
+      incomingData.messages.push(text);
+    },
+    onClose(closeFrame: CloseFrame) {
+      if (incomingData.closeFrame) {
+        onError(
+          new Error(
+            `${label} received a second close (code ${closeFrame.code}, reason ${JSON.stringify(closeFrame.reason)})`,
+          ),
+        );
+        return;
+      }
+      incomingData.closeFrame = { code: closeFrame.code, reason: closeFrame.reason };
+    },
+  });
+
   const assertOpen = () => {
     if (closeRequested || incomingData.closeFrame) {
       throw new Error(`${label} is closed`);
     }
   };
 
-  const endpoint: WebsocketEndpoint = {
+  return {
     async send(text: string) {
       assertOpen();
-      await transport.send(text);
+      await handle.send(text);
     },
     async close(options: CloseOptions = {}) {
       assertOpen();
       closeRequested = true;
-      await transport.close(options);
+      await handle.close(options);
     },
     async expectMessages(expectedMessages: string[]) {
       await expect
@@ -80,29 +103,6 @@ export function createWebsocketEndpoint({
         .toMatchObject(expected);
     },
   };
-
-  const recorder: EndpointRecorder = {
-    recordIncomingMessage(text: string) {
-      if (incomingData.closeFrame) {
-        onError(new Error(`${label} received message ${JSON.stringify(text)} after it closed`));
-        return;
-      }
-      incomingData.messages.push(text);
-    },
-    recordIncomingCloseFrame(closeFrame: CloseFrame) {
-      if (incomingData.closeFrame) {
-        onError(
-          new Error(
-            `${label} received a second close (code ${closeFrame.code}, reason ${JSON.stringify(closeFrame.reason)})`,
-          ),
-        );
-        return;
-      }
-      incomingData.closeFrame = { code: closeFrame.code, reason: closeFrame.reason };
-    },
-  };
-
-  return { endpoint, recorder };
 }
 
 type IncomingData = { messages: string[]; closeFrame: CloseFrame | undefined };

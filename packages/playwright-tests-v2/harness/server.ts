@@ -27,7 +27,6 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
   });
 
   const pathToWebsocket = new Map<string, WebSocket>();
-  
   const websocketServer = new WebSocketServer({ server: httpServer });
 
   websocketServer.on('connection', (websocket, request) => {

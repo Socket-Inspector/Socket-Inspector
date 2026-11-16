@@ -4,7 +4,7 @@ import type { Server } from './server';
 import type { SocketEnd } from './socketEnd';
 import { createWebsocketEndpoint, type WebsocketEndpoint } from './websocketEndpoint';
 
-export type HostPageArgs = {
+export type CreateHostPageArgs = {
   context: BrowserContext;
   server: Server;
   onError: (error: Error) => void;
@@ -27,12 +27,12 @@ type PageGlobals = {
   initialSocket: WebSocket;
 };
 
-export async function openHostPage({
+export async function createHostPage({
   context,
   server,
   onError,
   onSocketEnd,
-}: HostPageArgs): Promise<HostPage> {
+}: CreateHostPageArgs): Promise<HostPage> {
   const page = await context.newPage();
 
   page.on('pageerror', (error) => {

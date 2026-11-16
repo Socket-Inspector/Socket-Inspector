@@ -1,5 +1,5 @@
 import type { BrowserContext } from '@playwright/test';
-import { openHostPage, type HostPage } from './hostPage';
+import { createHostPage, type HostPage } from './hostPage';
 import { startServer } from './server';
 import type { InboundEvent, SocketEnd } from './socketEnd';
 
@@ -23,7 +23,7 @@ export async function harnessFixture(
     const labeledSocketEnds: { label: string; socketEnd: SocketEnd }[] = [];
     await use({
       openHostPage: async () => {
-        return await openHostPage({
+        return await createHostPage({
           context,
           server,
           onError: (error) => {

@@ -23,6 +23,10 @@ export type WebsocketConnection = {
   readonly server: WebsocketEndpoint;
 };
 
+type PageGlobals = {
+  initialSocket: WebSocket;
+};
+
 export async function openHostPage({
   context,
   server,
@@ -136,7 +140,3 @@ async function waitForClientSocketOpen(clientSocketJsHandle: JSHandle<WebSocket>
     });
   });
 }
-
-type PageGlobals = {
-  initialSocket: WebSocket;
-};

@@ -30,8 +30,10 @@ test('using the pause function', async ({ page, harness, devtoolsPanelUrl }) => 
   await connection.client.send('ping 2');
   await connection.server.send('pong 2');
 
-  await connection.server.expectMessagesToStay(['ping 1']);
-  await connection.client.expectMessagesToStay(['pong 1']);
+  await Promise.all([
+    connection.server.expectMessagesToStay(['ping 1']),
+    connection.client.expectMessagesToStay(['pong 1']),
+  ]);
   await devtoolsPanel.assertTableMessages([]);
 
   await devtoolsPanel.togglePauseCapture();

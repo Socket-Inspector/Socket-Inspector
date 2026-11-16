@@ -24,6 +24,7 @@ export default defineConfig({
     'array-callback-return': 'error',
     'no-return-assign': 'error',
     'import/no-cycle': 'error',
+    'max-params': ['error', { max: 2 }],
   },
   ignorePatterns: ['output/**'],
 });

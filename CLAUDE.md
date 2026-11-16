@@ -42,5 +42,4 @@ pnpm prepare:release
 
 ## Coding Guidlines
 
-Prefer TypeScript's `type` keyword, rather than `interface`.
 Don't write `switch` statements. Use if, else-if, else instead.

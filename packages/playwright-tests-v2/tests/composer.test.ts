@@ -177,8 +177,8 @@ test('it shows an error when sending invalid json', async ({ page, harness, devt
   await devtoolsPanel.submitComposerMessage();
 
   await devtoolsPanel.assertComposerError('Payload must be valid JSON');
-  await devtoolsPanel.assertTableMessages([]);
   await connection.server.expectMessagesToStay([]);
+  await devtoolsPanel.assertTableMessages([]);
 });
 
 test('it shows an error when sending a message on a closed socket', async ({
@@ -206,6 +206,6 @@ test('it shows an error when sending a message on a closed socket', async ({
   await devtoolsPanel.submitComposerMessage();
 
   await devtoolsPanel.assertComposerError('Cannot send a message on a closed socket');
-  await devtoolsPanel.assertTableMessages([]);
   await connection.server.expectMessagesToStay([]);
+  await devtoolsPanel.assertTableMessages([]);
 });

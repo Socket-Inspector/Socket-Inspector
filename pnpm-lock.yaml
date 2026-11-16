@@ -163,15 +163,6 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.10.4
-
-  packages/playwright-tests-v2:
-    devDependencies:
-      '@playwright/test':
-        specifier: ^1.57.0
-        version: 1.57.0
-      '@types/node':
-        specifier: ^24.0.0
-        version: 24.10.4
       '@types/ws':
         specifier: ^8.18.2
         version: 8.18.2
@@ -187,27 +178,6 @@ importers:
       ws:
         specifier: ^8.22.1
         version: 8.22.1
-
-  packages/test-app-server:
-    devDependencies:
-      '@types/bun':
-        specifier: ^1.3.5
-        version: 1.3.5
-
-  packages/test-app-tiny:
-    devDependencies:
-      vite:
-        specifier: ^8.3.4
-        version: 8.3.4(@types/node@24.10.4)(esbuild@0.27.2)(jiti@2.7.0)
-
-  packages/test-app-ui:
-    devDependencies:
-      typescript:
-        specifier: ^7.0.2
-        version: 7.0.2
-      vite:
-        specifier: ^8.3.4
-        version: 8.3.4(@types/node@24.10.4)(esbuild@0.27.2)(jiti@2.7.0)
 
 packages:
 
@@ -1492,9 +1462,6 @@ packages:
   '@types/aria-query@5.0.4':
     resolution: {integrity: sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==}
 
-  '@types/bun@1.3.5':
-    resolution: {integrity: sha512-RnygCqNrd3srIPEWBd5LFeUYG7plCoH2Yw9WaZGyNmdTEei+gWaHqydbaIRkIkcbXwhBT94q78QljxN0Sk838w==}
-
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
@@ -1808,9 +1775,6 @@ packages:
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
-
-  bun-types@1.3.5:
-    resolution: {integrity: sha512-inmAYe2PFLs0SUbFOWSVD24sg1jFlMPxOjOSSCYqUgn4Hsc3rDc7dFvfVYjFPNHtov6kgUeulV4SxbuIV/stPw==}
 
   bundle-name@4.1.0:
     resolution: {integrity: sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==}
@@ -4435,10 +4399,6 @@ snapshots:
 
   '@types/aria-query@5.0.4': {}
 
-  '@types/bun@1.3.5':
-    dependencies:
-      bun-types: 1.3.5
-
   '@types/chai@5.2.3':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -4685,10 +4645,6 @@ snapshots:
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
 
   buffer-from@1.1.2: {}
-
-  bun-types@1.3.5:
-    dependencies:
-      '@types/node': 24.10.4
 
   bundle-name@4.1.0:
     dependencies:

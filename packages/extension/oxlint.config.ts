@@ -27,13 +27,5 @@ export default defineConfig({
     'import/no-cycle': 'error',
     'max-params': ['error', { max: 2 }],
   },
-  ignorePatterns: ['playwright/test-app/**', 'components/shadcn', 'hooks/useIsMobile.ts'],
-  overrides: [
-    {
-      files: ['playwright/fixtures.ts'],
-      rules: {
-        'react/rules-of-hooks': 'off',
-      },
-    },
-  ],
+  ignorePatterns: ['components/shadcn', 'hooks/useIsMobile.ts'],
 });

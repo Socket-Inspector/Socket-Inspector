@@ -16,7 +16,9 @@ export type Transport = {
 export type TransportPage = {
   /** Pair for the socket the page opens on load. Replaced on each `refreshPage()`. */
   readonly initialPair: SocketPair;
+  /** Opens a new socket from the page (alongside the initial one) and returns its pair. */
   openAdditionalConnection(): Promise<SocketPair>;
+  /** Reloads the page and replaces `initialPair` with the pair for the reloaded page's socket. */
   refreshPage(): Promise<void>;
 };
 

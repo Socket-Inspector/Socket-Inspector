@@ -1,10 +1,22 @@
 import type { BrowserContext } from '@playwright/test';
-import { createHostPage, type HostPage } from './hostPage';
-import { startServer } from './server';
 import type { InboundEvent, SocketEnd } from './socketEnd';
+import { type SocketPair, startTransport } from './transport';
+import { createWebsocketEndpoint, type WebsocketEndpoint } from './websocketEndpoint';
 
 export type Harness = {
   openHostPage(): Promise<HostPage>;
+};
+
+export type HostPage = {
+  readonly connection: WebsocketConnection;
+  connect(): Promise<WebsocketConnection>;
+  reload(): Promise<void>;
+};
+
+export type WebsocketConnection = {
+  readonly url: string;
+  readonly client: WebsocketEndpoint;
+  readonly server: WebsocketEndpoint;
 };
 
 export async function harnessFixture(
@@ -13,7 +25,8 @@ export async function harnessFixture(
 ): Promise<void> {
   const errors: Error[] = [];
 
-  const server = await startServer({
+  const transport = await startTransport({
+    context,
     onError: (error) => {
       errors.push(error);
     },
@@ -21,28 +34,52 @@ export async function harnessFixture(
 
   try {
     const labeledSocketEnds: { label: string; socketEnd: SocketEnd }[] = [];
+
+    const createConnection = ({ url, client, server }: SocketPair): WebsocketConnection => {
+      const { pathname, search } = new URL(url);
+      const path = `${pathname}${search}`;
+      const clientLabel = `client end of ${path}`;
+      const serverLabel = `server end of ${path}`;
+      labeledSocketEnds.push(
+        { label: clientLabel, socketEnd: client },
+        { label: serverLabel, socketEnd: server },
+      );
+      return {
+        url,
+        client: createWebsocketEndpoint({ label: clientLabel, socketEnd: client }),
+        server: createWebsocketEndpoint({ label: serverLabel, socketEnd: server }),
+      };
+    };
+
     await use({
       openHostPage: async () => {
-        return await createHostPage({
-          context,
-          server,
-          onError: (error) => {
-            errors.push(error);
+        const transportPage = await transport.openPage();
+        let currentConnection = createConnection(transportPage.initialPair);
+        return {
+          get connection() {
+            return currentConnection;
           },
-          onSocketEnd: (label, socketEnd) => {
-            labeledSocketEnds.push({ label, socketEnd });
+          async connect() {
+            const socketPair = await transportPage.openAdditionalConnection();
+            return createConnection(socketPair);
           },
-        });
+          async reload() {
+            await transportPage.refreshPage();
+            currentConnection = createConnection(transportPage.initialPair);
+          },
+        };
       },
     });
+
     for (const { label, socketEnd } of labeledSocketEnds) {
       errors.push(...findUnexpectedEvents(label, socketEnd.receivedEvents));
     }
+
     if (errors.length > 0) {
       throw getCombinedErrors(errors);
     }
   } finally {
-    await server.stop();
+    await transport.stop();
   }
 }
 

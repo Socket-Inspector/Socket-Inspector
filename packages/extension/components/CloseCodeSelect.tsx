@@ -1,5 +1,11 @@
-import { Field, FieldLabel } from './shadcn/Field';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
+import { Field, FieldLabel } from '@socket-inspector/shadcn/Field';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@socket-inspector/shadcn/Select';
 
 export type CloseCode =
   | '1000'

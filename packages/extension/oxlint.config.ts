@@ -27,5 +27,4 @@ export default defineConfig({
     'import/no-cycle': 'error',
     'max-params': ['error', { max: 2 }],
   },
-  ignorePatterns: ['components/shadcn', 'hooks/useIsMobile.ts'],
 });

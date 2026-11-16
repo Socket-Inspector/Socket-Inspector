@@ -11,8 +11,8 @@ import { Separator } from './Separator';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from './Sheet';
 import { Skeleton } from './Skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './Tooltip';
-import { cn } from '@/utils/cn';
-import { useIsMobile } from '@/hooks/useIsMobile';
+import { cn } from '../lib/cn';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const SIDEBAR_WIDTH = '16rem';
 const SIDEBAR_WIDTH_MOBILE = '18rem';

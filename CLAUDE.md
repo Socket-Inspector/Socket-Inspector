@@ -7,6 +7,7 @@ Socket Inspector is a Chrome DevTools extension that enables the user to debug W
 pnpm workspace with the following packages:
 
 - `packages/extension` - the extension itself
+- `packages/shadcn` - shadcn component library used by the extension
 - `packages/playwright-tests` - e2e tests
 
 ## Common Commands

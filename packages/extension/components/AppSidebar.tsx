@@ -10,14 +10,19 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-} from './shadcn/Sidebar';
+} from '@socket-inspector/shadcn/Sidebar';
 import type { SocketDetails } from '@/utils/sharedTypes/sharedTypes';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
 import { X } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from './shadcn/Popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@socket-inspector/shadcn/Popover';
 import { useState } from 'react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@socket-inspector/shadcn/Tooltip';
 import { CloseSocketForm } from './CloseSocketForm';
 import { ExternalLinkFooter } from './ExternalLinkFooter';
 

@@ -1,8 +1,19 @@
 import { Filter, Ban, Pause, Play } from 'lucide-react';
-import { Input } from './shadcn/Input';
-import { Button } from './shadcn/Button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './shadcn/Select';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
+import { Input } from '@socket-inspector/shadcn/Input';
+import { Button } from '@socket-inspector/shadcn/Button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@socket-inspector/shadcn/Select';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@socket-inspector/shadcn/Tooltip';
 
 export type MessageFilterOption = 'all' | 'sent' | 'received';
 

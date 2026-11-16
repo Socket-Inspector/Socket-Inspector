@@ -1,11 +1,11 @@
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { AppSidebar } from '@/components/AppSidebar';
-import { SidebarProvider } from '@/components/shadcn/Sidebar';
+import { SidebarProvider } from '@socket-inspector/shadcn/Sidebar';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from '@/components/shadcn/Resizable';
+} from '@socket-inspector/shadcn/Resizable';
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { EmptySocketSelection } from '@/components/EmptySocketSelection';
 import { MessageTable } from '@/components/MessageTable';

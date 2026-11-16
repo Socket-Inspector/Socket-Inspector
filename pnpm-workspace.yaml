@@ -1,6 +1,18 @@
 packages:
   - packages/*
 
+catalog:
+  '@types/react': ^19.2.2
+  '@types/react-dom': ^19.2.2
+  lucide-react: ^0.515.0
+  oxlint: ^1.93.0
+  oxlint-tsgolint: ^7.0.2007
+  react: 19.2.0
+  react-dom: 19.2.0
+  typescript: ^7.0.2
+
+catalogMode: strict
+
 engineStrict: true
 
 allowBuilds:

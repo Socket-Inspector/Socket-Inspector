@@ -1,5 +1,10 @@
-import { Button } from './shadcn/Button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/Tooltip';
+import { Button } from '@socket-inspector/shadcn/Button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@socket-inspector/shadcn/Tooltip';
 import { BookOpen, CircleHelp, Heart } from 'lucide-react';
 
 export function ExternalLinkFooter() {

@@ -1,5 +1,10 @@
-import { Field, FieldLabel } from './shadcn/Field';
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from './shadcn/InputGroup';
+import { Field, FieldLabel } from '@socket-inspector/shadcn/Field';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from '@socket-inspector/shadcn/InputGroup';
 
 export type CloseReasonInputProps = {
   value: string;

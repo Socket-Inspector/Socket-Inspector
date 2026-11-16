@@ -1,17 +1,13 @@
 import type { BrowserContext, JSHandle } from '@playwright/test';
 import type { Server } from './server';
-import {
-  type CloseOptions,
-  createWebsocketEndpoint,
-  type WebsocketEndpoint,
-  type WebsocketHandle,
-  type WebsocketHandleListeners,
-} from './websocketEndpoint';
+import type { CloseOptions, InboundEvent, SocketEnd } from './socketEnd';
+import { createWebsocketEndpoint, type WebsocketEndpoint } from './websocketEndpoint';
 
 export type HostPageArgs = {
   context: BrowserContext;
   server: Server;
   onError: (error: Error) => void;
+  onSocketEnd: (label: string, socketEnd: SocketEnd) => void;
 };
 
 export type HostPage = {
@@ -30,6 +26,7 @@ export async function openHostPage({
   context,
   server,
   onError,
+  onSocketEnd,
 }: HostPageArgs): Promise<HostPage> {
   const page = await context.newPage();
 
@@ -37,19 +34,10 @@ export async function openHostPage({
     onError(error);
   });
 
-  const urlToClientListeners = new Map<string, WebsocketHandleListeners>();
+  const urlToClientReceivedEvents = new Map<string, InboundEvent[]>();
 
-  await page.exposeFunction('__onClientSocketEvent', (url: string, event: ClientEvent) => {
-    const listeners = urlToClientListeners.get(url)!;
-    if (event.type === 'text') {
-      listeners.onMessage(event.text);
-    } else if (event.type === 'close') {
-      listeners.onClose({ code: event.code, reason: event.reason });
-    } else if (event.type === 'binary') {
-      onError(new Error(`client end of ${url} received a binary message`));
-    } else {
-      onError(new Error(`client end of ${url} fired an error event`));
-    }
+  await page.exposeFunction('__onClientSocketEvent', (url: string, event: InboundEvent) => {
+    urlToClientReceivedEvents.get(url)!.push(event);
   });
 
   await page.goto(server.origin);
@@ -61,7 +49,13 @@ export async function openHostPage({
     const { pathname, search } = new URL(url);
     const path = `${pathname}${search}`;
 
-    const clientHandle: WebsocketHandle = {
+    const clientLabel = `client end of ${path}`;
+    const clientReceivedEvents: InboundEvent[] = [];
+    
+    urlToClientReceivedEvents.set(url, clientReceivedEvents);
+
+    const clientSocketEnd: SocketEnd = {
+      receivedEvents: clientReceivedEvents,
       async send(text: string) {
         await clientSocketJsHandle.evaluate((clientSocket, message) => {
           clientSocket.send(message);
@@ -72,20 +66,13 @@ export async function openHostPage({
           clientSocket.close(code, reason);
         }, options);
       },
-      subscribe(listeners: WebsocketHandleListeners) {
-        urlToClientListeners.set(url, listeners);
-      },
     };
 
-    const clientEndpoint = createWebsocketEndpoint({
-      label: `client end of ${path}`,
-      handle: clientHandle,
-      onError,
-    });
+    onSocketEnd(clientLabel, clientSocketEnd);
 
     await clientSocketJsHandle.evaluate(async (clientSocket) => {
       await new Promise<void>((resolve, reject) => {
-        const onClientSocketEvent = (event: ClientEvent) => {
+        const onClientSocketEvent = (event: InboundEvent) => {
           (globalThis as unknown as PageGlobals).__onClientSocketEvent(clientSocket.url, event);
         };
         clientSocket.addEventListener('message', (event) => {
@@ -113,13 +100,15 @@ export async function openHostPage({
       });
     });
 
-    const serverEndpoint = createWebsocketEndpoint({
-      label: `server end of ${path}`,
-      handle: server.getWebsocketHandle(url),
-      onError,
-    });
+    const serverLabel = `server end of ${path}`;
+    const serverSocketEnd = server.getSocketEnd(url);
+    onSocketEnd(serverLabel, serverSocketEnd);
 
-    return { url, client: clientEndpoint, server: serverEndpoint };
+    return {
+      url,
+      client: createWebsocketEndpoint({ label: clientLabel, socketEnd: clientSocketEnd }),
+      server: createWebsocketEndpoint({ label: serverLabel, socketEnd: serverSocketEnd }),
+    };
   };
 
   const initialClientSocketJsHandle = await page.evaluateHandle(
@@ -149,13 +138,7 @@ export async function openHostPage({
   };
 }
 
-type ClientEvent =
-  | { type: 'text'; text: string }
-  | { type: 'binary' }
-  | { type: 'close'; code: number; reason: string }
-  | { type: 'error' };
-
 type PageGlobals = {
   initialSocket: WebSocket;
-  __onClientSocketEvent(url: string, event: ClientEvent): void;
+  __onClientSocketEvent(url: string, event: InboundEvent): void;
 };

@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { createServer, type Server as HttpServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { WebSocketServer, type WebSocket } from 'ws';
-import type { CloseOptions, WebsocketHandle } from './websocketEndpoint';
+import type { CloseOptions, InboundEvent, SocketEnd } from './socketEnd';
 
 export type StartServerArgs = {
   onError: (error: Error) => void;
@@ -11,7 +11,7 @@ export type StartServerArgs = {
 export type Server = {
   readonly origin: string;
   generateUniqueHandshakeUrl(): string;
-  getWebsocketHandle(url: string): WebsocketHandle;
+  getSocketEnd(url: string): SocketEnd;
   stop(): Promise<void>;
 };
 
@@ -39,14 +39,14 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
   return {
     origin: `http://${host}:${port}`,
     generateUniqueHandshakeUrl: () => `ws://${host}:${port}/${randomUUID()}`,
-    getWebsocketHandle(url: string) {
+    getSocketEnd(url: string) {
       const { pathname, search } = new URL(url);
       const path = `${pathname}${search}`;
       const websocket = pathToWebsocket.get(path);
       if (!websocket) {
         throw new Error(`server has no connection for ${path}`);
       }
-      return createServerWebsocketHandle({ websocket, path, onError });
+      return createServerSocketEnd({ websocket, onError });
     },
     async stop() {
       await closeWebsocketServer(websocketServer);
@@ -93,21 +93,28 @@ async function closeHttpServer(httpServer: HttpServer): Promise<void> {
   });
 }
 
-type CreateServerWebsocketHandleArgs = {
+type CreateServerSocketEndArgs = {
   websocket: WebSocket;
-  path: string;
   onError: (error: Error) => void;
 };
 
-function createServerWebsocketHandle({
-  websocket,
-  path,
-  onError,
-}: CreateServerWebsocketHandleArgs): WebsocketHandle {
+function createServerSocketEnd({ websocket, onError }: CreateServerSocketEndArgs): SocketEnd {
+  const receivedEvents: InboundEvent[] = [];
+  websocket.on('message', (data, isBinary) => {
+    if (isBinary) {
+      receivedEvents.push({ type: 'binary' });
+    } else {
+      receivedEvents.push({ type: 'text', text: (data as Buffer).toString() });
+    }
+  });
+  websocket.on('close', (code, reason) => {
+    receivedEvents.push({ type: 'close', code, reason: reason.toString() });
+  });
   websocket.on('error', (error) => {
     onError(error);
   });
   return {
+    receivedEvents,
     async send(text: string) {
       return new Promise<void>((resolve, reject) => {
         websocket.send(text, (error) => {
@@ -121,21 +128,6 @@ function createServerWebsocketHandle({
     },
     async close({ code, reason }: CloseOptions) {
       websocket.close(code, reason);
-    },
-    subscribe({ onMessage, onClose }) {
-      websocket.on('message', (data, isBinary) => {
-        if (isBinary) {
-          onError(
-            new Error(`server end of ${path} received a binary message; only text is supported`),
-          );
-          return;
-        }
-        // ws always delivers text frames as a single Buffer, regardless of binaryType
-        onMessage((data as Buffer).toString());
-      });
-      websocket.on('close', (code, reason) => {
-        onClose({ code, reason: reason.toString() });
-      });
     },
   };
 }

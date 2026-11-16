@@ -1,5 +1,5 @@
 import { AppIcon } from '@/components/SocketInspectorIcon';
-import { Separator } from '@/components/shadcn/Separator';
+import { Separator } from '@socket-inspector/shadcn/Separator';
 import { ExternalLinkFooter } from '@/components/ExternalLinkFooter';
 
 export default function App() {

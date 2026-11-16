@@ -15,9 +15,9 @@
     "@playwright/test": "^1.57.0",
     "@types/node": "^24.0.0",
     "@types/ws": "^8.18.2",
-    "oxlint": "^1.93.0",
-    "oxlint-tsgolint": "^7.0.2007",
-    "typescript": "^7.0.2",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "typescript": "catalog:",
     "ws": "^8.22.1"
   }
 }

@@ -1,17 +1,24 @@
 import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { useEffect, useRef, useState } from 'react';
-import { ScrollArea } from './shadcn/ScrollArea';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './shadcn/Table';
+import { ScrollArea } from '@socket-inspector/shadcn/ScrollArea';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@socket-inspector/shadcn/Table';
 import { processJsonPayload } from '@/utils/payloadProcessors';
 import type { SocketMessage } from '@/utils/sharedTypes/sharedTypes';
-import { Badge } from './shadcn/Badge';
+import { Badge } from '@socket-inspector/shadcn/Badge';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from './shadcn/ContextMenu';
+} from '@socket-inspector/shadcn/ContextMenu';
 import {
   querySelectedSocketMessages,
   querySelectedSocketDetails,

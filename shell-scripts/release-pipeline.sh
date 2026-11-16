@@ -36,6 +36,7 @@ type_checker() {
     write_log "Running the type checker..."
     pnpm --filter socket-inspector prepare
     pnpm --filter socket-inspector compile
+    pnpm --filter @socket-inspector/shadcn typecheck
     pnpm --filter playwright-tests typecheck
     write_log "Type checking successful ✅"
 }

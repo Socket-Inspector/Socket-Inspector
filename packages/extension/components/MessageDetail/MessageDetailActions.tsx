@@ -1,6 +1,11 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadcn/Tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@socket-inspector/shadcn/Tooltip';
 import { Copy, ClipboardPaste } from 'lucide-react';
-import { Button } from '../shadcn/Button';
+import { Button } from '@socket-inspector/shadcn/Button';
 
 export type MessageDetailActionsProps = {
   onCopyToClipboardClicked: () => void;

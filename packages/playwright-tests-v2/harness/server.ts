@@ -11,7 +11,7 @@ export type StartServerArgs = {
 export type Server = {
   readonly origin: string;
   generateUniqueHandshakeUrl(): string;
-  getSocketEnd(url: string): SocketEnd;
+  createSocketEnd(url: string): SocketEnd;
   stop(): Promise<void>;
 };
 
@@ -39,7 +39,7 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
   return {
     origin: `http://${host}:${port}`,
     generateUniqueHandshakeUrl: () => `ws://${host}:${port}/${randomUUID()}`,
-    getSocketEnd(url: string) {
+    createSocketEnd(url: string) {
       const { pathname, search } = new URL(url);
       const path = `${pathname}${search}`;
       const websocket = pathToWebsocket.get(path);

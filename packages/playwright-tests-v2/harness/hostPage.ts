@@ -59,9 +59,9 @@ export async function openHostPage({
         (url) => new WebSocket(url),
         server.generateUniqueHandshakeUrl(),
       );
-      return await createConnection({ 
-        ...connectionArgs, 
-        clientSocketJsHandle 
+      return await createConnection({
+        ...connectionArgs,
+        clientSocketJsHandle,
       });
     },
     async reload() {
@@ -69,9 +69,9 @@ export async function openHostPage({
       const clientSocketJsHandle = await page.evaluateHandle(
         () => (globalThis as unknown as PageGlobals).initialSocket,
       );
-      currentConnection = await createConnection({ 
-        ...connectionArgs, 
-        clientSocketJsHandle 
+      currentConnection = await createConnection({
+        ...connectionArgs,
+        clientSocketJsHandle,
       });
     },
   };
@@ -95,24 +95,24 @@ async function createConnection({
   const path = `${pathname}${search}`;
 
   const clientLabel = `client end of ${path}`;
-  const clientSocketEnd = await clientSocketBridge.getSocketEnd(url, clientSocketJsHandle);
+  const clientSocketEnd = await clientSocketBridge.createSocketEnd(url, clientSocketJsHandle);
   onSocketEnd(clientLabel, clientSocketEnd);
 
   await waitForClientSocketOpen(clientSocketJsHandle);
 
   const serverLabel = `server end of ${path}`;
-  const serverSocketEnd = server.getSocketEnd(url);
+  const serverSocketEnd = server.createSocketEnd(url);
   onSocketEnd(serverLabel, serverSocketEnd);
 
   return {
     url,
-    client: createWebsocketEndpoint({ 
-      label: clientLabel, 
-      socketEnd: clientSocketEnd 
+    client: createWebsocketEndpoint({
+      label: clientLabel,
+      socketEnd: clientSocketEnd,
     }),
-    server: createWebsocketEndpoint({ 
-      label: serverLabel, 
-      socketEnd: serverSocketEnd 
+    server: createWebsocketEndpoint({
+      label: serverLabel,
+      socketEnd: serverSocketEnd,
     }),
   };
 }

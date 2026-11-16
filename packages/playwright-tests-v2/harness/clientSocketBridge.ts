@@ -2,7 +2,7 @@ import type { JSHandle, Page } from '@playwright/test';
 import type { CloseOptions, InboundEvent, SocketEnd } from './socketEnd';
 
 export type ClientSocketBridge = {
-  getSocketEnd(url: string, clientSocketJsHandle: JSHandle<WebSocket>): Promise<SocketEnd>;
+  createSocketEnd(url: string, clientSocketJsHandle: JSHandle<WebSocket>): Promise<SocketEnd>;
 };
 
 type PageGlobals = {
@@ -17,7 +17,7 @@ export async function installClientSocketBridge(page: Page): Promise<ClientSocke
   });
 
   return {
-    async getSocketEnd(url: string, clientSocketJsHandle: JSHandle<WebSocket>) {
+    async createSocketEnd(url: string, clientSocketJsHandle: JSHandle<WebSocket>) {
       const receivedEvents: InboundEvent[] = [];
       urlToReceivedEvents.set(url, receivedEvents);
       await forwardClientSocketEvents(clientSocketJsHandle);

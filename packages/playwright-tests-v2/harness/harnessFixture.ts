@@ -60,7 +60,7 @@ export async function harnessFixture(
             return currentConnection;
           },
           async connect() {
-            const socketPair = await transportPage.openAdditionalConnection();
+            const socketPair = await transportPage.addConnection();
             return createConnection(socketPair);
           },
           async reload() {

@@ -1,142 +1,187 @@
 import { test } from '../fixtures';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
-import { SidebarPageModel, SidebarSocket } from '../page-models/sidebarPageModel';
-import { HostPageModel } from '../page-models/hostPageModel';
-import { TinyHostPageModel } from '../page-models/tinyHostPageModel';
+import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
 test('it can select an open socket from the sidebar', async ({
   page,
-  context,
+  harness,
   devtoolsPanelUrl,
 }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Connected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
-  await sidebarPageModel.assertSidebarSockets([
-    {
-      url: hostPageModel.serverBaseUrl,
-      status: 'Connected',
-    },
-  ]);
-  await devtoolsPanelModel.assertTableMessages([]);
-  await assertVisible(devtoolsPanelModel.locators.noMessagesCapturedText);
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
+  await devtoolsPanel.assertTableMessages([]);
+  await assertVisible(devtoolsPanel.locators.noMessagesCapturedText);
 });
 
-// TODO: similar test for closing from server
-test('it can select a closed socket from the sidebar', async ({
+test('it can select a socket closed by the client from the sidebar', async ({
   page,
-  context,
+  harness,
   devtoolsPanelUrl,
 }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await hostPageModel.disconnectClient();
+  await connection.client.close();
+  await connection.server.expectClosed();
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Disconnected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
+});
 
-  await sidebarPageModel.assertSidebarSockets([
-    {
-      url: hostPageModel.serverBaseUrl,
-      status: 'Disconnected',
-    },
+test('it can select a socket closed by the server from the sidebar', async ({
+  page,
+  harness,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
+
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
+
+  await connection.server.close({ code: 4000, reason: 'server shutting down' });
+  await connection.client.expectClosed({ code: 4000, reason: 'server shutting down' });
+
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
+});
+
+test('closing a socket from the client and opening a new one', async ({
+  page,
+  harness,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
+
+  const hostPage = await harness.openHostPage();
+
+  const initialConnection = hostPage.connection;
+  await initialConnection.client.send('old_ping');
+  await initialConnection.server.expectMessages(['old_ping']);
+  await initialConnection.server.send('old_pong');
+  await initialConnection.client.expectMessages(['old_pong']);
+
+  await devtoolsPanel.bringToFront();
+
+  await sidebar.clickSocketLink({ url: initialConnection.url, status: 'Connected' });
+  await devtoolsPanel.assertTableMessages([
+    { text: 'old_ping', direction: 'outgoing' },
+    { text: 'old_pong', direction: 'incoming' },
+  ]);
+
+  await initialConnection.client.close();
+  await initialConnection.server.expectClosed();
+  await sidebar.assertSidebarSockets([{ url: initialConnection.url, status: 'Disconnected' }]);
+
+  const newConnection = await hostPage.addConnection();
+  await newConnection.client.send('new_ping');
+  await newConnection.server.expectMessages(['new_ping']);
+  await newConnection.server.send('new_pong');
+  await newConnection.client.expectMessages(['new_pong']);
+
+  await sidebar.assertSidebarSockets([
+    { url: initialConnection.url, status: 'Disconnected' },
+    { url: newConnection.url, status: 'Connected' },
+  ]);
+  await devtoolsPanel.assertTableMessages([
+    { text: 'old_ping', direction: 'outgoing' },
+    { text: 'old_pong', direction: 'incoming' },
+  ]);
+
+  await sidebar.clickSocketLink({ url: newConnection.url, status: 'Connected' });
+  await devtoolsPanel.assertTableMessages([
+    { text: 'new_ping', direction: 'outgoing' },
+    { text: 'new_pong', direction: 'incoming' },
+  ]);
+});
+
+test('closing a socket from the server and opening a new one', async ({
+  page,
+  harness,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
+
+  const hostPage = await harness.openHostPage();
+  const initialConnection = hostPage.connection;
+
+  await initialConnection.client.send('old_ping');
+  await initialConnection.server.expectMessages(['old_ping']);
+  await initialConnection.server.send('old_pong');
+  await initialConnection.client.expectMessages(['old_pong']);
+
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: initialConnection.url, status: 'Connected' });
+  await devtoolsPanel.assertTableMessages([
+    { text: 'old_ping', direction: 'outgoing' },
+    { text: 'old_pong', direction: 'incoming' },
+  ]);
+
+  await initialConnection.server.close({ code: 4000, reason: 'server_shutting_down' });
+  await initialConnection.client.expectClosed({ code: 4000, reason: 'server_shutting_down' });
+  await sidebar.assertSidebarSockets([{ url: initialConnection.url, status: 'Disconnected' }]);
+
+  const newConnection = await hostPage.addConnection();
+  await newConnection.client.send('new_ping');
+  await newConnection.server.expectMessages(['new_ping']);
+  await newConnection.server.send('new_pong');
+  await newConnection.client.expectMessages(['new_pong']);
+
+  await sidebar.assertSidebarSockets([
+    { url: initialConnection.url, status: 'Disconnected' },
+    { url: newConnection.url, status: 'Connected' },
+  ]);
+  await devtoolsPanel.assertTableMessages([
+    { text: 'old_ping', direction: 'outgoing' },
+    { text: 'old_pong', direction: 'incoming' },
+  ]);
+
+  await sidebar.clickSocketLink({ url: newConnection.url, status: 'Connected' });
+  await devtoolsPanel.assertTableMessages([
+    { text: 'new_ping', direction: 'outgoing' },
+    { text: 'new_pong', direction: 'incoming' },
   ]);
 });
 
 test('it clears the old connections when host page is refreshed', async ({
   page,
-  context,
+  harness,
   devtoolsPanelUrl,
 }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const initialConnection = hostPage.connection;
 
-  const expectedSockets: Array<SidebarSocket> = [
-    {
-      url: hostPageModel.serverBaseUrl,
-      status: 'Connected',
-    },
-  ];
+  await devtoolsPanel.bringToFront();
+  await sidebar.assertSidebarSockets([{ url: initialConnection.url, status: 'Connected' }]);
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.assertSidebarSockets(expectedSockets);
+  await hostPage.refreshPage();
+  const newConnection = hostPage.connection;
 
-  await hostPage.reload();
-
-  await devtoolsPanelModel.bringToFront();
-  // old socket was cleared, so there should only be one socket in sidebar
-  await sidebarPageModel.assertSidebarSockets(expectedSockets);
+  await initialConnection.server.expectClosed();
+  await sidebar.assertSidebarSockets([{ url: newConnection.url, status: 'Connected' }]);
 });
-
-// test.skip('closing a socket and reopening it', async ({ page, context, devtoolsPanelUrl }) => {
-/**
- * open host page (which opens socket)
- * send messages on the open socket
- * validate open socket messages
- * close socket (write separate test for client side)
- * validate the open and closed sockets are visible
- * send messages on the open socket
- * validate the closed socket did not receive the messges
- * validate the open socket DID receive the messages
- */
-// });
-
-test('it clears the old connections when tiny app host page is refreshed', async ({
-  page,
-  context,
-  devtoolsPanelUrl,
-}) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
-
-  const hostPage = await context.newPage();
-  const hostPageModel = new TinyHostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
-
-  const expectedSockets: Array<SidebarSocket> = [
-    {
-      url: hostPageModel.serverBaseUrl,
-      status: 'Connected',
-    },
-  ];
-
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.assertSidebarSockets(expectedSockets);
-
-  await hostPage.reload();
-
-  await devtoolsPanelModel.bringToFront();
-  // old socket was cleared, so there should only be one socket in sidebar
-  await sidebarPageModel.assertSidebarSockets(expectedSockets);
-});
-
-// test.skip('socket error', async ({ page, context, devtoolsPanelUrl }) => {
-// test that socket shows as closed (or maybe doesn't show at all if error is during handshake?)
-// });

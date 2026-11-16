@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '../fixtures';
 
 export type TableMessage = {
@@ -40,7 +40,6 @@ export class DevtoolsPanelModel {
     const isPaused = (await button.getAttribute('aria-label')) === 'Allow non-custom messages';
     await button.click();
 
-    // Wait for the round-trip to complete (UI updates when SocketDetailsPacket returns)
     const expectedLabel = isPaused ? 'Block non-custom messages' : 'Allow non-custom messages';
     await expect(button).toHaveAttribute('aria-label', expectedLabel);
   }
@@ -68,7 +67,6 @@ export class DevtoolsPanelModel {
   }
 
   public async assertTableMessages(queries: Array<TableMessage>) {
-    // Exclude virtualizer spacer rows (they render with aria-hidden="true")
     const rowLocators = this.locators.messageTableLocator.locator(
       'tbody tr:not([aria-hidden="true"])',
     );

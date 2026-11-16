@@ -2,39 +2,26 @@ import { test } from '../fixtures';
 import { CloseSocketPopupModel } from '../page-models/closeSocketPopupModel';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
 import { SidebarPageModel } from '../page-models/sidebarPageModel';
-import { HostPageModel } from '../page-models/hostPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
-test('it can close an open socket', async ({ page, context, devtoolsPanelUrl }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  const closeSocketModel = new CloseSocketPopupModel(page, devtoolsPanelUrl);
+test('it can close an open socket', async ({ page, harness, devtoolsPanelUrl }) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  const closeSocketPopup = new CloseSocketPopupModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  await devtoolsPanelModel.loadDevtoolsPanel();
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await devtoolsPanelModel.bringToFront();
+  await devtoolsPanel.bringToFront();
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
 
-  await sidebarPageModel.clickSocketCloseButton();
-  await assertVisible(closeSocketModel.locators.header);
+  await sidebar.clickSocketCloseButton();
+  await assertVisible(closeSocketPopup.locators.header);
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
+  await closeSocketPopup.locators.submitButton.click();
 
-  await sidebarPageModel.assertSidebarSockets([
-    {
-      url: hostPageModel.serverBaseUrl,
-      status: 'Connected',
-    },
-  ]);
-  await hostPageModel.assertReadyState('OPEN');
-
-  await closeSocketModel.locators.submitButton.click();
-
-  await hostPageModel.assertReadyState('CLOSED');
-  await sidebarPageModel.assertSidebarSockets([
-    {
-      url: hostPageModel.serverBaseUrl,
-      status: 'Disconnected',
-    },
-  ]);
+  await connection.client.expectClosed();
+  await connection.server.expectClosed();
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
 });

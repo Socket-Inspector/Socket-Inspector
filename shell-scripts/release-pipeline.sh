@@ -28,7 +28,7 @@ formatter() {
 
 linter() {
     write_log "Running the linter..."
-    pnpm --filter socket-inspector --filter playwright-tests-v2 lint
+    pnpm --filter socket-inspector --filter playwright-tests lint
     write_log "Linting successful ✅"
 }
 
@@ -36,7 +36,7 @@ type_checker() {
     write_log "Running the type checker..."
     pnpm --filter socket-inspector prepare
     pnpm --filter socket-inspector compile
-    pnpm --filter playwright-tests-v2 typecheck
+    pnpm --filter playwright-tests typecheck
     write_log "Type checking successful ✅"
 }
 

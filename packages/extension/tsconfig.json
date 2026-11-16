@@ -4,6 +4,5 @@
     "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true
-  },
-  "exclude": ["playwright/test-app"]
+  }
 }

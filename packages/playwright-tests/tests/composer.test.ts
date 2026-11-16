@@ -1,260 +1,211 @@
 import { test } from '../fixtures';
 import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
 import { SidebarPageModel } from '../page-models/sidebarPageModel';
-import { HostPageModel } from '../page-models/hostPageModel';
 
-test('it can send an echo message to the server', async ({ page, context, devtoolsPanelUrl }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+test('it can send a message to the server', async ({ page, harness, devtoolsPanelUrl }) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Connected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
+  await devtoolsPanel.assertTableMessages([]);
 
-  await devtoolsPanelModel.assertTableMessages([]);
+  const toServer = JSON.stringify({ from: 'composer', to: 'server' });
+  await devtoolsPanel.selectComposerDestination('Server');
+  await devtoolsPanel.selectComposerPayloadType('JSON');
+  await devtoolsPanel.enterComposerPayload(toServer);
+  await devtoolsPanel.submitComposerMessage();
 
-  await devtoolsPanelModel.selectComposerDestination('Server');
-  await devtoolsPanelModel.selectComposerPayloadType('JSON');
-  await devtoolsPanelModel.enterComposerPayload(
-    JSON.stringify({
-      type: 'EchoRequest',
-      payload: { message: 'CHROME' },
-    }),
-  );
-  await devtoolsPanelModel.submitComposerMessage();
+  await connection.server.expectMessages([toServer]);
+  await connection.client.expectMessagesToStay([]);
+  await devtoolsPanel.assertTableMessages([{ text: toServer, direction: 'outgoing' }]);
 
-  await devtoolsPanelModel.assertTableMessages([
-    {
-      text: `{"type":"EchoRequest","payload":{"message":"CHROME"}}`,
-      direction: 'outgoing',
-    },
-    {
-      text: `{"type":"EchoResponse","payload":{"message":"CHROME"}}`,
-      direction: 'incoming',
-    },
+  await connection.server.send('pong');
+  await connection.client.expectMessages(['pong']);
+  await devtoolsPanel.assertTableMessages([
+    { text: toServer, direction: 'outgoing' },
+    { text: 'pong', direction: 'incoming' },
   ]);
-
-  await hostPageModel.bringToFront();
-  await hostPageModel.assertEchoResponse('CHROME');
 });
 
-test('it can send an echo message to the client', async ({ page, context, devtoolsPanelUrl }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+test('it can send a message to the client', async ({ page, harness, devtoolsPanelUrl }) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Connected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
+  await devtoolsPanel.assertTableMessages([]);
 
-  await devtoolsPanelModel.assertTableMessages([]);
+  const toClient = JSON.stringify({ from: 'composer', to: 'client' });
+  await devtoolsPanel.selectComposerDestination('Client');
+  await devtoolsPanel.selectComposerPayloadType('JSON');
+  await devtoolsPanel.enterComposerPayload(toClient);
+  await devtoolsPanel.submitComposerMessage();
 
-  await devtoolsPanelModel.selectComposerDestination('Client');
-  await devtoolsPanelModel.selectComposerPayloadType('JSON');
-  await devtoolsPanelModel.enterComposerPayload(
-    JSON.stringify({
-      type: 'EchoResponse',
-      payload: { message: 'CHROME_CLIENT_ONLY' },
-    }),
-  );
-  await devtoolsPanelModel.submitComposerMessage();
-
-  await devtoolsPanelModel.assertTableMessages([
-    {
-      text: `{"type":"EchoResponse","payload":{"message":"CHROME_CLIENT_ONLY"}}`,
-      direction: 'incoming',
-    },
-  ]);
-
-  await hostPageModel.bringToFront();
-  await hostPageModel.assertEchoResponse('CHROME_CLIENT_ONLY');
+  await connection.client.expectMessages([toClient]);
+  await connection.server.expectMessagesToStay([]);
+  await devtoolsPanel.assertTableMessages([{ text: toClient, direction: 'incoming' }]);
 });
 
-test('it shows an error if payload is empty', async ({ page, context, devtoolsPanelUrl }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+test('it shows an error if payload is empty', async ({ page, harness, devtoolsPanelUrl }) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Connected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
+  await devtoolsPanel.assertNoComposerErrors();
 
-  await devtoolsPanelModel.assertNoComposerErrors();
+  await devtoolsPanel.selectComposerDestination('Server');
+  await devtoolsPanel.selectComposerPayloadType('JSON');
+  await devtoolsPanel.submitComposerMessage();
+  await devtoolsPanel.assertComposerError('Payload must not be empty');
+  await devtoolsPanel.assertTableMessages([]);
 
-  // JSON payload
-  await devtoolsPanelModel.selectComposerDestination('Server');
-  await devtoolsPanelModel.selectComposerPayloadType('JSON');
-  await devtoolsPanelModel.submitComposerMessage();
-  await devtoolsPanelModel.assertComposerError('Payload must not be empty');
-  await devtoolsPanelModel.assertTableMessages([]);
-
-  // Text payload
-  await devtoolsPanelModel.selectComposerPayloadType('Text');
-  await devtoolsPanelModel.assertNoComposerErrors();
-  await devtoolsPanelModel.submitComposerMessage();
-  await devtoolsPanelModel.assertComposerError('Payload must not be empty');
-  await devtoolsPanelModel.assertTableMessages([]);
+  await devtoolsPanel.selectComposerPayloadType('Text');
+  await devtoolsPanel.assertNoComposerErrors();
+  await devtoolsPanel.submitComposerMessage();
+  await devtoolsPanel.assertComposerError('Payload must not be empty');
+  await devtoolsPanel.assertTableMessages([]);
 });
 
 test('correcting an empty payload error allows the message to be sent', async ({
   page,
-  context,
+  harness,
   devtoolsPanelUrl,
 }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Connected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
-  await devtoolsPanelModel.selectComposerPayloadType('JSON');
-  await devtoolsPanelModel.submitComposerMessage();
-  await devtoolsPanelModel.assertComposerError('Payload must not be empty');
-  await devtoolsPanelModel.assertTableMessages([]);
+  await devtoolsPanel.selectComposerDestination('Client');
+  await devtoolsPanel.selectComposerPayloadType('JSON');
+  await devtoolsPanel.submitComposerMessage();
+  await devtoolsPanel.assertComposerError('Payload must not be empty');
+  await devtoolsPanel.assertTableMessages([]);
 
-  await devtoolsPanelModel.enterComposerPayload(
-    JSON.stringify({
-      type: 'EchoResponse',
-      payload: { message: 'CHROME_CLIENT_ONLY' },
-    }),
-  );
-  await devtoolsPanelModel.submitComposerMessage();
-  await devtoolsPanelModel.assertNoComposerErrors();
-  await devtoolsPanelModel.assertTableMessages([
-    {
-      text: `{"type":"EchoResponse","payload":{"message":"CHROME_CLIENT_ONLY"}}`,
-      direction: 'incoming',
-    },
-  ]);
+  const toClient = JSON.stringify({ from: 'composer', to: 'client' });
+  await devtoolsPanel.enterComposerPayload(toClient);
+  await devtoolsPanel.submitComposerMessage();
+  await devtoolsPanel.assertNoComposerErrors();
+
+  await connection.client.expectMessages([toClient]);
+  await devtoolsPanel.assertTableMessages([{ text: toClient, direction: 'incoming' }]);
 });
 
 test('it can still send a message when the websocket is paused', async ({
   page,
-  context,
+  harness,
   devtoolsPanelUrl,
 }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  // Open the devtools panel and select the socket
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Connected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
 
-  // Establish a baseline server echo so we can assert it doesn't change while paused
-  await hostPageModel.bringToFront();
-  await hostPageModel.sendEchoMessage('BASELINE');
-  await hostPageModel.assertEchoResponse('BASELINE');
+  await connection.client.send('baseline ping');
+  await connection.server.expectMessages(['baseline ping']);
+  await connection.server.send('baseline pong');
+  await connection.client.expectMessages(['baseline pong']);
 
-  await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.clearTableMessages();
-  await devtoolsPanelModel.assertTableMessages([]);
+  await devtoolsPanel.clearTableMessages();
+  await devtoolsPanel.assertTableMessages([]);
+  await devtoolsPanel.togglePauseCapture();
 
-  await devtoolsPanelModel.togglePauseCapture();
+  const toServer = JSON.stringify({ from: 'composer', to: 'server' });
+  await devtoolsPanel.selectComposerDestination('Server');
+  await devtoolsPanel.selectComposerPayloadType('JSON');
+  await devtoolsPanel.enterComposerPayload(toServer);
+  await devtoolsPanel.submitComposerMessage();
 
-  // While paused, send a message to the SERVER via the composer
-  await devtoolsPanelModel.selectComposerDestination('Server');
-  await devtoolsPanelModel.selectComposerPayloadType('JSON');
-  await devtoolsPanelModel.enterComposerPayload(
-    JSON.stringify({ type: 'EchoRequest', payload: { message: 'EXT_SERVER' } }),
-  );
-  await devtoolsPanelModel.submitComposerMessage();
+  await connection.server.expectMessages(['baseline ping', toServer]);
+  await devtoolsPanel.assertTableMessages([{ text: toServer, direction: 'outgoing' }]);
 
-  // Outgoing extension-injected request should appear in the table
-  await devtoolsPanelModel.assertTableMessages([
-    { text: `{"type":"EchoRequest","payload":{"message":"EXT_SERVER"}}`, direction: 'outgoing' },
+  await connection.server.send('blocked pong');
+  await connection.client.expectMessagesToStay(['baseline pong']);
+
+  const toClient = JSON.stringify({ from: 'composer', to: 'client' });
+  await devtoolsPanel.selectComposerDestination('Client');
+  await devtoolsPanel.clearComposerPayload();
+  await devtoolsPanel.enterComposerPayload(toClient);
+  await devtoolsPanel.submitComposerMessage();
+
+  await connection.client.expectMessages(['baseline pong', toClient]);
+  await devtoolsPanel.assertTableMessages([
+    { text: toServer, direction: 'outgoing' },
+    { text: toClient, direction: 'incoming' },
   ]);
-
-  // The server's response should be blocked while paused; host page should remain on BASELINE
-  await page.waitForTimeout(300);
-  await hostPageModel.bringToFront();
-  await hostPageModel.assertEchoResponse('BASELINE');
-
-  // While still paused, send a message to the CLIENT via the composer
-  await devtoolsPanelModel.bringToFront();
-  await devtoolsPanelModel.selectComposerDestination('Client');
-  await devtoolsPanelModel.selectComposerPayloadType('JSON');
-  await devtoolsPanelModel.clearComposerPayload();
-  await devtoolsPanelModel.enterComposerPayload(
-    JSON.stringify({ type: 'EchoResponse', payload: { message: 'EXT_CLIENT' } }),
-  );
-  await devtoolsPanelModel.submitComposerMessage();
-
-  // Incoming extension-injected message to client should appear in the table even while paused
-  await devtoolsPanelModel.assertTableMessages([
-    { text: `{"type":"EchoRequest","payload":{"message":"EXT_SERVER"}}`, direction: 'outgoing' },
-    { text: `{"type":"EchoResponse","payload":{"message":"EXT_CLIENT"}}`, direction: 'incoming' },
-  ]);
-
-  // Host page should update to EXT_CLIENT because we injected directly to client
-  await hostPageModel.bringToFront();
-  await hostPageModel.assertEchoResponse('EXT_CLIENT');
 });
 
-test('it shows an error when sending invalid json', async ({ page, context, devtoolsPanelUrl }) => {
-  const devtoolsPanelModel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
-  const sidebarPageModel = new SidebarPageModel(page, devtoolsPanelUrl);
-  await devtoolsPanelModel.loadDevtoolsPanel();
+test('it shows an error when sending invalid json', async ({ page, harness, devtoolsPanelUrl }) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
 
-  const hostPage = await context.newPage();
-  const hostPageModel = new HostPageModel(hostPage);
-  await hostPageModel.navigateToHostPage();
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
 
-  await devtoolsPanelModel.bringToFront();
-  await sidebarPageModel.clickSocketLink({
-    url: hostPageModel.serverBaseUrl,
-    status: 'Connected',
-  });
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Connected' });
+  await devtoolsPanel.assertNoComposerErrors();
 
-  await devtoolsPanelModel.assertNoComposerErrors();
+  await devtoolsPanel.selectComposerDestination('Server');
+  await devtoolsPanel.selectComposerPayloadType('JSON');
+  await devtoolsPanel.enterComposerPayload('{from:composer"');
+  await devtoolsPanel.submitComposerMessage();
 
-  // Select JSON payload type
-  await devtoolsPanelModel.selectComposerDestination('Server');
-  await devtoolsPanelModel.selectComposerPayloadType('JSON');
-
-  // Enter invalid JSON (missing closing brace)
-  await devtoolsPanelModel.enterComposerPayload('{type:EchoRequest"');
-  await devtoolsPanelModel.submitComposerMessage();
-  await devtoolsPanelModel.assertComposerError('Payload must be valid JSON');
-  await devtoolsPanelModel.assertTableMessages([]);
+  await devtoolsPanel.assertComposerError('Payload must be valid JSON');
+  await connection.server.expectMessagesToStay([]);
+  await devtoolsPanel.assertTableMessages([]);
 });
 
-// test.skip("it shows an error when trying to send a message on a closed socket", async ({
-//   page,
-//   context,
-//   devtoolsPanelUrl,
-// }) => {});
+test('it shows an error when sending a message on a closed socket', async ({
+  page,
+  harness,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
+
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
+
+  await connection.client.close();
+  await connection.server.expectClosed();
+
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
+  await devtoolsPanel.assertNoComposerErrors();
+
+  await devtoolsPanel.selectComposerDestination('Server');
+  await devtoolsPanel.selectComposerPayloadType('JSON');
+  await devtoolsPanel.enterComposerPayload(JSON.stringify({ from: 'composer', to: 'server' }));
+  await devtoolsPanel.submitComposerMessage();
+
+  await devtoolsPanel.assertComposerError('Cannot send a message on a closed socket');
+  await connection.server.expectMessagesToStay([]);
+  await devtoolsPanel.assertTableMessages([]);
+});

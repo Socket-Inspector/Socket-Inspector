@@ -8,9 +8,12 @@ export type Harness = {
 };
 
 export type HostPage = {
+  /** Connection for the socket the page opens on load. Replaced on each `refreshPage()`. */
   readonly connection: WebsocketConnection;
-  connect(): Promise<WebsocketConnection>;
-  reload(): Promise<void>;
+  /** Opens a new socket from the page (alongside the initial one) and returns its connection. */
+  addConnection(): Promise<WebsocketConnection>;
+  /** Reloads the page and replaces `connection` with the reloaded page's connection. */
+  refreshPage(): Promise<void>;
 };
 
 export type WebsocketConnection = {
@@ -59,11 +62,11 @@ export async function harnessFixture(
           get connection() {
             return currentConnection;
           },
-          async connect() {
+          async addConnection() {
             const socketPair = await transportPage.addConnection();
             return createConnection(socketPair);
           },
-          async reload() {
+          async refreshPage() {
             await transportPage.refreshPage();
             currentConnection = createConnection(transportPage.initialPair);
           },

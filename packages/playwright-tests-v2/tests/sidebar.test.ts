@@ -92,7 +92,7 @@ test('closing a socket from the client and opening a new one', async ({
   await initialConnection.server.expectClosed();
   await sidebar.assertSidebarSockets([{ url: initialConnection.url, status: 'Disconnected' }]);
 
-  const newConnection = await hostPage.connect();
+  const newConnection = await hostPage.addConnection();
   await newConnection.client.send('new_ping');
   await newConnection.server.expectMessages(['new_ping']);
   await newConnection.server.send('new_pong');
@@ -142,7 +142,7 @@ test('closing a socket from the server and opening a new one', async ({
   await initialConnection.client.expectClosed({ code: 4000, reason: 'server_shutting_down' });
   await sidebar.assertSidebarSockets([{ url: initialConnection.url, status: 'Disconnected' }]);
 
-  const newConnection = await hostPage.connect();
+  const newConnection = await hostPage.addConnection();
   await newConnection.client.send('new_ping');
   await newConnection.server.expectMessages(['new_ping']);
   await newConnection.server.send('new_pong');
@@ -179,7 +179,7 @@ test('it clears the old connections when host page is refreshed', async ({
   await devtoolsPanel.bringToFront();
   await sidebar.assertSidebarSockets([{ url: initialConnection.url, status: 'Connected' }]);
 
-  await hostPage.reload();
+  await hostPage.refreshPage();
   const newConnection = hostPage.connection;
 
   await initialConnection.server.expectClosed();

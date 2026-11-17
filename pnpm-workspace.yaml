@@ -11,7 +11,7 @@ catalog:
   react-dom: 19.2.0
   typescript: ^7.0.2
 
-catalogMode: strict
+catalogMode: prefer
 
 engineStrict: true
 

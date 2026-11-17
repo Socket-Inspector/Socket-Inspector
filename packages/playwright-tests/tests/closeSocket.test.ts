@@ -4,7 +4,7 @@ import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
 import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
-test('it can close an open socket', async ({ page, harness, devtoolsPanelUrl }) => {
+test('the close panel closes both the client and server', async ({ page, harness, devtoolsPanelUrl }) => {
   const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
   const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketPopup = new CloseSocketPopupModel(page, devtoolsPanelUrl);
@@ -12,7 +12,7 @@ test('it can close an open socket', async ({ page, harness, devtoolsPanelUrl }) 
 
   const hostPage = await harness.openHostPage();
   await devtoolsPanel.bringToFront();
-  
+
   const connection = hostPage.connection;
 
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);

@@ -51,8 +51,11 @@ export class SidebarPageModel {
       ).toBeVisible();
     }
   }
-  public async clickSocketCloseButton(index: number = 0) {
-    await this.page.getByRole('button', { name: 'Close Connection' }).nth(index).click();
+  public async clickSocketCloseButton(url: string, index: number = 0) {
+    await this.locators.sidebarNav
+      .getByRole('button', { name: `Close connection to ${url}`, exact: true })
+      .nth(index)
+      .click();
   }
   private getStaticLocators() {
     return {

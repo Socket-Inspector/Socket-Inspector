@@ -12,9 +12,11 @@ export class CloseSocketPopupModel {
   }
 
   private getStaticLocators() {
+    const popup = this.page.getByRole('dialog', { name: 'Close Connection' });
     return {
-      header: this.page.getByRole('heading', { name: 'Close Connection' }),
-      submitButton: this.page.getByRole('button', { name: 'Send Close Frame' }),
+      popup,
+      header: popup.getByRole('heading', { name: 'Close Connection' }),
+      submitButton: popup.getByRole('button', { name: 'Close Connection', exact: true }),
     };
   }
 }

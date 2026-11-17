@@ -16,7 +16,7 @@ import { useSocketContext } from '@/hooks/useSocketState/useSocketState';
 import { SocketStatusIcon } from './SocketStatusIcon';
 import { X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@socket-inspector/shadcn/Popover';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import {
   Tooltip,
   TooltipContent,
@@ -77,6 +77,7 @@ type SocketConnectionMenuItemProps = {
 
 function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnectionMenuItemProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const closeFormHeadingId = useId();
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -95,16 +96,22 @@ function SocketConnectionMenuItem({ socket, isSelected, onSelect }: SocketConnec
               <PopoverTrigger asChild>
                 <SidebarMenuAction className="hover:bg-primary/13 dark:hover:bg-primary/20 data-[state=open]:bg-primary/10 dark:data-[state=open]:bg-primary/13">
                   <X className="h-4 w-4"></X>
-                  <span className="sr-only">Close Connection</span>
+                  <span className="sr-only">Close connection to {socket.url}</span>
                 </SidebarMenuAction>
               </PopoverTrigger>
             </TooltipTrigger>
             <TooltipContent>Close Connection</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <PopoverContent side="right" align="start" className="w-72">
+        <PopoverContent
+          side="right"
+          align="start"
+          className="w-72"
+          aria-labelledby={closeFormHeadingId}
+        >
           <CloseSocketForm
             socketId={socket.id}
+            headingId={closeFormHeadingId}
             onSubmit={() => {
               setIsPopoverOpen(false);
             }}

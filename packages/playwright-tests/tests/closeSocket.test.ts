@@ -55,5 +55,6 @@ test('the close panel sends the selected close code and reason to the client', a
   await closeSocketPopup.locators.submitButton.click();
 
   await connection.client.expectClosed({ code: 1008, reason: 'Session ended' });
+  await connection.server.expectClosed({ code: 1005, reason: '' });
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
 });

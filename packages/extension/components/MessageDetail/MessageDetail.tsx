@@ -27,6 +27,7 @@ type MessageDetailContentProps = {
   socketState: SocketContext['socketState'];
   dispatch: SocketContext['dispatch'];
 };
+
 function MessageDetailContent({ socketState, dispatch }: MessageDetailContentProps) {
   if (querySelectedSocketMessages(socketState).length === 0) {
     return (

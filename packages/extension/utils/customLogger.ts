@@ -6,7 +6,6 @@ const GLOBAL_PREFIX = 'SOCKET_INSPECTOR';
  * Creates a namespaced logger whose output is
  *   • prefixed with the context label
  *   • colour-coded (so DevTools ≠ Service Worker in the console)
- *   • toggled on/off via chrome.storage or an env var
  */
 export function createLogger(label: string): (...args: unknown[]) => void {
   const colour = stringToHsl(label);

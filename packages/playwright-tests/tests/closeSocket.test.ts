@@ -11,9 +11,10 @@ test('it can close an open socket', async ({ page, harness, devtoolsPanelUrl }) 
   await devtoolsPanel.loadDevtoolsPanel();
 
   const hostPage = await harness.openHostPage();
+  await devtoolsPanel.bringToFront();
+  
   const connection = hostPage.connection;
 
-  await devtoolsPanel.bringToFront();
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
 
   await sidebar.clickSocketCloseButton();

@@ -1,7 +1,7 @@
 # Privacy Policy — Socket Inspector
 
-**Effective Date:** November 28, 2025  
-**Policy Version:** 1.1.2
+**Effective Date:** November 16, 2026  
+**Policy Version:** 1.2.0
 **Applies to:** Socket Inspector extension for Chromium-based browsers and `socketinspector.com` (the “Site”)
 
 ---
@@ -146,6 +146,7 @@ This section explains how we handle information on `socketinspector.com` (the �
 
 - **Server logs:** Our hosting/CDN provider (Cloudflare) automatically processes standard logs (e.g., IP address, user agent, referrer, date/time, pages requested) to operate, secure, and troubleshoot the Site. **Logs are retained no longer than 30 days** (see _Retention_ above).
 - **Contact/support:** If you email **support@socketinspector.com**, we process your email address, message, and metadata to respond and maintain records.
+- **Aggregate reports:** We receive aggregate statistics from Google Search Console (search clicks and impressions for the Site) and from the Chrome Web Store's Google Analytics integration (traffic and install statistics for the extension's store listing page). Google collects the underlying data under its own privacy policy.
 - **Cookies/analytics:** We avoid non‑essential cookies. If we deploy analytics or other non‑essential cookies in the future, we will update this notice (and, where required, request your consent before setting them).
 
 ### How we use Site information
@@ -256,11 +257,14 @@ We comply with the Personal Information Protection and Electronic Documents Act 
 
 - **Controller:** Trey Vigus is the data controller for the personal information collected via socketinspector.com and support channels.
 - **Legal Basis for Processing:** We process your personal data based on the following legal grounds:
-  - _Performance of a Contract:_ To provide the Socket Inspector extension functionality and deliver the website content you request.
+  - _Performance of a Contract:_ To deliver the website content you request.
   - _Legitimate Interests:_ To secure our website (server logs), prevent fraud, and respond to your support inquiries.
   - _Consent:_ If we request specific permission for non-essential cookies or optional features (currently none). You can withdraw this consent at any time, for example by changing your cookie settings or contacting us at support@socketinspector.com
+- **Extension:** The extension processes WebSocket traffic and related data only on your device, at your direction. We never receive this data.
 - **Your Rights:** Under the UK GDPR and EU GDPR, you have the right to **access**, **rectify**, **erase**, **restrict processing**, **object to processing**, and receive a **portable** copy of your data.
 - **How to Exercise Rights:** Contact us at support@socketinspector.com. We will respond within one month.
 - **Right to Complain:** You have the right to lodge a complaint with a supervisory authority. In the UK, this is the **Information Commissioner’s Office (ICO)** (ico.org.uk). In the EEA, you may contact your local Data Protection Authority.
-- **International Transfers:** We are located in the United States. If you are accessing the Site or Extension from the UK or EEA, please note that your personal data (such as support emails or website connection logs) may be transferred to and processed in the United States. We rely on mechanisms such as Adequacy Decisions (where applicable) or Standard Contractual Clauses (SCCs) to ensure your data remains protected.
+- **International Transfers:** We are located in the United States. If you contact us or visit the Site from the UK or EEA, your personal data (such as support emails or website connection logs) is processed in the United States, and our service providers (such as Cloudflare) may process it in other countries.
 - **Automated Decision Making:** We do not use automated decision-making or profiling that produces legal or similarly significant effects concerning you.
+
+**Other jurisdictions**: If you are located in a jurisdiction not listed above, you may have rights under your local law. Contact us at support@socketinspector.com and we will honor them as required.

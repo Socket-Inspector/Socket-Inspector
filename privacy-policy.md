@@ -1,7 +1,7 @@
 # Privacy Policy — Socket Inspector
 
-**Effective Date:** November 16, 2026  
-**Policy Version:** 1.2.0
+**Effective Date:** November 17, 2026  
+**Policy Version:** 1.2.1
 **Applies to:** Socket Inspector extension for Chromium-based browsers and `socketinspector.com` (the “Site”)
 
 ---
@@ -53,21 +53,14 @@ Socket Inspector helps you **inspect and manipulate WebSocket traffic** from the
 - **Storage:** **Ephemeral**; **not persisted** by the extension.
 - **Transmission:** **Not transmitted** outside your device.
 
-### 4) Extension Enabled/Disabled Preference
-
-- **What:** Your choice to enable or disable the extension.
-- **Why:** To respect your preference across sessions.
-- **Storage:** Persisted **locally** via the browser’s extension storage (`storage.local`).
-- **Transmission:** **Not transmitted** outside your device.
-
-### 5) User-Supplied Messages
+### 4) User-Supplied Messages
 
 - **What:** Messages you compose to send to the page’s WebSocket client and/or server.
 - **Why:** To test or interact with live WebSocket connections.
 - **Storage:** **Ephemeral**; **not persisted** by the extension.
 - **Transmission:** Only to the **destination(s) you choose** via the page’s WebSocket connection. Socket Inspector does **not** transmit these messages to the extension developer or any third-party server unless **you** direct them there.
 
-### 6) Other User-Supplied Input (UI Interactions)
+### 5) Other User-Supplied Input (UI Interactions)
 
 - **What:** Filter text, toggle states, button clicks, and other UI state needed to operate the DevTools panel.
 - **Why:** To render and control the panel.
@@ -84,8 +77,6 @@ Socket Inspector requests only the access required to provide its features:
   - Socket Inspector allows the user to debug WebSocket traffic on any page
   - These host permissions allow Socket Inspector to observe WebSocket traffic on any page and display it in the DevTools panel
   - These permissions are not used to collect browsing history or transmit page contents
-- **Extension storage (`storage`)**
-  - The `storage` permission allows Socket Inspector to save the user's decision to enable/disable the extension
 
 We do not use these permissions to collect browsing history, track you, or transmit page contents to our servers or any third party.
 
@@ -106,14 +97,14 @@ All data is processed locally on your device for the sole purpose of providing t
 ## Retention (Browser extension)
 
 - **Ephemeral data** (WebSocket traffic, Tab IDs, UI state) exists only in memory during active use and is discarded when the page or DevTools panel is closed/refreshed.
-- The **enable/disable** preference remains in `storage.local` until you change it, clear browser data, or uninstall the extension.
+- The extension does **not** persist any data.
 
 ---
 
 ## Security (Browser extension)
 
 - Processing is limited to your device.
-- Minimal local storage (`storage.local` for a single preference).
+- No data is persisted by the extension.
 - No extension-level network transmission of your WebSocket data.
 - We rely on modern browser extension architecture and OS sandboxing for isolation.
 
@@ -175,11 +166,9 @@ This section explains your privacy choices for both the **Socket Inspector brows
 
 ### Extension (local-only processing)
 
-- **What we store:** The extension persists only your **enable/disable** preference in the browser’s `storage.local`.
-- **What we don’t store:** WebSocket traffic, tab IDs, UI state, and messages you compose are processed **in memory** and are **not persisted** by the extension or sent to our servers.
-- **How to control or erase extension data:**
+- **What we store:** Nothing. WebSocket traffic, tab IDs, UI state, and messages you compose are processed **in memory** and are **not persisted** by the extension or sent to our servers.
+- **How to control extension processing:**
   - Disable or **uninstall** the extension in your browser to stop all processing.
-  - Clear the extension’s local data via your browser’s “Clear browsing data” or extension storage tools.
   - Use the browser’s **site access controls** to restrict where the extension can run.
 
 ### Website (socketinspector.com)
@@ -224,7 +213,7 @@ Socket Inspector is a developer tool and is **not intended for children** under 
 
 ## Changes to This Policy
 
-We may update this policy to reflect feature or legal changes. We will update the **Effective Date** and **Policy Version** above. Material changes will be summarized in the changelog.
+We may update this policy to reflect feature or legal changes. We will update the **Effective Date** and **Policy Version** above.
 
 ---
 

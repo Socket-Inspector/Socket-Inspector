@@ -35,6 +35,7 @@ export default function DevtoolsPanelApp() {
 type AppPanelsProps = {
   layout: 'two_column' | 'three_column';
 };
+
 function AppPanels({ layout }: AppPanelsProps) {
   const { socketState } = useSocketContext();
 

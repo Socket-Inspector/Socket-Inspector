@@ -9,6 +9,7 @@ export type SocketContext = {
   dispatch: React.Dispatch<ReducerAction>;
   sendPacket: (packet: Packet) => void;
 };
+
 const SocketStateContext = createContext<SocketContext | null>(null);
 
 export type SocketStateProviderProps = {

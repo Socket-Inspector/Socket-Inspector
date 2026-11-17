@@ -8,8 +8,8 @@ test('the close panel closes both the client and server', async ({ page, harness
   const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
   const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketPopup = new CloseSocketPopupModel(page, devtoolsPanelUrl);
+  
   await devtoolsPanel.loadDevtoolsPanel();
-
   const hostPage = await harness.openHostPage();
   await devtoolsPanel.bringToFront();
 

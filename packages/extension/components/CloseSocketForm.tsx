@@ -55,7 +55,7 @@ export function CloseSocketForm({ socketId, headingId, onSubmit }: CloseSocketFo
             Close Connection
           </h3>
           <p className="text-muted-foreground mt-1 text-sm">
-            {isClosed ? 'This connection is already closed' : 'Send a close frame to the client'}
+            {isClosed ? 'This connection is already closed' : 'The client gets your code and reason'}
           </p>
         </div>
         <FieldGroup className="gap-3">

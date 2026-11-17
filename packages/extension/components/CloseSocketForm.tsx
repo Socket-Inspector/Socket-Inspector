@@ -13,10 +13,11 @@ type CloseSocketFormState = {
 
 export type CloseSocketFormProps = {
   socketId: string;
+  headingId: string;
   onSubmit: () => void;
 };
 
-export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
+export function CloseSocketForm({ socketId, headingId, onSubmit }: CloseSocketFormProps) {
   const { sendPacket, socketState } = useSocketContext();
 
   const [formState, setFormState] = useState<CloseSocketFormState>({
@@ -50,9 +51,13 @@ export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
     >
       <div className="space-y-4">
         <div>
-          <h3 className="text-base font-semibold">Close Connection</h3>
+          <h3 id={headingId} className="text-base font-semibold">
+            Close Connection
+          </h3>
           <p className="text-muted-foreground mt-1 text-sm">
-            {isClosed ? 'This connection is already closed' : 'Send a close frame to the client'}
+            {isClosed
+              ? 'This connection is already closed'
+              : 'The client gets your code and reason'}
           </p>
         </div>
         <FieldGroup className="gap-3">
@@ -72,7 +77,7 @@ export function CloseSocketForm({ socketId, onSubmit }: CloseSocketFormProps) {
           ></CloseReasonInput>
         </FieldGroup>
         <Button className="w-full cursor-pointer" type="submit" disabled={isClosed}>
-          {isClosed ? 'Connection Closed' : 'Send Close Frame'}
+          {isClosed ? 'Connection Closed' : 'Close Connection'}
         </Button>
       </div>
     </form>

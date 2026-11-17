@@ -4,24 +4,29 @@ import { DevtoolsPanelModel } from '../page-models/devtoolsPanelModel';
 import { SidebarPageModel } from '../page-models/sidebarPageModel';
 import { assertVisible } from '../playwrightHelpers';
 
-test('it can close an open socket', async ({ page, harness, devtoolsPanelUrl }) => {
+test('the close panel closes both the client and server', async ({
+  page,
+  harness,
+  devtoolsPanelUrl,
+}) => {
   const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
   const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketPopup = new CloseSocketPopupModel(page, devtoolsPanelUrl);
-  await devtoolsPanel.loadDevtoolsPanel();
 
+  await devtoolsPanel.loadDevtoolsPanel();
   const hostPage = await harness.openHostPage();
+  await devtoolsPanel.bringToFront();
+
   const connection = hostPage.connection;
 
-  await devtoolsPanel.bringToFront();
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
 
-  await sidebar.clickSocketCloseButton();
+  await sidebar.clickSocketCloseButton(connection.url);
   await assertVisible(closeSocketPopup.locators.header);
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
   await closeSocketPopup.locators.submitButton.click();
 
-  await connection.client.expectClosed();
-  await connection.server.expectClosed();
+  await connection.client.expectClosed({ code: 1000, reason: '' });
+  await connection.server.expectClosed({ code: 1005, reason: '' });
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
 });

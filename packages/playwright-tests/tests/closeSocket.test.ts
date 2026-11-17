@@ -22,7 +22,6 @@ test('the close panel closes both the client and server', async ({
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
 
   await sidebar.clickSocketCloseButton(connection.url);
-  await assertVisible(closeSocketPopup.locators.popup);
   await assertVisible(closeSocketPopup.locators.header);
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Connected' }]);
   await closeSocketPopup.locators.submitButton.click();

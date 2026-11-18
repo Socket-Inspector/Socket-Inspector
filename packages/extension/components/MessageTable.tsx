@@ -250,7 +250,6 @@ export function MessageTable() {
               </TableRow>
             </TableHeader>
             <TableBody role="rowgroup">
-              {/* Top spacer */}
               {virtualItems.length > 0 && (
                 <TableRow aria-hidden role="presentation">
                   <TableCell
@@ -263,7 +262,6 @@ export function MessageTable() {
                 </TableRow>
               )}
 
-              {/* Virtual rows */}
               {virtualItems.map((virtualRow) => {
                 const message = filteredMessages[virtualRow.index];
                 return (
@@ -334,7 +332,6 @@ export function MessageTable() {
                 );
               })}
 
-              {/* Bottom spacer */}
               {virtualItems.length > 0 && (
                 <TableRow aria-hidden role="presentation">
                   <TableCell

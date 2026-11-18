@@ -121,8 +121,8 @@ const patchSocketSync = () => {
     });
 
     client.addEventListener('close', () => {
-      // socket was closed
-      // fires regardless of whether the client or server initiated the closure
+      // socket was closed. fires regardless of whether the client or server 
+      // initiated the closure
       interceptedSocket.status = 'CLOSED';
       sendSocketDetailsPacket();
     });

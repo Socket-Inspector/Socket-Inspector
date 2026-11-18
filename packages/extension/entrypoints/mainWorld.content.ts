@@ -17,10 +17,9 @@ type SocketConnection = {
 
 const patchSocketSync = () => {
   const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD' }).connect();
-
   const sockets = new Map<SocketDetails['id'], SocketConnection>();
-
   const interceptor = new WebSocketInterceptor();
+  
   interceptor.apply();
 
   interceptor.on('connection', ({ client, server }) => {

@@ -53,10 +53,7 @@ const patchSocketSync = () => {
     };
 
     server.addEventListener('open', () => {
-      /**
-       * server responded to the websocket handshake,
-       * and the connection is now open
-       */
+      // server responded to the websocket handshake, and the connection is now open
       interceptedSocket.status = 'OPEN';
       sendSocketDetailsPacket();
     });
@@ -124,12 +121,8 @@ const patchSocketSync = () => {
     });
 
     client.addEventListener('close', () => {
-      /**
-       * socket was closed
-       *
-       * note: this fires regardless of whether
-       * the client or server initiates the closure
-       */
+      // socket was closed. fires regardless of whether the client or server 
+      // initiated the closure
       interceptedSocket.status = 'CLOSED';
       sendSocketDetailsPacket();
     });

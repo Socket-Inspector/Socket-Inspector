@@ -118,13 +118,13 @@ const patchSocketSync = () => {
           },
         },
       };
-      
+
       windowConnector.sendPacket(serverMessagePacket);
     });
 
     client.addEventListener('close', () => {
       // socket was closed. fires regardless of whether the client or server 
-      // initiated the closure
+      //  initiated the closure
       interceptedSocket.status = 'CLOSED';
       sendSocketDetailsPacket();
     });

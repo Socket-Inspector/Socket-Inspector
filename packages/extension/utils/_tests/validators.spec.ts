@@ -44,6 +44,21 @@ describe('isPacket', () => {
     expect(isPacket(packet)).toBe(false);
   });
 
+  it('returns false for a CLOSED SocketDetailsPacket without closeDetails', () => {
+    const packet = {
+      type: 'SocketDetailsPacket',
+      payload: {
+        socket: {
+          id: 'socket-1',
+          url: 'wss://example.com',
+          status: 'CLOSED',
+          isPaused: false,
+        },
+      },
+    } as const;
+    expect(isPacket(packet)).toBe(false);
+  });
+
   it('returns false for an invalid packet', () => {
     const notAPacket = { foo: 'bar' } as const;
     expect(isPacket(notAPacket)).toBe(false);

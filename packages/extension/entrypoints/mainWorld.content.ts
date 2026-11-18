@@ -31,36 +31,36 @@ const patchSocketSync = () => {
     // initiate the websocket handshake GET request
     server.connect();
 
-    const interceptedSocket: SocketDetails = {
-      id: socketId,
-      url: socketUrl,
-      status: 'CONNECTING',
-      isPaused: false,
-    };
-
-    sockets.set(socketId, {
-      socket: interceptedSocket,
+    const connection: SocketConnection = {
+      socket: {
+        id: socketId,
+        url: socketUrl,
+        status: 'CONNECTING',
+        isPaused: false,
+      },
       client,
       server,
-    });
+    };
+
+    sockets.set(socketId, connection);
 
     const sendSocketDetailsPacket = () => {
       windowConnector.sendPacket({
         type: 'SocketDetailsPacket',
-        payload: { socket: interceptedSocket },
+        payload: { socket: connection.socket },
       });
     };
 
     server.addEventListener('open', () => {
       // server responded to the websocket handshake, and the connection is now open
-      interceptedSocket.status = 'OPEN';
+      connection.socket = { ...connection.socket, status: 'OPEN' };
       sendSocketDetailsPacket();
     });
 
     client.addEventListener('message', (event: MessageEvent<WebSocketData>) => {
       // client sent a message
 
-      if (interceptedSocket.isPaused) {
+      if (connection.socket.isPaused) {
         // block the message from reaching the server
         event.preventDefault();
         return;
@@ -73,7 +73,7 @@ const patchSocketSync = () => {
       const clientMessagePacket: SocketMessagePacket = {
         type: 'SocketMessagePacket',
         payload: {
-          socket: interceptedSocket,
+          socket: connection.socket,
           message: {
             id: crypto.randomUUID(),
             timestampISO: new Date().toISOString(),
@@ -92,7 +92,7 @@ const patchSocketSync = () => {
     server.addEventListener('message', (event: MessageEvent<WebSocketData>) => {
       // message received from server
 
-      if (interceptedSocket.isPaused) {
+      if (connection.socket.isPaused) {
         // block the message from reaching the client
         event.preventDefault();
         return;
@@ -105,7 +105,7 @@ const patchSocketSync = () => {
       const serverMessagePacket: SocketMessagePacket = {
         type: 'SocketMessagePacket',
         payload: {
-          socket: interceptedSocket,
+          socket: connection.socket,
           message: {
             id: crypto.randomUUID(),
             timestampISO: new Date().toISOString(),
@@ -124,12 +124,15 @@ const patchSocketSync = () => {
     client.addEventListener('close', (event) => {
       // socket was closed. fires regardless of whether the client or server
       //  initiated the closure
-      interceptedSocket.status = 'CLOSED';
-      interceptedSocket.closeDetails = {
-        code: event.code,
-        reason: event.reason,
-        wasClean: event.wasClean,
-        timestampISO: new Date().toISOString(),
+      connection.socket = {
+        ...connection.socket,
+        status: 'CLOSED',
+        closeDetails: {
+          code: event.code,
+          reason: event.reason,
+          wasClean: event.wasClean,
+          timestampISO: new Date().toISOString(),
+        },
       };
       sendSocketDetailsPacket();
     });
@@ -203,11 +206,15 @@ const patchSocketSync = () => {
     } else if (packet.type === 'PauseSocketPacket' || packet.type === 'ResumeSocketPacket') {
       const { socketId } = packet.payload;
       const connection = sockets.get(socketId);
+      
       if (!connection) {
         return;
       }
 
-      connection.socket.isPaused = packet.type === 'PauseSocketPacket';
+      connection.socket = { 
+        ...connection.socket, 
+        isPaused: packet.type === 'PauseSocketPacket'
+       };
 
       windowConnector.sendPacket({
         type: 'SocketDetailsPacket',

@@ -1,7 +1,7 @@
 import type { BrowserContext, JSHandle, Page } from '@playwright/test';
 import { type ClientSocketBridge, installClientSocketBridge } from './clientSocketBridge';
 import { type Server, startServer } from './server';
-import type { SocketEnd } from './socketEnd';
+import type { InboundEvent, SocketEnd } from './socketEnd';
 
 export type StartTransportArgs = {
   context: BrowserContext;
@@ -18,6 +18,8 @@ export type TransportPage = {
   readonly initialPair: SocketPair;
   /** Opens a new socket from the page (alongside the initial one) and returns its pair. */
   addConnection(): Promise<SocketPair>;
+  /** Opens a new socket from the page whose handshake the server rejects. Resolves on its close. */
+  addRejectedConnection(): Promise<RejectedSocket>;
   /** Reloads the page and replaces `initialPair` with the pair for the reloaded page's socket. */
   refreshPage(): Promise<void>;
 };
@@ -26,6 +28,12 @@ export type SocketPair = {
   readonly url: string;
   readonly client: SocketEnd;
   readonly server: SocketEnd;
+};
+
+export type RejectedSocket = {
+  readonly url: string;
+  /** Every event the client received, ending with its close. */
+  readonly clientEvents: readonly InboundEvent[];
 };
 
 type PageGlobals = {
@@ -84,12 +92,46 @@ async function openTransportPage({
       );
       return await createSocketPair({ clientSocketJsHandle, clientSocketBridge, server });
     },
+    async addRejectedConnection() {
+      const url = server.generateRejectedHandshakeUrl();
+      const clientEvents = await recordRejectedClientSocketEvents(page, url);
+      return { url, clientEvents };
+    },
     async refreshPage() {
       await page.reload();
       const clientSocketJsHandle = await getInitialClientSocketJsHandle(page);
       initialPair = await createSocketPair({ clientSocketJsHandle, clientSocketBridge, server });
     },
   };
+}
+
+/**
+ * Creates the socket and attaches its listeners in a single evaluate, since the server rejects the
+ * handshake immediately and listeners attached by a later evaluate could miss the events.
+ */
+async function recordRejectedClientSocketEvents(page: Page, url: string): Promise<InboundEvent[]> {
+  return await page.evaluate(async (socketUrl) => {
+    const clientSocket = new WebSocket(socketUrl);
+    const events: InboundEvent[] = [];
+    clientSocket.addEventListener('message', (event) => {
+      events.push(
+        typeof event.data === 'string' ? { type: 'text', text: event.data } : { type: 'binary' },
+      );
+    });
+    clientSocket.addEventListener('error', () => {
+      events.push({ type: 'error' });
+    });
+    await new Promise<void>((resolve, reject) => {
+      clientSocket.addEventListener('open', () => {
+        reject(new Error(`socket at ${socketUrl} opened even though its handshake was rejected`));
+      });
+      clientSocket.addEventListener('close', (event) => {
+        events.push({ type: 'close', code: event.code, reason: event.reason });
+        resolve();
+      });
+    });
+    return events;
+  }, url);
 }
 
 async function getInitialClientSocketJsHandle(page: Page): Promise<JSHandle<WebSocket>> {

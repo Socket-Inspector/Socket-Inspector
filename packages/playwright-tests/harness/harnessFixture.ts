@@ -10,9 +10,20 @@ export type Harness = {
 export type HostPage = {
   /** Connection for the socket the page opens on load. Replaced on each `refreshPage()`. */
   readonly connection: WebsocketConnection;
-  /** Opens a new socket from the page (alongside the initial one) and returns its connection. */
+  /**
+   * Opens a new socket from the page (alongside the initial one) and returns its connection.
+   * Resolves once the client has received its open event.
+   */
   addConnection(): Promise<WebsocketConnection>;
-  /** Reloads the page and replaces `connection` with the reloaded page's connection. */
+  /**
+   * Opens a new socket from the page whose handshake the server rejects.
+   * Resolves once the client has received its close event.
+   */
+  addRejectedConnection(): Promise<RejectedWebsocketConnection>;
+  /**
+   * Reloads the page and replaces `connection` with the reloaded page's connection.
+   * Resolves once the reloaded page's socket has received its open event.
+   */
   refreshPage(): Promise<void>;
 };
 
@@ -20,6 +31,11 @@ export type WebsocketConnection = {
   readonly url: string;
   readonly client: WebsocketEndpoint;
   readonly server: WebsocketEndpoint;
+};
+
+/** A socket that never opened, so there is no server end and nothing to send or close. */
+export type RejectedWebsocketConnection = {
+  readonly url: string;
 };
 
 export async function harnessFixture(
@@ -65,6 +81,18 @@ export async function harnessFixture(
           async addConnection() {
             const socketPair = await transportPage.addConnection();
             return createConnection(socketPair);
+          },
+          async addRejectedConnection() {
+            const { url, clientEvents } = await transportPage.addRejectedConnection();
+            const { pathname, search } = new URL(url);
+            const unexpectedEvents = findUnexpectedRejectionEvents(
+              `client end of rejected ${pathname}${search}`,
+              clientEvents,
+            );
+            if (unexpectedEvents.length > 0) {
+              throw getCombinedErrors(unexpectedEvents);
+            }
+            return { url };
           },
           async refreshPage() {
             await transportPage.refreshPage();
@@ -112,6 +140,26 @@ function findUnexpectedEvents(label: string, receivedEvents: readonly InboundEve
     }
   }
   return errors;
+}
+
+function findUnexpectedRejectionEvents(
+  label: string,
+  receivedEvents: readonly InboundEvent[],
+): Error[] {
+  const [first, second, ...rest] = receivedEvents;
+  if (
+    first?.type === 'error' &&
+    second?.type === 'close' &&
+    second.code === 1006 &&
+    rest.length === 0
+  ) {
+    return [];
+  }
+  return [
+    new Error(
+      `${label} expected an error event then a 1006 close, got ${JSON.stringify(receivedEvents)}`,
+    ),
+  ];
 }
 
 function getCombinedErrors(errors: Error[]): Error {

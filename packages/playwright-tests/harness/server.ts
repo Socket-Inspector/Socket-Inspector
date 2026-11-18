@@ -11,6 +11,7 @@ export type StartServerArgs = {
 export type Server = {
   readonly origin: string;
   generateUniqueHandshakeUrl(): string;
+  generateRejectedHandshakeUrl(): string;
   createSocketEnd(url: string): SocketEnd;
   stop(): Promise<void>;
 };
@@ -22,8 +23,20 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
       .end(hostPageHtml());
   });
 
-  const websocketServer = new WebSocketServer({ server: httpServer });
+  const websocketServer = new WebSocketServer({ noServer: true });
   const pathToWebsocket = new Map<string, WebSocket>();
+  const rejectedPaths = new Set<string>();
+
+  // oxlint-disable-next-line max-params -- signature is fixed by node's 'upgrade' event
+  httpServer.on('upgrade', (request, socket, head) => {
+    if (rejectedPaths.has(request.url ?? '/')) {
+      socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\nContent-Length: 0\r\n\r\n');
+      return;
+    }
+    websocketServer.handleUpgrade(request, socket, head, (websocket) => {
+      websocketServer.emit('connection', websocket, request);
+    });
+  });
 
   websocketServer.on('connection', (websocket, request) => {
     const path = request.url ?? '/';
@@ -38,7 +51,14 @@ export async function startServer({ onError }: StartServerArgs): Promise<Server>
 
   return {
     origin: `http://${host}:${port}`,
-    generateUniqueHandshakeUrl: () => `ws://${host}:${port}/${randomUUID()}`,
+    generateUniqueHandshakeUrl() {
+      return `ws://${host}:${port}/${randomUUID()}`;
+    },
+    generateRejectedHandshakeUrl() {
+      const path = `/${randomUUID()}`;
+      rejectedPaths.add(path);
+      return `ws://${host}:${port}${path}`;
+    },
     createSocketEnd(url: string) {
       const { pathname, search } = new URL(url);
       const path = `${pathname}${search}`;

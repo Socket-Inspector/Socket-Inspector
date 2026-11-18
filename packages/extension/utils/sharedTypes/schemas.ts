@@ -12,17 +12,14 @@ const SocketMessageEndpointsClientToServer = z.object({
   source: z.literal('client'),
   destination: z.literal('server'),
 });
-
 const SocketMessageEndpointsServerToClient = z.object({
   source: z.literal('server'),
   destination: z.literal('client'),
 });
-
 const SocketMessageEndpointsExt = z.object({
   source: z.literal('chrome_extension'),
   destination: z.enum(['client', 'server']),
 });
-
 export const SocketMessageEndpointsSchema = z.discriminatedUnion('source', [
   SocketMessageEndpointsClientToServer,
   SocketMessageEndpointsServerToClient,

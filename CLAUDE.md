@@ -39,3 +39,5 @@ pnpm prepare:release
 ## Coding Guidlines
 
 Don't write `switch` statements. Use if, else-if, else instead.
+
+Where possible, functions should take at most 2 parameters. Use an options object instead of more positional parameters.

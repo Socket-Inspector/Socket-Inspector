@@ -105,8 +105,7 @@ const applySocketMessagePacket = (
     prevState.selectedSocket.id === socket.id;
 
   if (customMessageOnSelectedSocket) {
-    // trigger MessageTable scroll so that user can see the
-    // custom message
+    // trigger MessageTable scroll so that user can see the custom message
     return {
       ...prevState,
       socketMessages: updatedSocketMessages,
@@ -219,6 +218,9 @@ const applyClearUnseenCustomMessageIdAction = (
   }
   return {
     ...prevState,
-    selectedSocket: { ...prevState.selectedSocket, unseenCustomMessageId: undefined },
+    selectedSocket: {
+      ...prevState.selectedSocket,
+      unseenCustomMessageId: undefined,
+    },
   };
 };

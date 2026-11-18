@@ -19,7 +19,7 @@ const patchSocketSync = () => {
   const windowConnector = new WindowConnector({ window, location: 'MAIN_WORLD' }).connect();
   const sockets = new Map<SocketDetails['id'], SocketConnection>();
   const interceptor = new WebSocketInterceptor();
-  
+
   interceptor.apply();
 
   interceptor.on('connection', ({ client, server }) => {
@@ -122,7 +122,7 @@ const patchSocketSync = () => {
     });
 
     client.addEventListener('close', () => {
-      // socket was closed. fires regardless of whether the client or server 
+      // socket was closed. fires regardless of whether the client or server
       //  initiated the closure
       interceptedSocket.status = 'CLOSED';
       sendSocketDetailsPacket();

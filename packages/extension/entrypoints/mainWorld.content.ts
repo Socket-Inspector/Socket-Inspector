@@ -121,10 +121,16 @@ const patchSocketSync = () => {
       windowConnector.sendPacket(serverMessagePacket);
     });
 
-    client.addEventListener('close', () => {
+    client.addEventListener('close', (event) => {
       // socket was closed. fires regardless of whether the client or server
       //  initiated the closure
       interceptedSocket.status = 'CLOSED';
+      interceptedSocket.closeDetails = {
+        code: event.code,
+        reason: event.reason,
+        wasClean: event.wasClean,
+        timestampISO: new Date().toISOString(),
+      };
       sendSocketDetailsPacket();
     });
 

@@ -1,11 +1,19 @@
 import { z } from 'zod';
 
 /***** Domain Schemas *****/
+export const SocketCloseDetailsSchema = z.object({
+  code: z.number(),
+  reason: z.string(),
+  wasClean: z.boolean(),
+  timestampISO: z.string(),
+});
+
 export const SocketDetailsSchema = z.object({
   id: z.string(),
   url: z.string(),
   status: z.enum(['CONNECTING', 'OPEN', 'CLOSED']),
   isPaused: z.boolean(),
+  closeDetails: SocketCloseDetailsSchema.optional(),
 });
 
 const SocketMessageEndpointsClientToServer = z.object({

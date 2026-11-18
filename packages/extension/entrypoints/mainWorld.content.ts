@@ -86,6 +86,7 @@ const patchSocketSync = () => {
           },
         },
       };
+
       windowConnector.sendPacket(clientMessagePacket);
     });
 
@@ -117,6 +118,7 @@ const patchSocketSync = () => {
           },
         },
       };
+      
       windowConnector.sendPacket(serverMessagePacket);
     });
 

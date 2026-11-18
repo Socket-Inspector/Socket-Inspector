@@ -4,9 +4,10 @@ import { isSocketIO } from '@/utils/socketIO/isSocketIO';
 import { WindowConnector } from '@/utils/windowMessaging';
 import {
   type WebSocketClientConnection,
-  type WebSocketData,
+  type WebSocketClientEventMap,
   WebSocketInterceptor,
   type WebSocketServerConnection,
+  type WebSocketServerEventMap,
 } from '@mswjs/interceptors/WebSocket';
 
 type SocketConnection = {
@@ -57,7 +58,7 @@ const patchSocketSync = () => {
       sendSocketDetailsPacket();
     });
 
-    client.addEventListener('message', (event: MessageEvent<WebSocketData>) => {
+    client.addEventListener('message', (event: WebSocketClientEventMap['message']) => {
       // client sent a message
 
       if (connection.socket.isPaused) {
@@ -89,7 +90,7 @@ const patchSocketSync = () => {
       windowConnector.sendPacket(clientMessagePacket);
     });
 
-    server.addEventListener('message', (event: MessageEvent<WebSocketData>) => {
+    server.addEventListener('message', (event: WebSocketServerEventMap['message']) => {
       // message received from server
 
       if (connection.socket.isPaused) {
@@ -121,7 +122,7 @@ const patchSocketSync = () => {
       windowConnector.sendPacket(serverMessagePacket);
     });
 
-    client.addEventListener('close', (event) => {
+    client.addEventListener('close', (event: WebSocketClientEventMap['close']) => {
       // socket was closed. fires regardless of whether the client or server
       //  initiated the closure
       connection.socket = {

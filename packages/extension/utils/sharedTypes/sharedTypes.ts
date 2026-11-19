@@ -1,5 +1,6 @@
 import type { z } from 'zod';
 import type {
+  SocketCloseDetailsSchema,
   SocketDetailsSchema,
   SocketMessageEndpointsSchema,
   SocketMessageSchema,
@@ -17,6 +18,7 @@ import type {
 } from './schemas';
 
 /***** Domain Types *****/
+export type SocketCloseDetails = z.infer<typeof SocketCloseDetailsSchema>;
 export type SocketDetails = z.infer<typeof SocketDetailsSchema>;
 export type SocketMessageEndpoints = z.infer<typeof SocketMessageEndpointsSchema>;
 export type SocketMessage = z.infer<typeof SocketMessageSchema>;

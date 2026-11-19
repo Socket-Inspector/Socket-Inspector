@@ -1,12 +1,33 @@
 import { z } from 'zod';
 
 /***** Domain Schemas *****/
-export const SocketDetailsSchema = z.object({
+export const SocketCloseDetailsSchema = z.object({
+  code: z.number(),
+  reason: z.string(),
+  wasClean: z.boolean(),
+  timestampISO: z.string(),
+});
+
+const SocketDetailsBaseSchema = z.object({
   id: z.string(),
   url: z.string(),
-  status: z.enum(['CONNECTING', 'OPEN', 'CLOSED']),
   isPaused: z.boolean(),
 });
+const SocketDetailsConnectingSchema = SocketDetailsBaseSchema.extend({
+  status: z.literal('CONNECTING'),
+});
+const SocketDetailsOpenSchema = SocketDetailsBaseSchema.extend({
+  status: z.literal('OPEN'),
+});
+const SocketDetailsClosedSchema = SocketDetailsBaseSchema.extend({
+  status: z.literal('CLOSED'),
+  closeDetails: SocketCloseDetailsSchema,
+});
+export const SocketDetailsSchema = z.discriminatedUnion('status', [
+  SocketDetailsConnectingSchema,
+  SocketDetailsOpenSchema,
+  SocketDetailsClosedSchema,
+]);
 
 const SocketMessageEndpointsClientToServer = z.object({
   source: z.literal('client'),

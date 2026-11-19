@@ -63,6 +63,48 @@ test('it can select a socket closed by the server from the sidebar', async ({
   await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
 });
 
+// TODO: @mswjs/interceptors drops the client's close code, so the server receives 1005
+test.skip('it can select a socket closed by the client with a code and no reason', async ({
+  page,
+  harness,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
+
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
+
+  await connection.client.close({ code: 4000 });
+  // TODO: fails here: the server receives code 1005 instead of 4000
+  await connection.server.expectClosed({ code: 4000, reason: '' });
+
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
+});
+
+test('it can select a socket closed by the server with a code and no reason', async ({
+  page,
+  harness,
+  devtoolsPanelUrl,
+}) => {
+  const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
+  const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
+  await devtoolsPanel.loadDevtoolsPanel();
+
+  const hostPage = await harness.openHostPage();
+  const connection = hostPage.connection;
+
+  await connection.server.close({ code: 4000 });
+  await connection.client.expectClosed({ code: 4000, reason: '' });
+
+  await devtoolsPanel.bringToFront();
+  await sidebar.clickSocketLink({ url: connection.url, status: 'Disconnected' });
+  await sidebar.assertSidebarSockets([{ url: connection.url, status: 'Disconnected' }]);
+});
+
 test('closing a socket from the client and opening a new one', async ({
   page,
   harness,

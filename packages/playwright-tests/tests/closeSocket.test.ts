@@ -12,8 +12,8 @@ test('the close panel closes both the client and server', async ({
   const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
   const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketPopup = new CloseSocketPopupModel(page, devtoolsPanelUrl);
-
   await devtoolsPanel.loadDevtoolsPanel();
+
   const hostPage = await harness.openHostPage();
   await devtoolsPanel.bringToFront();
 
@@ -39,8 +39,8 @@ test('the close panel sends the selected close code and reason to the client', a
   const devtoolsPanel = new DevtoolsPanelModel(page, devtoolsPanelUrl);
   const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketPopup = new CloseSocketPopupModel(page, devtoolsPanelUrl);
-
   await devtoolsPanel.loadDevtoolsPanel();
+
   const hostPage = await harness.openHostPage();
   await devtoolsPanel.bringToFront();
 

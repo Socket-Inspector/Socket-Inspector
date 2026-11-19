@@ -103,6 +103,12 @@ describe('reducer', () => {
             url: 'ws://localhost:6844/',
             status: 'CLOSED',
             isPaused: false,
+            closeDetails: {
+              code: 1000,
+              reason: '',
+              wasClean: true,
+              timestampISO: '2025-08-30T20:41:20.000Z',
+            },
           },
         },
       };
@@ -114,6 +120,12 @@ describe('reducer', () => {
             url: 'ws://localhost:6844/',
             status: 'CLOSED',
             isPaused: false,
+            closeDetails: {
+              code: 1000,
+              reason: '',
+              wasClean: true,
+              timestampISO: '2025-08-30T20:41:20.000Z',
+            },
           },
         ],
         socketMessages: {
@@ -144,6 +156,12 @@ describe('reducer', () => {
             url: 'ws://localhost:6844/',
             status: 'CLOSED',
             isPaused: false,
+            closeDetails: {
+              code: 1000,
+              reason: '',
+              wasClean: true,
+              timestampISO: '2025-08-30T20:41:20.000Z',
+            },
           },
         ],
         socketMessages: {
@@ -185,6 +203,12 @@ describe('reducer', () => {
             url: 'ws://localhost:6844/',
             status: 'CLOSED',
             isPaused: false,
+            closeDetails: {
+              code: 1000,
+              reason: '',
+              wasClean: true,
+              timestampISO: '2025-08-30T20:41:20.000Z',
+            },
           },
           {
             id: '661d82ca-23d2-4d1b-b069-be5ff140db1f',
@@ -257,6 +281,12 @@ describe('reducer', () => {
             url: 'ws://localhost:6844/',
             status: 'CLOSED',
             isPaused: false,
+            closeDetails: {
+              code: 1000,
+              reason: '',
+              wasClean: true,
+              timestampISO: '2025-08-30T20:41:20.000Z',
+            },
           },
           {
             id: '661d82ca-23d2-4d1b-b069-be5ff140db1f',
@@ -295,6 +325,12 @@ describe('reducer', () => {
             url: 'ws://localhost:6844/',
             status: 'CLOSED',
             isPaused: false,
+            closeDetails: {
+              code: 1000,
+              reason: '',
+              wasClean: true,
+              timestampISO: '2025-08-30T20:41:20.000Z',
+            },
           },
           {
             id: '661d82ca-23d2-4d1b-b069-be5ff140db1f',

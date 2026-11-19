@@ -40,7 +40,7 @@ test('the close panel sends the selected close code and reason to the client', a
   const sidebar = new SidebarPageModel(page, devtoolsPanelUrl);
   const closeSocketPopup = new CloseSocketPopupModel(page, devtoolsPanelUrl);
   await devtoolsPanel.loadDevtoolsPanel();
-  
+
   const hostPage = await harness.openHostPage();
   await devtoolsPanel.bringToFront();
 

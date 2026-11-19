@@ -5,9 +5,9 @@ import { WindowConnector } from '@/utils/windowMessaging';
 import {
   type WebSocketClientConnection,
   type WebSocketClientEventMap,
-  WebSocketInterceptor,
   type WebSocketServerConnection,
   type WebSocketServerEventMap,
+  WebSocketInterceptor,
 } from '@mswjs/interceptors/WebSocket';
 
 type SocketConnection = {
@@ -207,15 +207,15 @@ const patchSocketSync = () => {
     } else if (packet.type === 'PauseSocketPacket' || packet.type === 'ResumeSocketPacket') {
       const { socketId } = packet.payload;
       const connection = sockets.get(socketId);
-      
+
       if (!connection) {
         return;
       }
 
-      connection.socket = { 
-        ...connection.socket, 
-        isPaused: packet.type === 'PauseSocketPacket'
-       };
+      connection.socket = {
+        ...connection.socket,
+        isPaused: packet.type === 'PauseSocketPacket',
+      };
 
       windowConnector.sendPacket({
         type: 'SocketDetailsPacket',
